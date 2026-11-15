@@ -15,7 +15,7 @@ moment something goes wrong. It runs as a desktop app with NASA and partner data
    ID: if macOS blocks it, open **System Settings → Privacy & Security** and
    choose **Open Anyway** (on older macOS, right-click the app and choose **Open**).
 2. Choose **Walk** and select **Sample walk at Jezero**. For a harder case,
-   select **Try selecting point A and point B on Mars**.
+   select **Delta front traverse**: 3 km out, where a solar storm cannot be outrun.
 3. The **GO/NO-GO poll** fills in: route, ground, suit, way home, daylight, solar
    storms, body, radio.
 4. Press **Start the walk**, then **Solar storm**, **Suit leak** or **Injury**. The
