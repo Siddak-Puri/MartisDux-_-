@@ -9,10 +9,12 @@ moment something goes wrong. It runs as a desktop app with NASA and partner data
 
 ## Try it in two minutes
 
-1. Open MartisDux and press **Explore Mars**. On Windows run
-   `release/MartisDux-0.6.4-portable.exe` (no install; Windows may show an "unknown
-   publisher" warning because the build is unsigned). For macOS see the build
-   instructions below.
+1. Open MartisDux and press **Explore Mars**. On Windows download
+   `MartisDux-0.6.4-portable.exe` from the
+   [latest release](https://github.com/Siddak-Puri/MartisDux-_-/releases/latest) and
+   run it (no install; Windows may show an "unknown publisher" warning because the
+   build is unsigned). For macOS, or to run from source, see the build instructions
+   below.
 2. Choose **Walk** and select **Sample walk at Jezero**. For a harder case,
    select **Delta front traverse**:
    3 km out, where a solar storm cannot be outrun.
@@ -65,7 +67,7 @@ Needs Node.js 22 or newer. Python 3 (NumPy, requests) is only needed to regenera
 
 ```sh
 npm ci
-npm test            # 118 automated checks, including the validation statistics
+npm test            # 120 automated checks, including the validation statistics
 npm run app         # build and open the desktop app
 npm run app:dist    # portable .exe and installer into release/
 npm run dev         # browser development server
@@ -86,9 +88,7 @@ CSC_IDENTITY_AUTO_DISCOVERY=false npm run app:mac -- -c.mac.identity=- -c.mac.ha
 
 This local command produces ad-hoc signed apps and DMGs under `release/`.
 The macOS bundles declare macOS 13.0 as their minimum version. For distribution,
-use the macOS workflow with a Developer ID Application signing identity and
-Apple notarization credentials. Both architectures are also configured in
-`.github/workflows/build-mac.yml`.
+sign with a Developer ID Application identity and Apple notarization credentials.
 
 ## Discovery log
 
