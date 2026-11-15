@@ -1,4 +1,4 @@
-# MartisDux: Mission Control on board
+# MartisDux: The Ultimate Martian Navigator Out there
 
 NASA Space Apps 2026 · *Interplanetary Survival Guide: Martian Map* · Team MartisDux
 
@@ -9,23 +9,36 @@ moment something goes wrong. It runs as a desktop app with NASA and partner data
 
 ## Try it in two minutes
 
-1. Open MartisDux and press **Explore Mars**. On Windows download
-   `MartisDux-0.6.4-portable.exe` from the
-   [latest release](https://github.com/Siddak-Puri/MartisDux-_-/releases/latest) and
-   run it (no install; Windows may show an "unknown publisher" warning because the
-   build is unsigned). For macOS, or to run from source, see the build instructions
-   below.
+1. Open the **official website** at https://www.martisdux.com. In the Simulator
+   section, choose the download for Windows (`.exe`) or macOS (`.dmg`) and open
+   the file to start the app. The macOS app is not signed with an Apple Developer
+   ID: if macOS blocks it, open **System Settings → Privacy & Security** and
+   choose **Open Anyway** (on older macOS, right-click the app and choose **Open**).
 2. Choose **Walk** and select **Sample walk at Jezero**. For a harder case,
-   select **Delta front traverse**:
-   3 km out, where a solar storm cannot be outrun.
+   select **Try selecting point A and point B on Mars**.
 3. The **GO/NO-GO poll** fills in: route, ground, suit, way home, daylight, solar
    storms, body, radio.
 4. Press **Start the walk**, then **Solar storm**, **Suit leak** or **Injury**. The
    app gives the call, draws the fastest way home and counts down.
 5. Turn on **Storm shelter** (bottom bar) to see where terrain hides the sky, and
    **Rover check** to see the slope map tested against Perseverance.
-6. In **Walk**, choose **Stand in Jezero with the helmet display** to walk the landing
-   site at life size (see below).
+6. In **Walk**, choose **Stand in Jezero with the helmet display** to walk the
+   Perseverance landing site at life size from an astronaut's point of view. The
+   visor shows heading, slope and turn cues along the reference route.
+7. After selecting two points on the map, scroll down in the Walk panel and press
+   **Walk it in 3D** to follow your route in first person.
+8. With two points selected, you can also download the traverse sheet:
+
+<img width="1440" height="900" alt="Traverse sheet" src="https://github.com/user-attachments/assets/70983982-98b4-438a-92a5-a12585cd06f7" />
+
+9. Choose **Log** in the left panel to simulate reporting a finding to Earth.
+10. The time a message takes to travel between Mars and Earth is calculated by:
+
+<p align="center"><b>One-way light time (seconds) = d ÷ c</b></p>
+
+Where:
+* **d** = current distance between Earth and Mars (in kilometres)
+* **c** = speed of light in a vacuum (299,792.458 km/s)
 
 Plan your own walk with **Walk**: pick a start and a destination on the map, or try the
 sample walks there: a short one, the 3 km delta front, a climb onto the delta, the crater
@@ -77,12 +90,9 @@ Live solar storm data uses NASA's public DONKI API. It works with the shared dem
 key; for a higher request limit copy `.env.example` to `.env` and add a key from
 https://api.nasa.gov.
 
-## macOS app
-
-On macOS, build Apple Silicon and Intel packages with the existing Electron Builder workflow.
+macOS packages (Apple Silicon and Intel, ad-hoc signed, into `release/`):
 
 ```sh
-npm ci
 CSC_IDENTITY_AUTO_DISCOVERY=false npm run app:mac -- -c.mac.identity=- -c.mac.hardenedRuntime=false
 ```
 
