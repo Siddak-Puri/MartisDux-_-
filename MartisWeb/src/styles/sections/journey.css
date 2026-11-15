@@ -1,0 +1,345 @@
+/* ==========================================================================
+   How it works — a Deep Mars Brown band: three steps, then the hard parts
+   ========================================================================== */
+
+.section.journey {
+  /* Slides under the mission's convex lower edge, so the curve shows brown */
+  margin-top: calc(-1 * clamp(2.5rem, 6vw, 6.5rem));
+  padding-top: calc(var(--section-y) + clamp(2.5rem, 6vw, 6.5rem));
+  background: linear-gradient(180deg, #3a2414 0%, var(--brown) 45%, #22150c 100%);
+  overflow: clip;
+}
+
+.section.journey .lead {
+  color: var(--peach);
+}
+
+/* Faint topographic texture bleeding from the earthy band */
+.journey__topo {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 60%;
+  background:
+    repeating-radial-gradient(ellipse 120% 80% at 18% -20%, transparent 0 22px, rgb(217 131 39 / 0.07) 22px 23px),
+    repeating-radial-gradient(ellipse 90% 70% at 92% 10%, transparent 0 30px, rgb(217 131 39 / 0.05) 30px 31px);
+  mask-image: linear-gradient(180deg, #000 0%, transparent 100%);
+  pointer-events: none;
+}
+
+.journey .wrap {
+  position: relative;
+}
+
+.journey .kicker {
+  margin-bottom: clamp(2rem, 4vw, 3.5rem);
+}
+
+.journey__head {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: clamp(1rem, 2vw, 2rem);
+  row-gap: 2rem;
+  align-items: end;
+}
+
+.journey__head .h2 {
+  grid-column: 1 / span 7;
+}
+
+.journey__intro {
+  grid-column: 9 / -1;
+  display: grid;
+  gap: 1.25rem;
+  justify-items: start;
+}
+
+.journey__track {
+  --jv-h: clamp(9rem, 15vw, 12.5rem);
+  position: relative;
+  margin-top: clamp(4rem, 8vw, 7rem);
+}
+
+.journey__line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  /* Centre of the station markers: visual + its margin + grid gap − marker offset */
+  top: calc(var(--jv-h) + 1.25rem + 0.9rem - 0.55rem + 0.375rem);
+  width: 100%;
+  height: 40px;
+  translate: 0 -50%;
+  overflow: visible;
+}
+
+.journey__line path {
+  fill: none;
+  vector-effect: non-scaling-stroke;
+}
+
+.journey__line-base {
+  stroke: var(--line-ink-strong);
+  stroke-width: 1;
+  stroke-dasharray: 2 6;
+}
+
+.journey__line-fill {
+  stroke: var(--solar);
+  stroke-width: 1.5;
+  stroke-dasharray: 1;
+  stroke-dashoffset: calc(1 - var(--progress, 1));
+}
+
+.js-motion .journey__line-fill {
+  stroke-dashoffset: calc(1 - var(--progress, 0));
+}
+
+.journey__steps {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.5rem, 4vw, 4rem);
+}
+
+.journey__step {
+  display: grid;
+  align-content: start;
+  gap: 0.9rem;
+}
+
+.journey__visual {
+  height: var(--jv-h);
+  margin-bottom: 1.25rem;
+}
+
+.journey__visual svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Station marker on the line */
+.journey__num {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  color: var(--solar);
+  padding-top: 1.75rem;
+}
+
+.journey__num span {
+  color: var(--on-ink-3);
+}
+
+.journey__num::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: -0.55rem;
+  width: 0.75rem;
+  height: 0.75rem;
+  border: 1px solid var(--solar);
+  background: var(--brown);
+  transform: rotate(45deg);
+  transition: background-color var(--dur-2) var(--ease-out);
+}
+
+.journey[data-reached='1'] .journey__step[data-step='0'] .journey__num::before,
+.journey[data-reached='2'] .journey__step:is([data-step='0'], [data-step='1']) .journey__num::before,
+.journey[data-reached='3'] .journey__step .journey__num::before {
+  background: var(--solar);
+}
+
+.journey__step .h3 {
+  font-weight: 400;
+}
+
+.journey__text {
+  max-width: 34ch;
+  font-size: var(--fs-small);
+  color: var(--on-ink-2);
+}
+
+/* --- What makes this hard ----------------------------------------------------- */
+
+.hard {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+  gap: clamp(1.5rem, 4vw, 4rem);
+  margin-top: clamp(5rem, 9vw, 8rem);
+  padding-top: clamp(2.5rem, 4vw, 3.5rem);
+  border-top: 1px solid var(--line-ink-strong);
+}
+
+.hard__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 1.15rem + 1.1vw, 2.25rem);
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  line-height: 1.15;
+  color: var(--cream);
+}
+
+.hard__list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2rem clamp(1.5rem, 3vw, 3rem);
+  margin: 0;
+}
+
+.hard__item dt {
+  margin-bottom: 0.45rem;
+  font-weight: 600;
+  color: var(--solar);
+}
+
+.hard__item dd {
+  margin: 0;
+  font-size: var(--fs-small);
+  line-height: 1.6;
+  color: var(--on-ink-2);
+}
+
+@media (max-width: 63.99rem) {
+  .hard {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 39.99rem) {
+  .hard__list {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Station illustrations */
+.jv-globe circle,
+.jv-globe ellipse,
+.jv-globe line {
+  fill: none;
+  stroke: rgb(254 243 226 / 0.3);
+  stroke-width: 1;
+}
+
+.jv-globe circle {
+  stroke: rgb(254 243 226 / 0.55);
+}
+
+.jv-select rect {
+  fill: rgb(255 156 76 / 0.14);
+  stroke: none;
+}
+
+.jv-select path {
+  fill: none;
+  stroke: var(--solar);
+  stroke-width: 1.5;
+}
+
+.jv-select .jv-leader {
+  stroke-width: 1;
+  stroke: rgb(255 156 76 / 0.7);
+}
+
+.jv-label,
+.jv-chips text {
+  /* Martian Mono is wide: keep SVG labels condensed so they fit their chips */
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-stretch: 75%;
+  letter-spacing: 0;
+  fill: var(--on-ink-2);
+}
+
+.jv-tile {
+  fill: rgb(217 131 39 / 0.06);
+  stroke: rgb(254 243 226 / 0.35);
+  stroke-width: 1;
+}
+
+.jv-contours path {
+  fill: none;
+  stroke: var(--ochre);
+  stroke-width: 0.8;
+  opacity: 0.7;
+}
+
+.jv-chips rect {
+  fill: var(--ink-3);
+  stroke: rgb(254 243 226 / 0.28);
+}
+
+.jv-link {
+  stroke: rgb(254 243 226 / 0.3);
+  stroke-dasharray: 1 2;
+}
+
+.jv-poi {
+  fill: var(--solar);
+}
+
+.jv-route {
+  fill: none;
+  stroke: var(--solar);
+  stroke-width: 2;
+  stroke-dasharray: 3 5;
+  stroke-linecap: round;
+}
+
+.jv-start {
+  fill: var(--cream);
+}
+
+.jv-pin circle:first-child {
+  fill: var(--solar);
+}
+
+.jv-pin circle:last-child {
+  fill: none;
+  stroke: var(--solar);
+  stroke-opacity: 0.5;
+}
+
+@media (max-width: 63.99rem) {
+  .journey__head .h2,
+  .journey__intro {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Vertical narrative below 900px */
+@media (max-width: 56.24rem) {
+  .journey__line {
+    display: none;
+  }
+
+  .journey__steps {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding-left: 1.75rem;
+    border-left: 1px dashed var(--line-ink-strong);
+  }
+
+  .journey__step {
+    padding-bottom: 3.5rem;
+  }
+
+  .journey__step:last-child {
+    padding-bottom: 0;
+  }
+
+  .journey__visual {
+    height: auto;
+    max-width: 22rem;
+    aspect-ratio: 4 / 3;
+  }
+
+  .journey__num {
+    padding-top: 0;
+  }
+
+  .journey__num::before {
+    left: calc(-1.75rem - 0.4rem);
+    top: 0.4rem;
+  }
+}

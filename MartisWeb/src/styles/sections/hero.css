@@ -1,0 +1,467 @@
+/* ==========================================================================
+   Hero — planet stage, globe-wrapped headline (Figma), instrument ring
+   ========================================================================== */
+
+@property --enter {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.hero {
+  /* Planet diameter drives every orbital measurement below. */
+  --planet-d: min(60svh, 40vw, 680px);
+  --planet-x: 69%;
+  --planet-y: 50%;
+  --ring-r: 0.8; /* instrument ring radius ÷ planet diameter (≈1.6 r) */
+  --ring-tilt: rotateZ(17deg) rotateX(68deg);
+
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  background: radial-gradient(110% 75% at 50% 42%, #1d130c 0%, var(--ink) 62%);
+  color: var(--on-ink);
+}
+
+.hero__stars {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+  pointer-events: none;
+}
+
+/* Warm horizon glow at the foot of the hero, leading into the cream mission */
+.hero__glow {
+  position: absolute;
+  left: 50%;
+  bottom: -38vh;
+  z-index: -1;
+  width: 140vw;
+  height: 60vh;
+  translate: -50% 0;
+  background: radial-gradient(closest-side, rgb(217 131 39 / 0.14), rgb(217 131 39 / 0.04) 55%, transparent);
+  pointer-events: none;
+}
+
+.hero__inner {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-rows: minmax(0, 1fr) auto;
+  align-items: center;
+  column-gap: 2rem;
+  min-height: 100svh;
+  min-height: max(100svh, 40rem);
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding: calc(var(--header-h) + 1.5rem) var(--gutter) clamp(1.5rem, 4.5vh, 3rem);
+}
+
+/* --- Planet stage ------------------------------------------------------- */
+
+.hero__planet {
+  position: absolute;
+  left: var(--planet-x);
+  top: var(--planet-y);
+  z-index: 1;
+  width: var(--planet-d);
+  height: var(--planet-d);
+  translate: -50% -50%;
+  pointer-events: none;
+}
+
+/* Soft atmospheric halo behind the globe */
+.hero__planet::before {
+  content: '';
+  position: absolute;
+  inset: -55%;
+  background: radial-gradient(closest-side, rgb(255 156 76 / 0.12), rgb(255 156 76 / 0.035) 52%, transparent 74%);
+  z-index: -1;
+}
+
+.planet-css {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: 50%;
+  background-color: #6e3a1d;
+  background-repeat: repeat-x;
+  background-size: 200% 100%;
+  background-position: 0 50%;
+  box-shadow: 0 0 calc(var(--planet-d) * 0.09) rgb(255 156 76 / 0.18);
+  animation: planet-pan var(--planet-period) linear infinite;
+  transition: opacity 1.6s var(--ease-out);
+}
+
+/* Terminator, limb darkening and a hint of atmospheric rim */
+.planet-css::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 33% 30%, rgb(255 228 196 / 0.14), transparent 42%),
+    radial-gradient(circle at 36% 33%, transparent 44%, rgb(18 11 7 / 0.55) 66%, rgb(18 11 7 / 0.95) 86%);
+  box-shadow:
+    inset calc(var(--planet-d) * 0.012) calc(var(--planet-d) * 0.01) calc(var(--planet-d) * 0.035) rgb(255 170 110 / 0.3);
+}
+
+@keyframes planet-pan {
+  to {
+    background-position: -200% 50%;
+  }
+}
+
+.planet-gl {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 2;
+  width: 160%;
+  max-width: none;
+  height: 160%;
+  translate: -50% -50%;
+  opacity: 0;
+  transition: opacity 1.6s var(--ease-out);
+}
+
+.hero[data-gl='ready'] .planet-gl {
+  opacity: 1;
+}
+
+.hero[data-gl='ready'] .planet-css {
+  opacity: 0;
+  animation-play-state: paused;
+}
+
+/* --- Orbits: back layer sits behind the planet, front layer in front ----- */
+
+.orbit {
+  position: absolute;
+  inset: 0;
+  perspective: calc(var(--planet-d) * 4.2);
+  perspective-origin: 50% 50%;
+  pointer-events: none;
+}
+
+.orbit--back {
+  z-index: 0;
+}
+
+.orbit--front {
+  z-index: 3;
+}
+
+/* Instrument ring: a tilted disc of ticks and orbital text, split into
+   far/near halves */
+.ring-plane {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: calc(var(--planet-d) * var(--ring-r) * 2);
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  transform: var(--ring-tilt);
+}
+
+.orbit--back .ring-plane {
+  clip-path: inset(0 0 50% 0);
+  opacity: 0.4;
+}
+
+.orbit--front .ring-plane {
+  clip-path: inset(50% 0 0 0);
+  opacity: 0.85;
+}
+
+.ring-spin {
+  width: 100%;
+  height: 100%;
+  animation: ring-spin var(--orbit-ring-period) linear infinite;
+}
+
+.ring-spin svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+@keyframes ring-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.ring__circle {
+  fill: none;
+  stroke: rgb(254 243 226 / 0.3);
+  stroke-width: 0.16;
+}
+
+.ring__circle--faint {
+  stroke: rgb(254 243 226 / 0.14);
+  stroke-dasharray: 0.5 1.1;
+}
+
+.ring__tick {
+  stroke: rgb(254 243 226 / 0.38);
+  stroke-width: 0.15;
+}
+
+.ring__tick--major {
+  stroke: var(--solar);
+  stroke-width: 0.26;
+}
+
+.ring__label {
+  fill: rgb(242 181 140 / 0.82);
+  font-family: var(--font-mono);
+  font-size: 2.05px;
+  letter-spacing: 0.3em;
+}
+
+/* Globe-wrapped headline: glyphs on the front of a cylinder (orbit-text.js) */
+.wrap-title {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0;
+  height: 0;
+  transform-style: preserve-3d;
+  transform: rotateX(-5deg);
+}
+
+.wrap-title__turn {
+  --enter: 0deg;
+  transform-style: preserve-3d;
+  transform: rotateY(calc(var(--enter) + var(--turn, 0deg)));
+}
+
+.wrap-title__char {
+  position: absolute;
+  left: calc(var(--cw) / -2);
+  top: calc(var(--wrap-fs) * -0.56);
+  width: var(--cw);
+  font-family: var(--font-sans);
+  font-size: var(--wrap-fs);
+  font-weight: 600;
+  line-height: 1.1;
+  text-align: center;
+  white-space: pre;
+  color: rgb(254 243 226 / calc(var(--light, 1) * 0.92));
+  text-shadow: 0 0.04em 0.45em rgb(18 11 7 / 0.55);
+  transform: rotateY(var(--a)) translateZ(var(--wrap-R));
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* --- Copy ----------------------------------------------------------------- */
+
+.hero__copy {
+  grid-column: 1;
+  grid-row: 1 / 3;
+  z-index: 3;
+  display: grid;
+  gap: 1.4rem;
+  max-width: min(36rem, 42vw);
+  padding-top: 2rem;
+}
+
+.hero__descriptor {
+  color: var(--peach);
+  font-size: var(--fs-mono);
+}
+
+/* The headline: thin, wide capitals, read at a glance */
+.hero__title {
+  font-family: var(--font-display);
+  /* Capped so "NAVIGABLE." never reaches the descriptor wrapped on the globe */
+  font-size: clamp(2.8rem, 1rem + 4.6vw, 5.25rem);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  line-height: 1.02;
+  color: var(--cream);
+  text-shadow: 0 0.05em 0.6em rgb(18 11 7 / 0.65);
+}
+
+.hero__line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+.hero__line-inner {
+  display: block;
+}
+
+.hero__lede {
+  max-width: 30rem;
+  font-size: clamp(1.02rem, 0.95rem + 0.25vw, 1.15rem);
+  line-height: 1.6;
+  color: var(--peach);
+  text-wrap: pretty;
+}
+
+.hero__lede strong {
+  color: var(--cream);
+  font-weight: 600;
+}
+
+.hero__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 0.4rem;
+}
+
+.hero__meta {
+  grid-column: 2;
+  grid-row: 2;
+  z-index: 3;
+  align-self: end;
+  display: flex;
+  gap: 2.25rem;
+  text-align: right;
+  color: var(--on-ink-3);
+}
+
+.hero__meta dd {
+  margin: 0.15rem 0 0;
+  color: var(--cream);
+  font-variant-numeric: tabular-nums;
+}
+
+.hero__status {
+  color: var(--solar) !important;
+}
+
+/* --- Entrance (only when motion is allowed) --------------------------------- */
+
+.js-motion .hero__line-inner {
+  transform: translate3d(0, 108%, 0);
+  transition: transform 1.5s var(--ease-out);
+}
+
+.js-motion .hero__line + .hero__line .hero__line-inner {
+  transition-delay: 140ms;
+}
+
+.js-motion.is-ready .hero__line-inner {
+  transform: none;
+}
+
+.js-motion .hero__planet {
+  opacity: 0;
+  scale: 0.94;
+  transition:
+    opacity 2.2s var(--ease-out) 200ms,
+    scale 2.6s var(--ease-out) 200ms;
+}
+
+.js-motion .orbit {
+  opacity: 0;
+  transition: opacity 2s var(--ease-out) 700ms;
+}
+
+/* The descriptor turns into place across the globe */
+.js-motion .wrap-title__turn {
+  --enter: 55deg;
+  transition: --enter 2.6s var(--ease-out) 500ms;
+}
+
+.js-motion.is-ready .hero__planet {
+  opacity: 1;
+  scale: 1;
+}
+
+.js-motion.is-ready .orbit {
+  opacity: 1;
+}
+
+.js-motion.is-ready .wrap-title__turn {
+  --enter: 0deg;
+}
+
+/* --- Responsive recomposition ---------------------------------------------- */
+
+/* Short laptop screens */
+@media (max-height: 46rem) and (min-width: 68.75rem) {
+  .hero {
+    --planet-d: min(62svh, 40vw);
+  }
+
+  .hero__copy {
+    gap: 1.1rem;
+  }
+}
+
+/* Tablet & phone: the globe on top, the headline overlapping its lower edge */
+@media (max-width: 68.74rem) {
+  .hero {
+    --planet-d: min(70vw, 50svh, 540px);
+  }
+
+  .hero__inner {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: none;
+    grid-template-areas:
+      'stage'
+      'copy'
+      'meta';
+    align-content: center;
+  }
+
+  .hero__planet {
+    grid-area: stage;
+    position: relative;
+    left: auto;
+    top: auto;
+    translate: none;
+    justify-self: center;
+    margin-block: clamp(1.5rem, 5vh, 3rem) 0;
+  }
+
+  .hero__copy {
+    grid-area: copy;
+    grid-row: auto;
+    grid-column: auto;
+    max-width: 36rem;
+    margin-top: calc(var(--planet-d) * -0.12);
+    padding-top: 0;
+  }
+
+  .hero__title {
+    font-size: min(clamp(2.6rem, 1rem + 6vw, 4.6rem), 11.5vw);
+  }
+
+  .hero__meta {
+    grid-area: meta;
+    grid-row: auto;
+    grid-column: auto;
+    margin-top: 2.25rem;
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--line-ink);
+    text-align: left;
+  }
+}
+
+@media (max-width: 39.99rem) {
+  .hero {
+    --planet-d: min(78vw, 42svh);
+    --ring-r: 0.72;
+  }
+
+  .hero__ctas .btn {
+    flex: 1 1 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .planet-css,
+  .ring-spin {
+    animation: none;
+  }
+}

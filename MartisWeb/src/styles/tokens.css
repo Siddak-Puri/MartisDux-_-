@@ -1,0 +1,113 @@
+/* ==========================================================================
+   MartisDux design tokens
+   Every colour, type size, spacing step and motion value lives here.
+   Visual direction follows the "MartisDux Layout" Figma: a warm brown-black
+   base, peach accents, metallic panel edges, thin wide titles.
+   ========================================================================== */
+
+:root {
+  /* --- Brand palette -------------------------------------------------- */
+  --cream: #fef3e2;   /* Martian Cream   – reading sections, headline type   */
+  --solar: #ff9c4c;   /* Solar Orange    – interaction, orbital accents      */
+  --ochre: #d98327;   /* Martian Ochre   – topography, secondary accents     */
+  --brown: #2a1a0e;   /* Deep Mars Brown – text on cream, earthy bands       */
+  --cosmic: #080616;  /* Cosmic Ink      – deepest space, used sparingly     */
+
+  /* --- Warm dark base (Figma) ------------------------------------------- */
+  --ink: #120b07;     /* page base: warm brown-black                         */
+  --ink-2: #1b120c;   /* raised surface                                      */
+  --ink-3: #24180f;   /* panels, map frame                                   */
+  --peach: #f2b58c;   /* subheads and panel copy on dark (11:1 on --ink)     */
+
+  /* --- Warm light surface ----------------------------------------------- */
+  /* Sand replaces near-white cream for light sections, so they read as
+     Martian ground rather than paper. Cream stays for type on dark. */
+  --sand: #f3dfc1;
+  --sand-2: #ead0aa;
+  --sand-3: #dfbf93;
+
+  /* --- Derived tones ---------------------------------------------------- */
+  --cream-2: #f7e7cf;        /* slightly deeper cream for small fills  */
+  --cream-3: #efd9b9;        /* hairline fills                         */
+  --rust: #8a4510;           /* ochre for small text on sand (5.5:1)   */
+
+  --on-ink: var(--cream);
+  --on-ink-2: rgb(254 243 226 / 0.74);
+  --on-ink-3: rgb(254 243 226 / 0.58);
+  --line-ink: rgb(254 243 226 / 0.12);
+  --line-ink-strong: rgb(254 243 226 / 0.24);
+
+  --on-cream: var(--brown);
+  --on-cream-2: rgb(42 26 14 / 0.74);
+  --on-cream-3: rgb(42 26 14 / 0.6);
+  --line-cream: rgb(42 26 14 / 0.14);
+  --line-cream-strong: rgb(42 26 14 / 0.28);
+
+  /* Brushed-metal edge used on panels, pills and the map frame */
+  --metal: linear-gradient(
+    140deg,
+    #f4e6d4 0%,
+    #a88a72 18%,
+    #3d2c21 42%,
+    #5e4636 62%,
+    #d9c3ad 84%,
+    #7a5f4c 100%
+  );
+  --glass: rgb(18 11 7 / 0.58);
+
+  /* --- Typography ----------------------------------------------------- */
+  --font-sans: 'Instrument Sans Variable', 'Instrument Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-display: 'Julius Sans One', 'Instrument Sans Variable', system-ui, sans-serif;
+  --font-mono: 'Martian Mono Variable', 'Martian Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  --fs-display: clamp(3rem, 0.9rem + 7.1vw, 8.75rem);
+  --fs-h2: clamp(1.9rem, 1.1rem + 2.45vw, 3.5rem);
+  --fs-h3: clamp(1.25rem, 1.08rem + 0.6vw, 1.7rem);
+  --fs-lead: clamp(1.15rem, 1.02rem + 0.48vw, 1.5rem);
+  --fs-body: clamp(1rem, 0.96rem + 0.18vw, 1.125rem);
+  --fs-small: 0.9375rem;
+  --fs-mono: 0.72rem;
+  --fs-mono-s: 0.66rem;
+
+  --track-display: -0.03em;
+  --track-h2: 0.035em;
+  --track-mono: 0.02em;
+  --track-caps: 0.24em;
+
+  --measure: 62ch;
+
+  /* --- Layout --------------------------------------------------------- */
+  --maxw: 1440px;
+  --gutter: clamp(1rem, 4.2vw, 3.5rem);
+  --section-y: clamp(6rem, 4rem + 9vw, 13rem);
+  --header-h: 4.75rem;
+  --radius: 2px;
+  --radius-panel: clamp(1.25rem, 2.4vw, 2.25rem);
+
+  /* --- Motion --------------------------------------------------------- */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);       /* expo-like settle   */
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-1: 240ms;
+  --dur-2: 520ms;
+  --dur-3: 900ms;
+  --dur-4: 1400ms;
+  --stagger: 70ms;
+
+  /* Orbital timings (hero + closing) */
+  --orbit-ring-period: 240s;
+  --planet-period: 150s;
+
+  /* --- Layers --------------------------------------------------------- */
+  --z-stage: 0;
+  --z-content: 2;
+  --z-header: 50;
+  --z-menu: 60;
+
+  color-scheme: dark light;
+}
+
+@media (max-width: 47.99rem) {
+  :root {
+    --header-h: 4rem;
+  }
+}

@@ -1,0 +1,188 @@
+/* ==========================================================================
+   Roadmap — an honest, horizontal timeline on Deep Mars Brown
+   ========================================================================== */
+
+.section.roadmap {
+  /* Slides under the open-source section's convex lower edge */
+  margin-top: calc(-1 * clamp(2.5rem, 6vw, 6.5rem));
+  padding-top: calc(var(--section-y) + clamp(2.5rem, 6vw, 6.5rem));
+  background: linear-gradient(180deg, var(--brown) 0%, #22150c 100%);
+}
+
+.section.roadmap .lead {
+  color: var(--peach);
+}
+
+.roadmap__head {
+  display: grid;
+  grid-template-columns: minmax(0, 6fr) minmax(0, 6fr);
+  gap: 1.5rem clamp(1.5rem, 4vw, 4rem);
+  align-items: end;
+}
+
+.roadmap__head .lead {
+  max-width: 34ch;
+}
+
+.roadmap__key {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.75rem;
+  color: var(--on-ink-2);
+}
+
+.roadmap__key li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+/* Status marks: shape carries the meaning as well as the label */
+.status-mark {
+  display: inline-block;
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+  border: 1.5px solid var(--cream);
+  background: var(--brown);
+}
+
+.status-mark--progress {
+  border-color: var(--solar);
+  background: linear-gradient(90deg, var(--solar) 50%, var(--brown) 50%);
+}
+
+.status-mark--done {
+  border-color: var(--solar);
+  background: var(--solar);
+}
+
+.status-mark--exploring {
+  border-style: dashed;
+  border-color: var(--peach);
+}
+
+.status-mark--planned {
+  border-color: rgb(254 243 226 / 0.5);
+}
+
+/* --- Timeline ---------------------------------------------------------------- */
+
+.phases {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(1rem, 2vw, 2rem);
+  margin-top: clamp(3.5rem, 6vw, 5rem);
+  padding-top: 2.25rem;
+}
+
+/* The track: solid for the stretch in progress, dashed for what lies ahead */
+.phases::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0.5rem;
+  border-top: 1px dashed rgb(254 243 226 / 0.3);
+}
+
+.phases::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: calc(0.5rem - 0.5px);
+  /* Solid through the done phases, fading out across the one in progress */
+  width: 92%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--solar) 75%, rgb(255 156 76 / 0));
+}
+
+.phase {
+  position: relative;
+  display: grid;
+  align-content: start;
+  gap: 0.55rem;
+}
+
+.phase > .status-mark {
+  position: absolute;
+  left: 0;
+  top: calc(-2.25rem + 0.5rem - 0.55rem);
+  width: 1.1rem;
+  height: 1.1rem;
+}
+
+.phase__status {
+  color: var(--on-ink-3);
+}
+
+.phase--progress .phase__status {
+  color: var(--solar);
+}
+
+.phase--exploring .phase__status {
+  color: var(--peach);
+}
+
+.phase__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.2rem, 1rem + 0.6vw, 1.6rem);
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  line-height: 1.15;
+  color: var(--cream);
+}
+
+.phase--planned .phase__title {
+  color: var(--on-ink-2);
+}
+
+.phase__text {
+  max-width: 30ch;
+  font-size: var(--fs-small);
+  line-height: 1.55;
+  color: var(--on-ink-2);
+}
+
+/* Vertical sequence below desktop */
+@media (max-width: 63.99rem) {
+  .roadmap__head {
+    grid-template-columns: 1fr;
+  }
+
+  .phases {
+    grid-template-columns: 1fr;
+    gap: 2.25rem;
+    padding-top: 0;
+    padding-left: 2.5rem;
+  }
+
+  .phases::before {
+    left: 0.5rem;
+    right: auto;
+    top: 0.3rem;
+    bottom: 0;
+    border-top: 0;
+    border-left: 1px dashed rgb(254 243 226 / 0.3);
+  }
+
+  .phases::after {
+    left: calc(0.5rem - 0.5px);
+    top: 0.3rem;
+    width: 2px;
+    height: 90%;
+    background: linear-gradient(180deg, var(--solar) 75%, rgb(255 156 76 / 0));
+  }
+
+  .phase > .status-mark {
+    left: calc(-2.5rem + 0.5rem - 0.55rem);
+    top: 0.1rem;
+  }
+
+  .phase__text {
+    max-width: 44ch;
+  }
+}

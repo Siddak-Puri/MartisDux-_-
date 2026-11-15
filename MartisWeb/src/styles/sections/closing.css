@@ -1,0 +1,157 @@
+/* ==========================================================================
+   08 Closing — a planet rising from the bottom edge, echoing the hero
+   ========================================================================== */
+
+.closing {
+  position: relative;
+  isolation: isolate;
+  overflow: clip;
+  display: flex;
+  flex-direction: column;
+  background: var(--ink);
+  color: var(--on-ink);
+  padding-top: calc(var(--section-y) * 0.9);
+}
+
+.closing__stars {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+}
+
+.closing__inner {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  justify-items: center;
+  gap: 1.75rem;
+  text-align: center;
+}
+
+.closing__eyebrow {
+  color: var(--solar);
+}
+
+.closing__title {
+  max-width: 24ch;
+  font-size: clamp(2rem, 1rem + 3.2vw, 4.5rem);
+}
+
+.closing__text {
+  max-width: 44ch;
+  margin-inline: auto;
+}
+
+.closing__ctas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+/* Horizon: an enormous Mars limb with a turning instrument ring */
+.horizon {
+  --limb: max(150vw, 1500px);
+  position: relative;
+  height: clamp(15rem, 30vw, 27rem);
+  margin-top: clamp(6rem, 11vw, 10rem);
+  pointer-events: none;
+}
+
+.horizon__planet {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: var(--limb);
+  height: var(--limb);
+  translate: -50% 0;
+  border-radius: 50%;
+  background-color: #6b3417;
+  background-repeat: repeat-x;
+  /* A sharp equatorial strip (10°N–20°S, all 360°) laid along the top of the
+     disc, where the lit limb is: twice the disc wide, so one turn = one pan. */
+  background-size: 200% auto;
+  background-position: 0 0;
+  transition: background-color 1.2s var(--ease-out);
+  box-shadow:
+    0 0 6rem rgb(255 156 76 / 0.28),
+    0 -0.5rem 3rem rgb(255 156 76 / 0.18);
+  animation: horizon-pan 600s linear infinite;
+}
+
+@keyframes horizon-pan {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+.horizon__planet::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background:
+    radial-gradient(120% 22% at 50% 0%, rgb(255 170 110 / 0.18), transparent 70%),
+    radial-gradient(circle at 50% -2%, rgb(18 11 7 / 0.1) 0 3%, rgb(18 11 7 / 0.72) 9%, rgb(18 11 7 / 0.97) 17%);
+  box-shadow:
+    inset 0 0.2rem 0.6rem rgb(255 200 150 / 0.65),
+    inset 0 1.5rem 3rem rgb(255 140 70 / 0.18);
+}
+
+.horizon__ring {
+  position: absolute;
+  left: 50%;
+  top: calc(var(--limb) * -0.06);
+  width: calc(var(--limb) * 1.12);
+  height: calc(var(--limb) * 1.12);
+  translate: -50% 0;
+}
+
+.horizon__ring svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  animation: ring-spin 720s linear infinite reverse;
+}
+
+.horizon-circle {
+  fill: none;
+  stroke: rgb(254 243 226 / 0.28);
+  stroke-width: 0.05;
+}
+
+.horizon-circle--faint {
+  stroke: rgb(254 243 226 / 0.14);
+  stroke-dasharray: 0.3 0.5;
+}
+
+.horizon-tick {
+  stroke: rgb(254 243 226 / 0.35);
+  stroke-width: 0.05;
+}
+
+.horizon-tick--major {
+  stroke: var(--solar);
+  stroke-width: 0.09;
+}
+
+.horizon-text {
+  font-family: var(--font-mono);
+  font-size: 0.62px;
+  letter-spacing: 0.3em;
+  fill: rgb(254 243 226 / 0.6);
+}
+
+.horizon-text .dot {
+  fill: var(--solar);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .horizon__planet,
+  .horizon__ring svg {
+    animation: none;
+  }
+}

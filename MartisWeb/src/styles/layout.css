@@ -1,0 +1,412 @@
+/* ==========================================================================
+   Layout: header, navigation, mobile menu, footer
+   ========================================================================== */
+
+/* --- Header --------------------------------------------------------------- */
+
+.site-header {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: var(--z-header);
+  color: var(--on-ink);
+  transition: color var(--dur-2) var(--ease-out);
+}
+
+/* Backdrop lives on a pseudo-element so the fixed mobile menu inside the
+   header is not trapped by backdrop-filter's containing block. */
+.site-header::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgb(18 11 7 / 0.72);
+  border-bottom: 1px solid var(--line-ink);
+  -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  backdrop-filter: blur(12px) saturate(1.2);
+  opacity: 0;
+  transition:
+    opacity var(--dur-2) var(--ease-out),
+    background-color var(--dur-2) var(--ease-out),
+    border-color var(--dur-2) var(--ease-out);
+}
+
+.site-header[data-scrolled]::before {
+  opacity: 1;
+}
+
+.site-header[data-theme='cream'] {
+  color: var(--on-cream);
+}
+
+.site-header[data-theme='cream']::before {
+  background: rgb(243 223 193 / 0.9);
+  border-color: var(--line-cream);
+}
+
+/* Five tracks: links · rule · wordmark · rule · links. The nav spans all of
+   them via subgrid, and the wordmark sits in the middle track, so it stays
+   centred like the Figma header. */
+.site-header__inner {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(1.5rem, 1fr) auto minmax(1.5rem, 1fr) auto;
+  align-items: center;
+  column-gap: clamp(1rem, 2vw, 1.75rem);
+  height: var(--header-h);
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+}
+
+.site-header .brand {
+  grid-column: 3;
+  grid-row: 1;
+  z-index: 1;
+}
+
+.brand__word {
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 1.1rem + 0.6vw, 1.75rem);
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  line-height: 1;
+}
+
+/* --- Primary navigation ----------------------------------------------------- */
+
+.site-nav {
+  grid-column: 1 / -1;
+  grid-row: 1;
+  display: grid;
+  grid-template-columns: subgrid;
+  align-items: center;
+}
+
+.site-nav__list {
+  display: flex;
+  gap: clamp(1.25rem, 2.2vw, 2.25rem);
+}
+
+.site-nav__list--start {
+  grid-column: 1;
+}
+
+.site-nav__list--end {
+  grid-column: 5;
+}
+
+.site-nav__rule,
+.site-header__rule {
+  height: 1px;
+  background: currentColor;
+  opacity: 0.45;
+}
+
+.site-nav__rule--start {
+  grid-column: 2;
+}
+
+.site-nav__rule--end {
+  grid-column: 4;
+}
+
+.site-header__rule {
+  display: none;
+}
+
+.site-nav a {
+  position: relative;
+  display: inline-flex;
+  padding-block: 0.65rem;
+  font-size: 0.76rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: inherit;
+  opacity: 0.74;
+  transition: opacity var(--dur-1) var(--ease-out);
+}
+
+.site-nav a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0.3rem;
+  height: 1px;
+  background: var(--solar);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--dur-2) var(--ease-out);
+}
+
+.site-header[data-theme='cream'] .site-nav a::after {
+  background: var(--rust);
+}
+
+.site-nav a:hover,
+.site-nav a:focus-visible,
+.site-nav a[aria-current='true'] {
+  opacity: 1;
+}
+
+.site-nav a:hover::after,
+.site-nav a:focus-visible::after,
+.site-nav a[aria-current='true']::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* --- Mobile menu ------------------------------------------------------------ */
+
+.menu-toggle {
+  display: none;
+  align-items: center;
+  gap: 0.75rem;
+  min-height: 2.75rem;
+  padding: 0 0.25rem 0 0.75rem;
+  border: 0;
+  background: none;
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono);
+  letter-spacing: var(--track-mono);
+  text-transform: uppercase;
+}
+
+.menu-toggle__bars {
+  position: relative;
+  display: grid;
+  gap: 6px;
+  width: 1.5rem;
+}
+
+.menu-toggle__bars span {
+  display: block;
+  height: 1px;
+  background: currentColor;
+  transition: transform var(--dur-2) var(--ease-out);
+}
+
+.menu-toggle[aria-expanded='true'] .menu-toggle__bars span:first-child {
+  transform: translateY(3.5px) rotate(45deg);
+}
+
+.menu-toggle[aria-expanded='true'] .menu-toggle__bars span:last-child {
+  transform: translateY(-3.5px) rotate(-45deg);
+}
+
+.mobile-menu {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: calc(var(--header-h) + 2.5rem) var(--gutter) 2rem;
+  background:
+    radial-gradient(120% 60% at 100% 100%, rgb(217 131 39 / 0.16), transparent 60%),
+    var(--ink);
+  color: var(--on-ink);
+}
+
+.mobile-menu:not([hidden]) {
+  animation: menu-in var(--dur-2) var(--ease-out) both;
+}
+
+@keyframes menu-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.mobile-menu__list li {
+  border-bottom: 1px solid var(--line-ink);
+}
+
+.mobile-menu__list a {
+  display: flex;
+  align-items: baseline;
+  gap: 1.25rem;
+  padding: 1.1rem 0;
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 8vw, 2.75rem);
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  text-decoration: none;
+}
+
+.mobile-menu__list .mono {
+  color: var(--solar);
+}
+
+.mobile-menu__foot {
+  color: var(--on-ink-3);
+}
+
+.menu-open .site-header {
+  color: var(--on-ink);
+}
+
+.menu-open .site-header::before {
+  opacity: 0;
+}
+
+@media (max-width: 59.99rem) {
+  .site-header__inner {
+    grid-template-columns: auto 1fr auto;
+  }
+
+  .site-nav {
+    display: none;
+  }
+
+  .site-header .brand {
+    grid-column: 1;
+  }
+
+  .site-header__rule {
+    display: block;
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  .menu-toggle {
+    display: inline-flex;
+    grid-column: 3;
+    grid-row: 1;
+  }
+}
+
+/* --- Footer --------------------------------------------------------------- */
+
+.site-footer {
+  position: relative;
+  background: var(--ink);
+  color: var(--on-ink);
+  padding-block: clamp(4rem, 8vw, 6.5rem) 2rem;
+  border-top: 1px solid var(--line-ink);
+}
+
+.site-footer__grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 2.5rem clamp(1rem, 2vw, 2rem);
+}
+
+.site-footer__brand {
+  grid-column: 1 / span 5;
+  display: grid;
+  gap: 1.25rem;
+  align-content: start;
+}
+
+.site-footer .brand__word {
+  font-size: 1.9rem;
+}
+
+.site-footer__brand p {
+  max-width: 34ch;
+  font-size: var(--fs-small);
+  color: var(--on-ink-2);
+}
+
+.site-footer__nav {
+  grid-column: 7 / span 2;
+}
+
+.site-footer__credits {
+  grid-column: 9 / span 4;
+}
+
+.site-footer__label {
+  margin-bottom: 1.1rem;
+  color: var(--on-ink-3);
+}
+
+.site-footer__nav ul {
+  display: grid;
+  gap: 0.55rem;
+}
+
+.site-footer__nav a,
+.site-footer__credits a,
+.site-footer__base a {
+  text-decoration-color: rgb(254 243 226 / 0.35);
+  transition:
+    color var(--dur-1) var(--ease-out),
+    text-decoration-color var(--dur-1) var(--ease-out);
+}
+
+.site-footer__nav a {
+  text-decoration: none;
+  font-size: var(--fs-small);
+}
+
+.site-footer a:hover {
+  color: var(--solar);
+  text-decoration-color: currentColor;
+}
+
+.site-footer__credits ul {
+  display: grid;
+  gap: 0.85rem;
+  font-size: 0.875rem;
+  line-height: 1.55;
+  color: var(--on-ink-2);
+}
+
+/* Bottom line: a quiet disclaimer, then the one mention of the challenge,
+   centred beneath everything else */
+.site-footer__base {
+  display: grid;
+  justify-items: center;
+  gap: 1.25rem;
+  margin-top: clamp(3rem, 7vw, 5rem);
+  padding-top: 1.75rem;
+  padding-bottom: 0.5rem;
+  border-top: 1px solid var(--line-ink);
+  text-align: center;
+  color: var(--on-ink-3);
+}
+
+.site-footer__disclaimer {
+  font-size: 0.8125rem;
+}
+
+.site-footer__event {
+  color: rgb(242 181 140 / 0.72);
+  letter-spacing: 0.04em;
+  text-wrap: balance;
+}
+
+@media (max-width: 63.99rem) {
+  .site-footer__brand {
+    grid-column: 1 / -1;
+  }
+
+  .site-footer__nav {
+    grid-column: 1 / span 4;
+  }
+
+  .site-footer__credits {
+    grid-column: 5 / -1;
+  }
+}
+
+@media (max-width: 39.99rem) {
+  .site-footer__nav,
+  .site-footer__credits {
+    grid-column: 1 / -1;
+  }
+
+  .site-footer__nav ul {
+    grid-template-columns: 1fr 1fr;
+  }
+}

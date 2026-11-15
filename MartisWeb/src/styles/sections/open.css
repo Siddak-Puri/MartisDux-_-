@@ -1,0 +1,166 @@
+/* ==========================================================================
+   Open source — a quiet two-column essay on sand, and a plain status record
+   ========================================================================== */
+
+.open {
+  --horizon: clamp(2.5rem, 6vw, 6.5rem);
+  z-index: 1;
+  border-radius: 50% / var(--horizon);
+}
+
+.open__body {
+  max-width: var(--measure);
+  color: var(--on-cream-2);
+}
+
+.open__grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: clamp(1rem, 2vw, 2rem);
+  row-gap: 3rem;
+  align-items: start;
+}
+
+.open__intro {
+  grid-column: 1 / span 6;
+  display: grid;
+  gap: 1.75rem;
+}
+
+.principles {
+  grid-column: 8 / -1;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2rem clamp(1.25rem, 2.5vw, 2.5rem);
+  padding-top: 0.5rem;
+}
+
+.principle {
+  display: grid;
+  align-content: start;
+  gap: 0.5rem;
+  padding-top: 1rem;
+  border-top: 2px solid var(--brown);
+}
+
+.principle__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 1.05rem + 0.75vw, 1.8rem);
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  line-height: 1.15;
+}
+
+.principle p {
+  color: var(--on-cream-2);
+  font-size: var(--fs-small);
+  max-width: 44ch;
+}
+
+.manifest {
+  margin-top: clamp(4rem, 8vw, 7rem);
+  max-width: 52rem;
+  border: 1px solid var(--line-cream-strong);
+  border-radius: 1rem;
+  overflow: hidden;
+  background: rgb(254 243 226 / 0.45);
+}
+
+/* Prepared for the team's own note (added once the team supplies the text) */
+.note {
+  display: grid;
+  grid-template-columns: minmax(0, 3fr) minmax(0, 7fr);
+  gap: 1.5rem clamp(1.5rem, 4vw, 4rem);
+  margin-top: clamp(4rem, 8vw, 7rem);
+  padding-top: 2rem;
+  border-top: 1px solid var(--line-cream-strong);
+}
+
+.note__label {
+  color: var(--rust);
+}
+
+.note__text {
+  max-width: 58ch;
+  font-size: var(--fs-lead);
+  line-height: 1.55;
+}
+
+.note__sign {
+  margin-top: 1rem;
+  color: var(--on-cream-2);
+}
+
+.manifest__file {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.75rem 1.1rem;
+  border-bottom: 1px solid var(--line-cream-strong);
+  color: var(--on-cream-2);
+}
+
+.manifest__file::before {
+  content: '';
+  width: 0.55rem;
+  height: 0.55rem;
+  border: 1px solid var(--rust);
+}
+
+.manifest__list {
+  padding: 0.6rem 1.1rem;
+  text-transform: none;
+  letter-spacing: 0.02em;
+  font-size: 0.875rem;
+}
+
+.manifest__list div {
+  display: grid;
+  grid-template-columns: 9rem 1fr;
+  gap: 1rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px dotted var(--line-cream-strong);
+}
+
+.manifest__list div:last-child {
+  border-bottom: 0;
+}
+
+.manifest__list dt {
+  color: var(--rust);
+}
+
+.manifest__list dd {
+  margin: 0;
+  color: var(--brown);
+}
+
+.manifest__note {
+  padding: 0.75rem 1.1rem 0.9rem;
+  border-top: 1px solid var(--line-cream-strong);
+  font-size: 0.875rem;
+}
+
+@media (max-width: 63.99rem) {
+  .open__intro,
+  .principles {
+    grid-column: 1 / -1;
+  }
+
+  .note {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 39.99rem) {
+  .principles {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 39.99rem) {
+  .manifest__list div {
+    grid-template-columns: 1fr;
+    gap: 0.15rem;
+  }
+}

@@ -1,0 +1,819 @@
+/* ==========================================================================
+   04 Explore — concept map styled after the Figma's mission-control dashboard:
+   a metallic-edged frame, a frosted "Location overview" panel and a pill bar
+   of layer chips.
+   ========================================================================== */
+
+.section.explore {
+  background: var(--ink);
+  padding-top: calc(var(--section-y) * 0.45);
+}
+
+.explore .kicker {
+  margin-bottom: clamp(2rem, 4vw, 3.5rem);
+}
+
+.explore__head {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: clamp(1rem, 2vw, 2rem);
+  row-gap: 1.75rem;
+  align-items: end;
+}
+
+.explore__head .h2 {
+  grid-column: 1 / span 7;
+}
+
+.explore__head .lead {
+  grid-column: 9 / -1;
+  max-width: 34ch;
+}
+
+.map {
+  display: grid;
+  gap: 1rem;
+  margin-top: clamp(3rem, 6vw, 5rem);
+}
+
+.map__frame {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: var(--radius-panel);
+  background: var(--ink-3);
+  box-shadow: 0 2.5rem 5rem rgb(0 0 0 / 0.4);
+  cursor: crosshair;
+}
+
+/* The map keeps its 16:9 proportions and is cropped, never stretched */
+.map__inner {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  height: 100%;
+  aspect-ratio: 16 / 9;
+  translate: -50% 0;
+}
+
+.map__relief,
+.map__overlay,
+.map__hazard,
+.map__route {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+}
+
+.map__relief {
+  transition: opacity var(--dur-3) var(--ease-out);
+}
+
+.map__overlay,
+.map__route {
+  overflow: visible;
+  pointer-events: none;
+}
+
+/* --- Layer visibility (chips) and focus (layer tabs) ------------------------ */
+
+.map__relief,
+.map-contours,
+.map__hazard,
+.map__route,
+.map__markers {
+  transition: opacity var(--dur-3) var(--ease-out);
+}
+
+.map:not([data-relief]) .map__relief {
+  opacity: 0.14;
+}
+
+.map:not([data-relief]) .map-contours,
+.map:not([data-hazard]) .map__hazard,
+.map:not([data-route]) .map__route {
+  opacity: 0;
+}
+
+.map:not([data-sites]) .map__markers .map__marker {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.map__hazard {
+  overflow: visible;
+  pointer-events: none;
+}
+
+.map-hazard-edge {
+  fill: rgb(255 156 76 / 0.08);
+  stroke: var(--solar);
+  stroke-width: 2;
+  stroke-dasharray: 4 8;
+  vector-effect: non-scaling-stroke;
+}
+
+.map-hazard-label {
+  font-family: var(--font-mono);
+  font-size: 18px;
+  fill: var(--cream);
+  paint-order: stroke;
+  stroke: rgb(18 11 7 / 0.8);
+  stroke-width: 4px;
+}
+
+/* When a layer tab is chosen, the other layers step back */
+.map[data-focus] .map__relief {
+  opacity: 0.5;
+}
+
+.map[data-focus] .map__route,
+.map[data-focus] .map__markers,
+.map[data-focus] .map__hazard {
+  opacity: 0.35;
+}
+
+.map[data-focus='relief'] .map__relief,
+.map[data-focus='route'] .map__route,
+.map[data-focus='sites'] .map__markers,
+.map[data-focus='hazard'] .map__hazard {
+  opacity: 1;
+}
+
+.map[data-focus='route'] .map__markers {
+  opacity: 0.7;
+}
+
+.map__focus {
+  position: absolute;
+  left: 3.5rem;
+  top: 1.15rem;
+  z-index: 2;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  background: rgb(18 11 7 / 0.72);
+  color: var(--peach);
+  pointer-events: none;
+}
+
+.map-contour {
+  fill: none;
+  stroke: rgb(254 243 226 / 0.2);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.map-contour--index {
+  stroke: rgb(254 243 226 / 0.42);
+}
+
+.map-grid line {
+  stroke: rgb(254 243 226 / 0.14);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.map-grid text {
+  font-family: var(--font-mono);
+  font-size: 15px;
+  letter-spacing: 0.12em;
+  fill: rgb(254 243 226 / 0.62);
+}
+
+.map-contours,
+.map-grid {
+  transition: opacity var(--dur-3) var(--ease-out);
+}
+
+
+.map__route-path {
+  fill: none;
+  stroke: var(--solar);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+.map__route-path.is-drawn {
+  stroke-dashoffset: 0;
+  transition: stroke-dashoffset 1.6s var(--ease-in-out);
+}
+
+.map__route-halo {
+  fill: none;
+  stroke: rgb(18 11 7 / 0.55);
+  stroke-width: 7;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.map__route-all {
+  fill: none;
+  stroke: rgb(254 243 226 / 0.38);
+  stroke-width: 1.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 2 4;
+  vector-effect: non-scaling-stroke;
+}
+
+.map__sample {
+  position: absolute;
+  left: calc(var(--x) * 100%);
+  top: calc(var(--y) * 100%);
+  width: 7px;
+  height: 7px;
+  translate: -50% -50%;
+  rotate: 45deg;
+  background: var(--ink);
+  border: 1.5px solid rgb(254 243 226 / 0.8);
+  pointer-events: none;
+}
+
+.map:not([data-sites]) .map__sample {
+  display: none;
+}
+
+.map__waypoint {
+  fill: var(--ink);
+  stroke: var(--solar);
+  stroke-width: 2;
+  vector-effect: non-scaling-stroke;
+}
+
+/* --- Markers ---------------------------------------------------------------- */
+
+.map__markers {
+  position: absolute;
+  inset: 0;
+}
+
+.map__marker,
+.map__landing {
+  position: absolute;
+  left: calc(var(--x) * 100%);
+  top: calc(var(--y) * 100%);
+  translate: -50% -50%;
+}
+
+.map__marker {
+  display: grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--cream);
+  z-index: 1;
+}
+
+.map__marker:focus-visible {
+  outline-offset: -2px;
+  border-radius: 50%;
+}
+
+.map__marker-dot {
+  width: 0.85rem;
+  height: 0.85rem;
+  background: var(--solar);
+  border: 1.5px solid var(--ink);
+  box-shadow: 0 0 0 1px var(--solar);
+  transform: rotate(45deg);
+  transition: transform var(--dur-2) var(--ease-out);
+}
+
+.map__marker--caution .map__marker-dot {
+  width: 1.05rem;
+  height: 0.95rem;
+  border: 0;
+  box-shadow: none;
+  transform: none;
+  background: var(--ochre);
+  clip-path: polygon(50% 0, 100% 100%, 0 100%);
+}
+
+.map__marker::after {
+  content: '';
+  position: absolute;
+  inset: 0.45rem;
+  border: 1px solid var(--solar);
+  border-radius: 50%;
+  opacity: 0;
+  transform: scale(0.6);
+  transition:
+    opacity var(--dur-2) var(--ease-out),
+    transform var(--dur-2) var(--ease-out);
+}
+
+.map__marker[aria-pressed='true']::after,
+.map__marker:hover::after {
+  opacity: 1;
+  transform: none;
+}
+
+.map__marker[aria-pressed='true'] .map__marker-dot {
+  transform: rotate(45deg) scale(1.2);
+}
+
+.map__marker--caution[aria-pressed='true'] .map__marker-dot {
+  transform: scale(1.2);
+}
+
+.map__marker-label {
+  position: absolute;
+  left: calc(100% - 0.35rem);
+  top: 50%;
+  translate: 0 -50%;
+  padding: 0.3rem 0.6rem 0.28rem;
+  border-radius: 999px;
+  background: rgb(18 11 7 / 0.78);
+  border: 1px solid var(--line-ink-strong);
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono-s);
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+  color: var(--on-ink-2);
+  pointer-events: none;
+  transition:
+    color var(--dur-1) var(--ease-out),
+    border-color var(--dur-1) var(--ease-out);
+}
+
+/* Only needed where the overview panel overlays the map */
+@media (min-width: 80rem) {
+  .map__marker--left .map__marker-label {
+    left: auto;
+    right: calc(100% - 0.35rem);
+  }
+}
+
+.map__marker[aria-pressed='true'] .map__marker-label,
+.map__marker:hover .map__marker-label {
+  color: var(--cream);
+  border-color: var(--solar);
+}
+
+.map__landing {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  pointer-events: none;
+  /* The landing site is near the east edge: label to the left of the icon,
+     with the icon (not the whole label) anchored on the point. */
+  flex-direction: row-reverse;
+  translate: calc(-100% + 0.45rem) -50%;
+}
+
+.map__landing-icon {
+  width: 0.9rem;
+  height: 0.8rem;
+  background: var(--cream);
+  clip-path: polygon(50% 100%, 0 0, 100% 0);
+}
+
+.map__landing-label {
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  background: rgb(18 11 7 / 0.7);
+  color: var(--on-ink-2);
+  white-space: nowrap;
+}
+
+.map__north {
+  position: absolute;
+  left: 1.25rem;
+  top: 1.1rem;
+  z-index: 2;
+  display: grid;
+  justify-items: center;
+  gap: 0.15rem;
+  color: var(--on-ink-2);
+  pointer-events: none;
+}
+
+.map__north::before {
+  content: '';
+  width: 0.6rem;
+  height: 0.9rem;
+  background: var(--cream);
+  clip-path: polygon(50% 0, 100% 100%, 50% 72%, 0 100%);
+}
+
+/* --- Location overview panel (glass) ---------------------------------------- */
+
+.map__panel {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  z-index: 3;
+  display: grid;
+  gap: 0.75rem;
+  align-content: start;
+  width: clamp(17.5rem, 27vw, 22rem);
+  max-height: calc(100% - 2.5rem);
+  overflow: auto;
+  padding: 1.3rem 1.35rem 1.4rem;
+  border-radius: 1.25rem;
+  cursor: auto;
+}
+
+.map__panel-kicker {
+  color: var(--solar);
+}
+
+.map__panel-title {
+  font-weight: 500;
+  color: var(--cream);
+}
+
+.map__panel-type {
+  margin-top: -0.35rem;
+  color: var(--on-ink-3);
+}
+
+.map__panel-text {
+  font-size: var(--fs-small);
+  color: var(--peach);
+}
+
+.map__panel-meta {
+  display: grid;
+  gap: 0.75rem;
+  padding-top: 0.9rem;
+  border-top: 1px solid var(--line-ink);
+}
+
+.map__panel-meta dt {
+  color: var(--on-ink-3);
+  margin-bottom: 0.15rem;
+}
+
+.map__panel-meta dd {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--on-ink-2);
+}
+
+.map__profile {
+  width: 100%;
+  height: 3.25rem;
+  overflow: visible;
+}
+
+.map__profile-area {
+  fill: rgb(217 131 39 / 0.2);
+}
+
+.map__profile-line {
+  fill: none;
+  stroke: var(--ochre);
+  stroke-width: 1.5;
+  vector-effect: non-scaling-stroke;
+}
+
+/* --- Pill bar of layer chips ---------------------------------------------- */
+
+.map__bar {
+  position: absolute;
+  left: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 3;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem;
+  max-width: calc(100% - 2.5rem);
+  margin: 0;
+  padding: 0.4rem 0.45rem 0.4rem 1.1rem;
+  border: 0;
+  border-radius: 999px;
+  cursor: auto;
+}
+
+.map__bar-label {
+  margin-right: 0.35rem;
+  color: var(--on-ink-3);
+}
+
+.chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 2.5rem;
+  padding: 0 1rem 0 0.8rem;
+  border: 1px solid rgb(254 243 226 / 0.2);
+  border-radius: 999px;
+  background: rgb(254 243 226 / 0.06);
+  color: var(--on-ink-2);
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition:
+    background-color var(--dur-1) var(--ease-out),
+    border-color var(--dur-1) var(--ease-out),
+    color var(--dur-1) var(--ease-out);
+}
+
+.chip input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  margin: 0;
+  cursor: pointer;
+}
+
+/* On/off is shown by fill and shape, not colour alone */
+.chip__dot {
+  width: 0.6rem;
+  height: 0.6rem;
+  border: 1.5px solid currentColor;
+  border-radius: 50%;
+}
+
+.chip:has(input:checked) {
+  border-color: rgb(255 156 76 / 0.7);
+  background: rgb(255 156 76 / 0.16);
+  color: var(--cream);
+}
+
+.chip:has(input:checked) .chip__dot {
+  border-color: var(--solar);
+  background: var(--solar);
+}
+
+.chip:hover {
+  border-color: var(--solar);
+}
+
+.chip:has(input:focus-visible) {
+  outline: 2px solid var(--solar);
+  outline-offset: 3px;
+}
+
+/* --- Caption and legend ------------------------------------------------------ */
+
+.map__caption {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem 1.5rem;
+  margin-top: 0.25rem;
+}
+
+.map__badge {
+  white-space: normal;
+}
+
+.map__readout {
+  color: var(--on-ink-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.map__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem 1.75rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line-ink);
+  color: var(--on-ink-2);
+}
+
+.map__legend div {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.map__legend dd {
+  margin: 0;
+}
+
+.lg {
+  display: block;
+}
+
+.lg--ramp {
+  width: 2.5rem;
+  height: 0.55rem;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #1a0f0e, #3e2014, #703a1c, #a8602a, #d69456, #f0cea0);
+}
+
+.lg--contour {
+  width: 2.5rem;
+  height: 0.55rem;
+  border-top: 1px solid rgb(254 243 226 / 0.42);
+  border-bottom: 1px solid rgb(254 243 226 / 0.2);
+}
+
+.lg--route {
+  width: 2.5rem;
+  height: 3px;
+  background: var(--solar);
+}
+
+.lg--site {
+  width: 0.7rem;
+  height: 0.7rem;
+  margin-inline: 0.15rem;
+  background: var(--solar);
+  transform: rotate(45deg);
+}
+
+.lg--hazard {
+  width: 1.4rem;
+  height: 0.8rem;
+  background: repeating-linear-gradient(-45deg, var(--solar) 0 1.5px, transparent 1.5px 5px);
+}
+
+.lg--start {
+  width: 0.8rem;
+  height: 0.7rem;
+  background: var(--cream);
+  clip-path: polygon(50% 100%, 0 0, 100% 0);
+}
+
+@media (max-width: 63.99rem) {
+  .explore__head .h2,
+  .explore__head .lead {
+    grid-column: 1 / -1;
+  }
+}
+
+/* Below 1280px the overlaid panel would cover sample sites, so the panel and
+   chip bar move under the map */
+@media (max-width: 79.99rem) {
+  .map__frame {
+    overflow: visible;
+    aspect-ratio: auto;
+    display: grid;
+    gap: 1rem;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+    cursor: auto;
+  }
+
+  .map__frame.metal-edge::before {
+    display: none;
+  }
+
+  .map__inner {
+    position: relative;
+    left: auto;
+    translate: none;
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-panel);
+    overflow: hidden;
+    background: var(--ink-3);
+    cursor: crosshair;
+  }
+
+  .map__north {
+    top: 1rem;
+    left: 1rem;
+  }
+
+  .map__panel,
+  .map__bar {
+    position: static;
+    width: auto;
+    max-width: none;
+    max-height: none;
+  }
+
+  .map__bar {
+    justify-self: start;
+  }
+}
+
+@media (max-width: 39.99rem) {
+  /* Phones crop the 16:9 map to 4:3, shifted east so the start stays in view */
+  .map__inner {
+    aspect-ratio: 4 / 3;
+  }
+
+  .map__inner > .map__relief,
+  .map__inner > .map__overlay,
+  .map__inner > .map__hazard,
+  .map__inner > .map__route,
+  .map__inner > .map__markers {
+    left: 50%;
+    width: 133.33%;
+    translate: -46% 0;
+  }
+
+  /* Markers keep their number; the panel carries the name. */
+  .map__marker-name {
+    display: none;
+  }
+
+  .map__landing-label {
+    display: none;
+  }
+
+  .map__bar {
+    padding-left: 0.45rem;
+    border-radius: 1.25rem;
+  }
+
+  .map__bar-label {
+    display: none;
+  }
+
+  .chip {
+    padding: 0 0.85rem 0 0.7rem;
+  }
+}
+
+/* --- Real Mars: a photograph set beside the illustrative map --------------- */
+
+.real {
+  display: grid;
+  grid-template-columns: minmax(0, 4fr) minmax(0, 8fr);
+  gap: 1rem clamp(1.5rem, 3vw, 3rem);
+  align-items: end;
+  margin: clamp(4rem, 8vw, 6.5rem) 0 0;
+}
+
+.real__label {
+  display: grid;
+  gap: 0.6rem;
+  align-self: start;
+}
+
+.real__kicker {
+  color: var(--solar);
+}
+
+.real__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 1.05rem + 0.8vw, 1.85rem);
+  letter-spacing: 0.03em;
+  line-height: 1.2;
+  color: var(--cream);
+}
+
+.real__image img {
+  width: 100%;
+  height: auto;
+  border-radius: 0.75rem;
+  background: var(--ink-3);
+  /* The ChemCam original is black and white; a warm tint keeps it in the palette */
+  filter: sepia(0.75) saturate(1.5) hue-rotate(-12deg) brightness(0.88) contrast(1.05);
+}
+
+.real__caption {
+  grid-column: 2;
+  display: grid;
+  gap: 0.35rem;
+  font-size: 0.9rem;
+  color: var(--on-ink-2);
+}
+
+.real__caption .mono {
+  color: var(--on-ink-3);
+}
+
+@media (max-width: 79.99rem) {
+  .map__focus {
+    left: 3rem;
+    top: 0.9rem;
+  }
+}
+
+@media (max-width: 63.99rem) {
+  .real {
+    grid-template-columns: 1fr;
+  }
+
+  .real__caption {
+    grid-column: 1;
+  }
+
+  .map__focus {
+    left: 3rem;
+    top: 0.9rem;
+  }
+}
+
+@media (max-width: 39.99rem) {
+  .map__focus {
+    display: none;
+  }
+
+  /* The ChemCam strip is very wide; crop it to a readable height on phones */
+  .real__image img {
+    height: 11rem;
+    object-fit: cover;
+    object-position: 40% 50%;
+  }
+}

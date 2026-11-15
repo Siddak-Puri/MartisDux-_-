@@ -1,0 +1,134 @@
+/* ==========================================================================
+   Mission — sand section rising like a horizon from the hero, an editorial
+   opening, a full-bleed photograph and three plain facts
+   ========================================================================== */
+
+.mission {
+  --horizon: clamp(2.5rem, 6vw, 6.5rem);
+  z-index: 1;
+  /* A sand band with convex edges, like a planet's limb, between dark sections */
+  border-radius: 50% / var(--horizon);
+  padding-top: calc(var(--section-y) * 0.85);
+  padding-bottom: calc(var(--section-y) * 0.75);
+}
+
+.mission__grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  column-gap: clamp(1rem, 2vw, 2rem);
+  row-gap: 1.75rem;
+  align-items: start;
+}
+
+.mission .kicker {
+  grid-column: 1 / -1;
+}
+
+.mission__title {
+  grid-column: 1 / span 7;
+  max-width: 18ch;
+}
+
+.mission__text {
+  grid-column: 8 / -1;
+  display: grid;
+  gap: 1.25rem;
+  padding-bottom: 0.4rem;
+}
+
+.mission__text .lead {
+  font-size: clamp(1.1rem, 1rem + 0.35vw, 1.3rem);
+}
+
+.mission__body {
+  color: var(--on-cream-2);
+  max-width: 44ch;
+}
+
+/* --- Full-bleed photograph -------------------------------------------------- */
+
+.photo-band {
+  margin: clamp(3.5rem, 7vw, 6rem) 0 0;
+}
+
+.photo-band img {
+  width: 100%;
+  height: clamp(15rem, 30vw, 32rem);
+  object-fit: cover;
+  object-position: 50% 62%;
+  background: var(--sand-3);
+}
+
+.photo-band__caption {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.4rem 2rem;
+  margin-top: 0.9rem;
+  font-size: 0.9rem;
+  color: var(--on-cream-2);
+}
+
+.photo-band__caption .mono {
+  color: var(--on-cream-3);
+}
+
+/* --- Conditions ---------------------------------------------------------------- */
+
+.conditions {
+  margin-top: clamp(4rem, 8vw, 7rem);
+}
+
+.conditions__title {
+  max-width: 28ch;
+  margin-bottom: 2rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 1.1rem + 0.7vw, 1.8rem);
+  font-weight: 400;
+  letter-spacing: 0.03em;
+  line-height: 1.25;
+}
+
+.conditions__list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1.5rem, 3vw, 3rem);
+}
+
+.condition {
+  display: grid;
+  align-content: start;
+  gap: 0.7rem;
+  padding-top: 1.25rem;
+  border-top: 2px solid var(--brown);
+}
+
+.condition__title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+}
+
+.condition p {
+  color: var(--on-cream-2);
+  font-size: var(--fs-small);
+  max-width: 40ch;
+}
+
+@media (max-width: 63.99rem) {
+  .mission__title,
+  .mission__text {
+    grid-column: 1 / -1;
+  }
+
+  .conditions__list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 39.99rem) {
+  .photo-band img {
+    object-position: 58% 60%;
+  }
+}

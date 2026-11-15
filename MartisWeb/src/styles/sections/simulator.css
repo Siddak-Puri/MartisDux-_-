@@ -1,0 +1,165 @@
+/* ==========================================================================
+   Simulator — the desktop app (Windows and macOS) where official maps, AR,
+   navigation and hardware integrations are made and tested.
+   ========================================================================== */
+
+.section.sim {
+  background:
+    radial-gradient(60% 45% at 50% 58%, rgb(217 131 39 / 0.12), transparent 70%),
+    linear-gradient(180deg, var(--ink) 0%, var(--cosmic) 18%, var(--cosmic) 82%, var(--ink) 100%);
+  overflow: clip;
+}
+
+.sim__glow {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: min(80rem, 120vw);
+  height: 1px;
+  translate: -50% 0;
+  background: linear-gradient(90deg, transparent, rgb(255 156 76 / 0.5), transparent);
+}
+
+/* --- Intro ------------------------------------------------------------------ */
+
+.sim__intro {
+  display: grid;
+  justify-items: center;
+  gap: 1.5rem;
+  max-width: 54rem;
+  margin-inline: auto;
+  text-align: center;
+}
+
+.sim__title {
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 1rem + 4.8vw, 6rem);
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  line-height: 1.04;
+  color: var(--cream);
+  text-wrap: balance;
+}
+
+.sim__lede {
+  max-width: 44ch;
+  font-size: var(--fs-lead);
+  line-height: 1.5;
+  color: var(--peach);
+}
+
+.sim__platforms {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sim__platform {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.45rem 0.9rem;
+  border: 1px solid var(--line-ink-strong);
+  border-radius: 999px;
+  color: var(--cream);
+  text-decoration: none;
+}
+
+/* Windows has a download: it reads as a button */
+.sim__platform--download {
+  border-color: rgb(255 156 76 / 0.6);
+  transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
+
+.sim__platform--download:hover,
+.sim__platform--download:focus-visible {
+  border-color: var(--solar);
+  background: var(--solar);
+  color: var(--ink);
+}
+
+.sim__platform--download:hover svg,
+.sim__platform--download:focus-visible svg {
+  fill: var(--ink);
+}
+
+.sim__get {
+  color: var(--solar);
+  transition: translate 0.25s ease, color 0.25s ease;
+}
+
+.sim__platform--download:hover .sim__get,
+.sim__platform--download:focus-visible .sim__get {
+  color: var(--ink);
+  translate: 0 2px;
+}
+
+.sim__platforms svg {
+  width: 0.95rem;
+  height: 0.95rem;
+  fill: var(--solar);
+}
+
+/* --- The screenshot ------------------------------------------------------------ */
+
+.sim__figure {
+  margin: clamp(3rem, 6vw, 5rem) auto 0;
+  max-width: 68rem;
+}
+
+.sim__shot {
+  overflow: hidden;
+  border: 1px solid var(--line-ink-strong);
+  border-radius: 0.9rem;
+  background: var(--ink-2);
+  box-shadow:
+    0 2.5rem 6rem -1.5rem rgb(0 0 0 / 0.7),
+    0 0 5rem -1rem rgb(217 131 39 / 0.18);
+}
+
+.sim__shot img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.sim__caption {
+  margin-top: 0.9rem;
+  text-align: center;
+  color: var(--on-ink-3);
+}
+
+/* What the simulator is for: a plain ruled strip, like the spec line under a
+   product photo. No icons, no boxes. */
+.sim__uses {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 68rem;
+  margin: clamp(2.5rem, 5vw, 3.5rem) auto 0;
+  padding: 1.1rem 0;
+  border-top: 1px solid var(--line-ink-strong);
+  border-bottom: 1px solid var(--line-ink);
+}
+
+.sim__modules {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--font-sans);
+  font-size: clamp(1.05rem, 0.95rem + 0.4vw, 1.3rem);
+  color: var(--cream);
+}
+
+.sim__modules li + li::before {
+  content: '/';
+  margin: 0 0.85em;
+  color: var(--ochre);
+}

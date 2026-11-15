@@ -1,0 +1,890 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>MartisDux — Make Mars feel navigable</title>
+    <meta
+      name="description"
+      content="MartisDux is an open-source concept for reading the Martian surface: terrain, routes, scientific sites and hazards on one layered map, and in augmented reality."
+    />
+    <meta name="theme-color" content="#120b07" />
+    <meta property="og:title" content="MartisDux — Make Mars feel navigable" />
+    <meta
+      property="og:description"
+      content="A layered Martian surface map, built and tested in our own simulator for Windows and macOS. An open-source concept in development."
+    />
+    <meta property="og:type" content="website" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preload" href="/textures/mars-2k.jpg" as="image" fetchpriority="high" />
+    <script>
+      // Hidden reveal states only apply when motion is allowed and the app boots.
+      // If main.js never signals readiness, content is shown regardless, and the
+      // loading screen can never keep the page covered.
+      (function () {
+        var root = document.documentElement;
+        root.classList.add('js', 'is-loading');
+        var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (!reduce) root.classList.add('js-motion');
+        function release() {
+          root.classList.remove('is-loading');
+          var loader = document.querySelector('[data-loader]');
+          if (loader) loader.hidden = true;
+        }
+        setTimeout(function () {
+          if (!window.__martisdux) {
+            root.classList.remove('js-motion');
+            release();
+          }
+        }, 3500);
+        // Room for the helmet's exit after the loader's own five-second limit.
+        // `?loader=hold` (a testing aid) keeps the screen up until a click.
+        if (!/[?&]loader=hold\b/.test(location.search)) setTimeout(release, 12000);
+      })();
+    </script>
+    <style>
+      /* Loading screen: inlined so it paints before the main stylesheet. */
+      .loader {
+        position: fixed;
+        inset: 0;
+        z-index: 200;
+        display: none;
+        background: #000;
+        color: #fef3e2;
+        transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), visibility 0s linear 0.9s;
+      }
+      /* Dot stars for the plain screen; they give way to the canvas's own once the helmet is in. */
+      .loader::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        transition: opacity 0.6s ease-out;
+        background:
+          radial-gradient(circle at 23% 61%, rgba(235, 242, 255, 0.8) 0 0.7px, transparent 1.3px) 0 0 / 211px 167px,
+          radial-gradient(circle at 71% 18%, rgba(235, 242, 255, 0.5) 0 0.6px, transparent 1.2px) 0 0 / 149px 193px,
+          radial-gradient(circle at 44% 87%, rgba(235, 242, 255, 0.65) 0 0.6px, transparent 1.2px) 0 0 / 271px 233px,
+          radial-gradient(circle at 88% 49%, rgba(235, 242, 255, 0.4) 0 0.5px, transparent 1.1px) 0 0 / 127px 109px,
+          radial-gradient(circle at 12% 9%, rgba(235, 242, 255, 0.85) 0 1px, transparent 1.7px) 0 0 / 337px 311px,
+          radial-gradient(circle at 57% 36%, rgba(235, 242, 255, 0.45) 0 0.5px, transparent 1.1px) 0 0 / 181px 251px,
+          transparent;
+      }
+      .loader.has-helmet::before,
+      .loader.is-open::before { opacity: 0; }
+      .js .loader { display: block; }
+      .loader.is-done { opacity: 0; visibility: hidden; }
+      /* The visor has opened: only the canvas covers the page now, and it is
+         see-through where the glass was. */
+      .loader.is-open { background: none; pointer-events: none; transition: none; }
+      .is-loading body { overflow: hidden; }
+      .loader__canvas {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        max-width: none;
+        opacity: 0;
+        transition: opacity 0.7s ease-out;
+      }
+      .loader.has-helmet .loader__canvas { opacity: 1; }
+      .loader__frame {
+        position: relative;
+        display: grid;
+        place-content: center;
+        justify-items: center;
+        gap: clamp(1.1rem, 3.4vh, 2.2rem);
+        height: 100%;
+        padding-bottom: 2vh;
+      }
+      /* The helmet is drawn into this box: src/js/loader/helmet.js reads its place and size. */
+      .loader__stage { position: relative; width: min(60vh, 86vw); height: min(60vh, 86vw); }
+      /* Until the helmet arrives, and wherever WebGL is missing: a quiet orbit. */
+      .loader__stage::before {
+        content: '';
+        position: absolute;
+        inset: 36%;
+        border: 1px solid rgba(254, 243, 226, 0.14);
+        border-top-color: #ff9c4c;
+        border-radius: 50%;
+        animation: loader-orbit 1.6s linear infinite;
+        transition: opacity 0.5s ease-out;
+      }
+      .loader.has-helmet .loader__stage::before { opacity: 0; }
+      .loader__hud {
+        display: grid;
+        justify-items: center;
+        gap: 0.55rem;
+        width: min(12rem, 58vw);
+        transition: opacity 0.35s ease-out, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+      .loader.is-exiting .loader__hud { opacity: 0; transform: translateY(0.5rem); }
+      .loader__step {
+        margin: 0;
+        font-family: 'Martian Mono Variable', ui-monospace, Menlo, monospace;
+        font-stretch: 87.5%;
+      }
+      .loader__step { font-size: 0.62rem; white-space: nowrap; color: rgba(254, 243, 226, 0.6); }
+      @keyframes loader-orbit { to { transform: rotate(360deg); } }
+      @media (prefers-reduced-motion: reduce) {
+        .loader__stage::before { animation: none; }
+      }
+    </style>
+    <script type="module" src="/main.js"></script>
+  </head>
+
+  <body>
+    <!-- Loading screen: an astronaut's helmet floats while the first screen's
+         work is done (type, surface imagery, the WebGL planet, the page), then
+         the camera dives through its visor and this page is what is behind the
+         glass. It gives up after a few seconds regardless. See src/js/loader/. -->
+    <div class="loader" data-loader>
+      <canvas class="loader__canvas" data-loader-canvas aria-hidden="true"></canvas>
+      <div class="loader__frame">
+        <div class="loader__stage" data-loader-stage aria-hidden="true"></div>
+        <div class="loader__hud">
+          <p class="loader__step" data-loader-step role="status">Preparing the map</p>
+        </div>
+      </div>
+    </div>
+
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <!-- ================================================================ HEADER -->
+    <header class="site-header" data-header data-theme="ink">
+      <div class="site-header__inner">
+        <a class="brand" href="#top" aria-label="MartisDux, back to top">
+          <span class="brand__word">MartisDux</span>
+        </a>
+
+        <nav class="site-nav" aria-label="Primary">
+          <ul class="site-nav__list site-nav__list--start">
+            <li><a href="#mission" data-nav="mission">Mission</a></li>
+            <li><a href="#layers" data-nav="map">Map</a></li>
+          </ul>
+          <span class="site-nav__rule site-nav__rule--start" aria-hidden="true"></span>
+          <span class="site-nav__rule site-nav__rule--end" aria-hidden="true"></span>
+          <ul class="site-nav__list site-nav__list--end">
+            <li><a href="#simulator" data-nav="simulator">Simulator</a></li>
+            <li><a href="#roadmap" data-nav="roadmap">Roadmap</a></li>
+          </ul>
+        </nav>
+
+        <span class="site-header__rule" aria-hidden="true"></span>
+        <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" data-menu-toggle>
+          <span class="menu-toggle__label">Menu</span>
+          <span class="menu-toggle__bars" aria-hidden="true"><span></span><span></span></span>
+        </button>
+      </div>
+
+      <div class="mobile-menu" id="mobile-menu" data-menu hidden>
+        <nav aria-label="Mobile">
+          <ol class="mobile-menu__list">
+            <li><a href="#mission">Mission</a></li>
+            <li><a href="#layers">Map</a></li>
+            <li><a href="#simulator">Simulator</a></li>
+            <li><a href="#roadmap">Roadmap</a></li>
+          </ol>
+        </nav>
+        <p class="mobile-menu__foot mono mono--s">MartisDux · concept in development</p>
+      </div>
+    </header>
+
+    <main id="main">
+      <!-- ============================================================== HERO -->
+      <section class="hero" id="top" data-theme="ink" data-section="top" aria-labelledby="hero-title">
+        <canvas class="hero__stars" data-stars aria-hidden="true"></canvas>
+        <div class="hero__glow" aria-hidden="true"></div>
+
+        <div class="hero__inner">
+          <!-- Planet stage: back ring · planet · front ring and wrapped descriptor -->
+          <div class="hero__planet" data-planet aria-hidden="true">
+            <div class="orbit orbit--back">
+              <div class="ring-plane"><div class="ring-spin" data-ring></div></div>
+            </div>
+            <div class="planet-css" style="background-image: url('/textures/mars-2k.jpg')"></div>
+            <canvas class="planet-gl" data-planet-canvas></canvas>
+            <div class="orbit orbit--front">
+              <div class="ring-plane"><div class="ring-spin" data-ring></div></div>
+              <div class="wrap-title"><div class="wrap-title__turn" data-wrap></div></div>
+            </div>
+          </div>
+
+          <div class="hero__copy">
+            <h1 class="hero__title" id="hero-title">
+              <span class="hero__line"><span class="hero__line-inner">Make Mars</span></span>
+              <span class="hero__line"><span class="hero__line-inner">feel navigable.</span></span>
+            </h1>
+            <p class="hero__lede" data-reveal style="--i: 4">
+              <strong>MartisDux</strong> is an open-source concept for reading the Martian surface: terrain, routes,
+              scientific sites and hazards on one layered map — and, one day, in augmented reality on the table in front
+              of you.
+            </p>
+            <div class="hero__ctas" data-reveal style="--i: 6">
+              <a class="btn btn--primary btn--down" href="#layers">
+                Explore the map <span class="btn__arrow" aria-hidden="true">↓</span>
+              </a>
+              <a class="btn btn--ghost" href="#simulator">
+                Meet the simulator <span class="btn__arrow" aria-hidden="true">→</span>
+              </a>
+            </div>
+          </div>
+
+          <dl class="hero__meta mono mono--s" data-reveal="fade" style="--i: 8">
+            <div>
+              <dt>Facing you</dt>
+              <dd data-meridian>290° E</dd>
+            </div>
+            <div>
+              <dt>Status</dt>
+              <dd class="hero__status">Concept, in development</dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
+      <!-- =========================================================== MISSION -->
+      <section class="section mission" id="mission" data-theme="cream" data-section="mission" aria-labelledby="mission-title">
+        <div class="wrap mission__grid">
+          <p class="kicker" data-reveal>Why we started</p>
+          <h2 class="h2 mission__title" id="mission-title" data-reveal="words">An unfamiliar world deserves a clearer map.</h2>
+
+          <div class="mission__text">
+            <p class="lead" data-reveal>
+              Mars has been photographed, measured and mapped from orbit for decades. Yet a simple question about one
+              place — how steep is that slope, what is that rock, can I get there from here — still means digging
+              through archives that were never meant to be read together.
+            </p>
+            <p class="mission__body" data-reveal style="--i: 1">
+              MartisDux is our attempt to put those answers in one view. Pick a place and see its shape, the features
+              worth visiting, a route across it and the hazards along the way, all drawn over the same ground.
+            </p>
+          </div>
+        </div>
+
+        <figure class="photo-band" data-reveal="photo">
+          <picture>
+            <source type="image/webp" srcset="/images/pahrump-band-1200.webp 1200w, /images/pahrump-band-2400.webp 2400w" sizes="100vw" />
+            <img
+              src="/images/pahrump-band-1200.jpg"
+              srcset="/images/pahrump-band-1200.jpg 1200w, /images/pahrump-band-2400.jpg 2400w"
+              sizes="100vw"
+              width="2400"
+              height="686"
+              loading="lazy"
+              decoding="async"
+              alt="Reddish-brown Martian ground with rippled sand in the foreground, pale rock outcrops in the middle distance and a low ridge under a hazy sky."
+            />
+          </picture>
+          <figcaption class="wrap photo-band__caption">
+            <span>The “Pahrump Hills” outcrop in Gale crater, as Curiosity’s Mastcam saw it in September 2014. Sand, bedrock and loose rock, all within a short walk.</span>
+            <span class="mono mono--s">Mastcam mosaic · NASA/JPL-Caltech/MSSS</span>
+          </figcaption>
+        </figure>
+
+        <div class="wrap">
+          <div class="conditions">
+            <h3 class="conditions__title" data-reveal>Three things that make a map matter more on Mars</h3>
+            <ol class="conditions__list">
+              <li class="condition" data-reveal style="--i: 0">
+                <h4 class="condition__title">No satellite navigation</h4>
+                <p>
+                  There is no GPS-style constellation around Mars. Knowing where you are, and what lies ahead, depends
+                  on maps built from orbital data and on landmarks you can recognise.
+                </p>
+              </li>
+              <li class="condition" data-reveal style="--i: 1">
+                <h4 class="condition__title">Minutes of delay</h4>
+                <p>
+                  A radio signal takes roughly 3 to 22 minutes to cross between Earth and Mars, depending on where the
+                  planets are. Explorers will need answers close at hand, not a conversation away.
+                </p>
+              </li>
+              <li class="condition" data-reveal style="--i: 2">
+                <h4 class="condition__title">Knowledge in many places</h4>
+                <p>
+                  Orbiters, landers and rovers have each studied Mars with their own instruments, resolutions and
+                  archives. Reading them side by side is still hard work.
+                </p>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================== HOW IT WORKS -->
+      <section class="section journey" id="approach" data-theme="ink" data-section="map" aria-labelledby="journey-title" data-journey data-progress>
+        <div class="journey__topo" aria-hidden="true"></div>
+        <div class="wrap">
+          <div class="journey__head">
+            <h2 class="h2" id="journey-title" data-reveal="words">From planetary data to a clearer picture.</h2>
+            <div class="journey__intro" data-reveal style="--i: 1">
+              <p class="tag">Intended experience · not yet built</p>
+              <p class="lead">From the whole planet down to a single walk across it, in three steps.</p>
+            </div>
+          </div>
+
+          <div class="journey__track">
+            <svg class="journey__line" viewBox="0 0 1200 40" preserveAspectRatio="none" aria-hidden="true">
+              <path class="journey__line-base" d="M0 20 H1200" />
+              <path class="journey__line-fill" d="M0 20 H1200" pathLength="1" />
+            </svg>
+
+            <ol class="journey__steps">
+              <li class="journey__step" data-step="0">
+                <div class="journey__visual" aria-hidden="true">
+                  <svg viewBox="0 0 240 180">
+                    <g class="jv-globe">
+                      <circle cx="120" cy="90" r="68" />
+                      <ellipse cx="120" cy="90" rx="24" ry="68" />
+                      <ellipse cx="120" cy="90" rx="48" ry="68" />
+                      <line x1="120" y1="22" x2="120" y2="158" />
+                      <ellipse cx="120" cy="56" rx="58" ry="5" />
+                      <ellipse cx="120" cy="90" rx="68" ry="6" />
+                      <ellipse cx="120" cy="124" rx="58" ry="5" />
+                    </g>
+                    <g class="jv-select">
+                      <rect x="134" y="70" width="34" height="26" />
+                      <path d="M134 76v-6h6M162 70h6v6M168 90v6h-6M140 96h-6v-6" />
+                      <path class="jv-leader" d="M168 70 L194 44 H226" />
+                    </g>
+                    <text class="jv-label" x="226" y="40" text-anchor="end">Region</text>
+                  </svg>
+                </div>
+                <p class="journey__num mono">Step 1</p>
+                <h3 class="h3">Choose a place</h3>
+                <p class="journey__text">
+                  Start from the whole planet and zoom in on somewhere specific: a landing site, a crater floor, the
+                  edge of a canyon.
+                </p>
+              </li>
+
+              <li class="journey__step" data-step="1">
+                <div class="journey__visual" aria-hidden="true">
+                  <svg viewBox="0 0 240 180">
+                    <g class="jv-chips">
+                      <rect x="150" y="34" width="86" height="22" rx="11" />
+                      <rect x="150" y="62" width="86" height="22" rx="11" />
+                      <rect x="150" y="90" width="86" height="22" rx="11" />
+                      <text x="162" y="49">Elevation</text>
+                      <text x="162" y="77">Sites</text>
+                      <text x="162" y="105">Hazards</text>
+                    </g>
+                    <rect class="jv-tile" x="20" y="24" width="124" height="124" />
+                    <g class="jv-contours" data-terrain="tile" data-x="20" data-y="24" data-size="124"></g>
+                    <circle class="jv-poi" cx="58" cy="70" r="4" />
+                    <circle class="jv-poi" cx="112" cy="114" r="4" />
+                    <path class="jv-link" d="M144 45 H150 M144 73 H150 M144 101 H150" />
+                  </svg>
+                </div>
+                <p class="journey__num mono">Step 2</p>
+                <h3 class="h3">Read it in layers</h3>
+                <p class="journey__text">
+                  Turn on what you need — elevation and slope, sites of scientific interest, hazards — and see how they
+                  relate on the same ground.
+                </p>
+              </li>
+
+              <li class="journey__step" data-step="2">
+                <div class="journey__visual" aria-hidden="true">
+                  <svg viewBox="0 0 240 180">
+                    <rect class="jv-tile" x="58" y="24" width="124" height="124" />
+                    <g class="jv-contours" data-terrain="tile" data-x="58" data-y="24" data-size="124"></g>
+                    <path class="jv-route" d="M72 134 C 92 120, 96 96, 118 92 S 150 70, 162 44" />
+                    <path class="jv-start" d="M72 128 l6 10 h-12 z" />
+                    <g class="jv-pin">
+                      <circle cx="162" cy="40" r="6" />
+                      <circle cx="162" cy="40" r="12" />
+                    </g>
+                    <text class="jv-label" x="188" y="44">Site</text>
+                    <text class="jv-label" x="18" y="160">Start</text>
+                  </svg>
+                </div>
+                <p class="journey__num mono">Step 3</p>
+                <h3 class="h3">Study a route</h3>
+                <p class="journey__text">
+                  Sketch a path to a destination and see what it crosses. The map informs a person’s judgement; it
+                  doesn’t plan the walk for them.
+                </p>
+              </li>
+            </ol>
+          </div>
+
+          <div class="hard">
+            <h3 class="hard__title" data-reveal>What makes this hard</h3>
+            <dl class="hard__list">
+              <div class="hard__item" data-reveal style="--i: 0">
+                <dt>Different scales</dt>
+                <dd>
+                  Global elevation from laser altimetry (MOLA) is gridded at hundreds of metres per pixel. Stereo models
+                  from the HiRISE camera reach about a metre. Combining them without inventing detail is the first
+                  problem.
+                </dd>
+              </div>
+              <div class="hard__item" data-reveal style="--i: 1">
+                <dt>Patchy coverage</dt>
+                <dd>
+                  The sharpest images cover only small parts of the planet, so what we know changes from place to
+                  place. The map has to show where it knows less.
+                </dd>
+              </div>
+              <div class="hard__item" data-reveal style="--i: 2">
+                <dt>Coordinates that disagree</dt>
+                <dd>
+                  Datasets use different map projections, and Mars longitudes can run east-positive or west-positive.
+                  Making one point land in the same spot on every layer takes care.
+                </dd>
+              </div>
+              <div class="hard__item" data-reveal style="--i: 3">
+                <dt>Credit and limits</dt>
+                <dd>
+                  Every layer comes from a mission team. Each needs proper citation, and a note on what it can’t tell
+                  you.
+                </dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========================================================== MAP ROOM -->
+      <section class="section layers" id="layers" data-theme="ink" data-section="map" aria-labelledby="layers-title">
+        <div class="wrap">
+          <div class="layers__head">
+            <h2 class="h2" id="layers-title" data-reveal="words">One landscape. Many layers of information.</h2>
+            <p class="lead" data-reveal style="--i: 1">
+              Four kinds of information, drawn over the same 9.5 km square of Jezero crater. Choose a layer to see what it
+              adds — the map below follows along.
+            </p>
+          </div>
+
+          <div class="layers__explorer" data-layers>
+            <div class="layers__visual" data-reveal="fade">
+              <div class="stack-scene">
+                <div class="stack" data-stack data-active="0" data-mode="exploded">
+                  <div class="stack__plane" data-plane="0"><svg data-plane-svg="terrain" viewBox="0 0 400 400" aria-hidden="true"></svg></div>
+                  <div class="stack__plane" data-plane="1"><svg data-plane-svg="routes" viewBox="0 0 400 400" aria-hidden="true"></svg></div>
+                  <div class="stack__plane" data-plane="2"><svg data-plane-svg="poi" viewBox="0 0 400 400" aria-hidden="true"></svg></div>
+                  <div class="stack__plane" data-plane="3"><svg data-plane-svg="hazard" viewBox="0 0 400 400" aria-hidden="true"></svg></div>
+                </div>
+              </div>
+              <div class="layers__toolbar">
+                <p class="mono mono--s layers__note">Jezero crater · USGS elevation · NASA rover data</p>
+                <button class="layers__mode mono mono--s" type="button" aria-pressed="false" data-stack-mode>
+                  <span class="layers__mode-box" aria-hidden="true"></span>
+                  Combine layers
+                </button>
+              </div>
+            </div>
+
+            <div class="layers__ui metal-edge">
+              <div class="layers__tabs" role="tablist" aria-label="Proposed information layers" aria-orientation="vertical">
+                <button class="layers__tab" role="tab" type="button" id="tab-terrain" aria-controls="panel-terrain" aria-selected="true" data-tab="0">
+                  <span class="layers__tab-num mono">L1</span>
+                  <span class="layers__tab-name">Terrain &amp; elevation</span>
+                  <span class="layers__swatch layers__swatch--terrain" aria-hidden="true"></span>
+                </button>
+                <button class="layers__tab" role="tab" type="button" id="tab-routes" aria-controls="panel-routes" aria-selected="false" tabindex="-1" data-tab="1">
+                  <span class="layers__tab-num mono">L2</span>
+                  <span class="layers__tab-name">Routes &amp; terrain context</span>
+                  <span class="layers__swatch layers__swatch--routes" aria-hidden="true"></span>
+                </button>
+                <button class="layers__tab" role="tab" type="button" id="tab-poi" aria-controls="panel-poi" aria-selected="false" tabindex="-1" data-tab="2">
+                  <span class="layers__tab-num mono">L3</span>
+                  <span class="layers__tab-name">Scientific points of interest</span>
+                  <span class="layers__swatch layers__swatch--poi" aria-hidden="true"></span>
+                </button>
+                <button class="layers__tab" role="tab" type="button" id="tab-hazard" aria-controls="panel-hazard" aria-selected="false" tabindex="-1" data-tab="3">
+                  <span class="layers__tab-num mono">L4</span>
+                  <span class="layers__tab-name">Environment &amp; hazards</span>
+                  <span class="layers__swatch layers__swatch--hazard" aria-hidden="true"></span>
+                </button>
+              </div>
+
+              <div class="layers__panels">
+                <div class="layers__panel" role="tabpanel" id="panel-terrain" aria-labelledby="tab-terrain" tabindex="0">
+                  <p class="tag">Prototype layer · real data from Jezero</p>
+                  <h3 class="h3">The shape of the ground comes first.</h3>
+                  <p>
+                    Slopes, ridges, crater rims and basins decide where a person could walk comfortably and where they
+                    couldn’t. Every other layer sits on top of this one.
+                  </p>
+                  <dl class="layers__facts">
+                    <div><dt class="mono mono--s">Could help answer</dt><dd>How steep is the ground between here and that ridge?</dd></div>
+                    <div><dt class="mono mono--s">Data used here</dt><dd>USGS elevation model of Jezero made from CTX stereo images (20 m per pixel), produced for Perseverance’s landing. Next: MOLA for the whole planet, HiRISE stereo for metre-scale detail</dd></div>
+                  </dl>
+                </div>
+
+                <div class="layers__panel" role="tabpanel" id="panel-routes" aria-labelledby="tab-routes" tabindex="0" hidden>
+                  <p class="tag">Prototype layer · real data from Jezero</p>
+                  <h3 class="h3">A route, read against the land it crosses.</h3>
+                  <p>
+                    A path is more than a line between two points. Drawn over the terrain, it shows what it passes:
+                    rising ground, loose material, shadowed slopes. The goal is to help people study a journey, not to
+                    plan one automatically.
+                  </p>
+                  <dl class="layers__facts">
+                    <div><dt class="mono mono--s">Could help answer</dt><dd>What does this traverse cross along the way?</dd></div>
+                    <div><dt class="mono mono--s">Data used here</dt><dd>Perseverance’s actual drive (NASA/JPL traverse file, up to sol 2022), drawn over the elevation layer. Next: routes a person draws</dd></div>
+                  </dl>
+                </div>
+
+                <div class="layers__panel" role="tabpanel" id="panel-poi" aria-labelledby="tab-poi" tabindex="0" hidden>
+                  <p class="tag">Prototype layer · real data from Jezero</p>
+                  <h3 class="h3">Where the planet’s history is exposed.</h3>
+                  <p>
+                    Layered outcrops, old river channels, crater walls and mineral signatures are where much of Mars’s
+                    past is recorded. Marking them turns a landscape into destinations, each with a short note on why it
+                    matters.
+                  </p>
+                  <dl class="layers__facts">
+                    <div><dt class="mono mono--s">Could help answer</dt><dd>Which nearby features are worth a closer look, and why?</dd></div>
+                    <div><dt class="mono mono--s">Data used here</dt><dd>NASA’s Mars rock sample record, each core placed at the rover’s position on the sol it was sealed. Next: geologic maps, CRISM mineral maps, HiRISE images</dd></div>
+                  </dl>
+                </div>
+
+                <div class="layers__panel" role="tabpanel" id="panel-hazard" aria-labelledby="tab-hazard" tabindex="0" hidden>
+                  <p class="tag">Prototype layer · real data from Jezero</p>
+                  <h3 class="h3">Conditions that shape when, and whether, to go.</h3>
+                  <p>
+                    Steep or rough ground, loose sand, lighting and dust all affect where it makes sense to travel. Where
+                    reliable data exists, this layer would put it next to the route — with a note on its limits.
+                  </p>
+                  <dl class="layers__facts">
+                    <div><dt class="mono mono--s">Could help answer</dt><dd>Where is the ground likely to be too steep or too soft?</dd></div>
+                    <div><dt class="mono mono--s">Data used here</dt><dd>Slopes of 15° or more, calculated from the elevation model; the Séítah sand ripples from the rover’s record. Next: THEMIS thermal data, Mars Climate Sounder</dd></div>
+                  </dl>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section explore" id="explore" data-theme="ink" data-section="map" aria-labelledby="explore-title">
+        <div class="wrap">
+          <div class="explore__head">
+            <h2 class="h2" id="explore-title" data-reveal="words">Explore Jezero crater.</h2>
+            <p class="lead" data-reveal style="--i: 1">
+              Perseverance landed here in February 2021 and has driven more than 45 km since. Pick a site to see what
+              the rover found and the route it took to get there. The terrain, routes and sites are real data.
+            </p>
+          </div>
+
+          <div class="map" data-map data-relief data-route data-sites data-reveal="fade">
+            <div class="map__frame metal-edge" role="group" aria-label="Map of western Jezero crater, Mars, with Perseverance’s route and four sites it explored">
+              <div class="map__inner" data-map-inner>
+                <canvas class="map__relief" data-map-relief aria-hidden="true"></canvas>
+                <svg class="map__overlay" data-map-overlay viewBox="0 0 1600 900" preserveAspectRatio="none" aria-hidden="true"></svg>
+                <svg class="map__hazard" data-map-hazard viewBox="0 0 1600 900" preserveAspectRatio="none" aria-hidden="true"></svg>
+                <svg class="map__route" data-map-route viewBox="0 0 1600 900" preserveAspectRatio="none" aria-hidden="true">
+                  <path class="map__route-path" d="" pathLength="1" />
+                </svg>
+
+                <div class="map__markers" data-map-markers>
+                  <div class="map__landing" style="--x: 0.14; --y: 0.78" aria-hidden="true">
+                    <span class="map__landing-icon"></span>
+                    <span class="map__landing-label mono mono--s">Landing · Feb 2021</span>
+                  </div>
+                  <!-- Site buttons are generated from data in explorer.js -->
+                </div>
+              </div>
+
+              <div class="map__north mono mono--s" aria-hidden="true"><span>N</span></div>
+              <p class="map__focus mono mono--s" data-map-focus aria-live="polite">Showing all layers</p>
+
+              <div class="map__panel glass metal-edge" data-map-panel aria-live="polite">
+                <p class="mono mono--s map__panel-kicker">Location overview</p>
+                <h3 class="h3 map__panel-title">Four places Perseverance explored</h3>
+                <p class="map__panel-text">
+                  Each marker is a place the rover actually reached, at the position NASA recorded. Small diamonds mark
+                  where it sealed rock samples.
+                </p>
+              </div>
+
+              <fieldset class="map__bar glass metal-edge">
+                <legend class="visually-hidden">Map layers</legend>
+                <span class="map__bar-label mono mono--s" aria-hidden="true">Layers</span>
+                <label class="chip"><input type="checkbox" data-map-toggle="relief" checked /><span class="chip__dot" aria-hidden="true"></span>Elevation</label>
+                <label class="chip"><input type="checkbox" data-map-toggle="route" checked /><span class="chip__dot" aria-hidden="true"></span>Route</label>
+                <label class="chip"><input type="checkbox" data-map-toggle="sites" checked /><span class="chip__dot" aria-hidden="true"></span>Sites</label>
+                <label class="chip"><input type="checkbox" data-map-toggle="hazard" /><span class="chip__dot" aria-hidden="true"></span>Hazards</label>
+              </fieldset>
+            </div>
+
+            <div class="map__caption">
+              <p class="tag map__badge">Real data · USGS CTX elevation · NASA/JPL Perseverance traverse to sol 2022</p>
+              <p class="map__readout mono mono--s" data-map-readout aria-hidden="true">— · elevation —</p>
+            </div>
+
+            <dl class="map__legend mono mono--s">
+              <div><dt><span class="lg lg--ramp" aria-hidden="true"></span></dt><dd>−2,640 m → −1,650 m</dd></div>
+              <div><dt><span class="lg lg--contour" aria-hidden="true"></span></dt><dd>Contour</dd></div>
+              <div><dt><span class="lg lg--route" aria-hidden="true"></span></dt><dd>Rover route</dd></div>
+              <div><dt><span class="lg lg--site" aria-hidden="true"></span></dt><dd>Site · sample core</dd></div>
+              <div><dt><span class="lg lg--hazard" aria-hidden="true"></span></dt><dd>Slope ≥ 15°</dd></div>
+              <div><dt><span class="lg lg--start" aria-hidden="true"></span></dt><dd>Landing site</dd></div>
+            </dl>
+          </div>
+
+          <figure class="real" data-reveal="photo">
+            <div class="real__label">
+              <p class="mono mono--s real__kicker">Real Mars</p>
+              <p class="real__title">Ancient river channels like Neretva Vallis are found elsewhere too.</p>
+            </div>
+            <picture class="real__image">
+              <source type="image/webp" srcset="/images/peace-vallis-800.webp 800w, /images/peace-vallis-1600.webp 1600w" sizes="(min-width: 64rem) 66vw, 100vw" />
+              <img
+                src="/images/peace-vallis-800.jpg"
+                srcset="/images/peace-vallis-800.jpg 800w, /images/peace-vallis-1600.jpg 1600w"
+                sizes="(min-width: 64rem) 66vw, 100vw"
+                width="1600"
+                height="314"
+                loading="lazy"
+                decoding="async"
+                alt="A grey telephoto view of a long, gently sloping hillside cut by a shallow channel, with dark boulders scattered along it."
+              />
+            </picture>
+            <figcaption class="real__caption">
+              <span>Peace Vallis, an ancient river channel running down the rim of Gale crater, photographed by Curiosity’s ChemCam from about 30 km away on 1 September 2025.</span>
+              <span class="mono mono--s">Black-and-white original, warm tint added for this page · NASA/JPL-Caltech/LANL/CNES/CNRS/IRAP/IAS/LPG</span>
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+
+      <!-- ========================================================= SIMULATOR -->
+      <section class="section sim" id="simulator" data-theme="ink" data-section="simulator" aria-labelledby="sim-title">
+        <div class="sim__glow" aria-hidden="true"></div>
+        <div class="wrap">
+          <div class="sim__intro">
+            <p class="kicker" data-reveal>The simulator</p>
+            <h2 class="sim__title" id="sim-title" data-reveal="words">Every mission starts in the simulator.</h2>
+            <p class="sim__lede" data-reveal style="--i: 1">
+              We’ve built a desktop simulator for Windows and macOS. It’s where every official MartisDux map, AR
+              experience, route and hardware integration will be made and tested.
+            </p>
+            <ul class="sim__platforms mono mono--s" data-reveal style="--i: 2" aria-label="Platforms">
+              <li>
+                <a class="sim__platform sim__platform--download" href="https://drive.google.com/drive/folders/1B5uJ2BAqH0C6zWngz7YWjN552usQ0Mdi?usp=drive_link" target="_blank" rel="noopener" aria-label="Download the simulator for Windows (opens Google Drive in a new tab)">
+                  <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M1 2.6 6.6 1.8v5.5H1zM7.3 1.7 15 .6v6.7H7.3zM1 8h5.6v5.5L1 12.7zM7.3 8H15v6.7l-7.7-1.1z" /></svg>
+                  Windows
+                  <span class="sim__get" aria-hidden="true">↓</span>
+                </a>
+              </li>
+              <li>
+                <span class="sim__platform">
+                  <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M11.2 8.5c0-1.6 1.3-2.4 1.4-2.4-.8-1.1-1.9-1.3-2.3-1.3-1-.1-1.9.6-2.4.6s-1.3-.6-2.1-.5c-1.1 0-2.1.6-2.6 1.6-1.1 1.9-.3 4.8.8 6.4.5.8 1.2 1.6 2 1.6s1.1-.5 2.1-.5 1.2.5 2.1.5 1.4-.8 1.9-1.6c.6-.9.8-1.7.9-1.8-.1 0-1.8-.7-1.8-2.6zM9.6 3.7c.4-.5.7-1.2.6-1.9-.6 0-1.4.4-1.8.9-.4.4-.7 1.1-.6 1.8.7.1 1.4-.3 1.8-.8z" /></svg>
+                  macOS
+                </span>
+              </li>
+            </ul>
+          </div>
+
+          <figure class="sim__figure" data-reveal="fade">
+            <div class="sim__shot">
+              <picture>
+                <source type="image/webp" srcset="/images/simulator-960.webp 960w, /images/simulator-1908.webp 1908w" sizes="(min-width: 72rem) 68rem, 92vw" />
+                <img
+                  src="/images/simulator-960.jpg"
+                  srcset="/images/simulator-960.jpg 960w, /images/simulator-1908.jpg 1908w"
+                  sizes="(min-width: 72rem) 68rem, 92vw"
+                  width="1908"
+                  height="1158"
+                  loading="lazy"
+                  decoding="async"
+                  alt="The MartisDux Simulator: a grey orbital image of Gale crater fills the window, with a Places list of Mars landmarks and landing sites on the left, map view and overlay buttons along the bottom, and Jezero's local time in the status bar."
+                />
+              </picture>
+            </div>
+            <figcaption class="sim__caption mono mono--s">The MartisDux Simulator, showing Gale crater. Imagery: NASA / JPL / MSSS, Caltech Murray Lab, Esri.</figcaption>
+          </figure>
+
+          <div class="sim__uses" data-reveal>
+            <ul class="sim__modules">
+              <li>Official mappings</li>
+              <li>AR</li>
+              <li>Navigation</li>
+              <li>Hardware integrations</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================================================= OPEN SOURCE -->
+      <section class="section open" id="open" data-theme="cream" data-section="open" aria-labelledby="open-title">
+        <div class="wrap">
+          <div class="open__grid">
+            <div class="open__intro">
+              <p class="kicker" data-reveal>Open source</p>
+              <h2 class="h2" id="open-title" data-reveal="words">Exploration is better when knowledge is shared.</h2>
+              <p class="lead" data-reveal style="--i: 1">
+                The data behind a map like this was gathered by public missions. The tools that help people read it
+                should be open too.
+              </p>
+              <p class="open__body" data-reveal style="--i: 2">
+                We intend to develop MartisDux in the open — code, methods and data sources — so anyone can check how a
+                map was made, fix what’s wrong with it, or build something of their own on top.
+              </p>
+            </div>
+
+            <ol class="principles">
+              <li class="principle" data-reveal style="--i: 0">
+                <h3 class="principle__title">Transparency</h3>
+                <p>Every layer should say where its data came from, how it was processed and what it can’t tell you.</p>
+              </li>
+              <li class="principle" data-reveal style="--i: 1">
+                <h3 class="principle__title">Reproducibility</h3>
+                <p>Open code and documented steps mean anyone can check a result, rebuild a map or find a mistake.</p>
+              </li>
+              <li class="principle" data-reveal style="--i: 2">
+                <h3 class="principle__title">Collaboration</h3>
+                <p>Scientists, developers, designers and teachers each notice different problems. Openness lets all of them help.</p>
+              </li>
+              <li class="principle" data-reveal style="--i: 3">
+                <h3 class="principle__title">Learning</h3>
+                <p>Students should be able to look inside the map, not only at it.</p>
+              </li>
+            </ol>
+          </div>
+
+          <div class="manifest" data-reveal>
+            <p class="manifest__file mono mono--s">martisdux / project-status</p>
+            <dl class="manifest__list mono">
+              <div><dt>stage</dt><dd>Early concept, in development</dd></div>
+              <div><dt>repository</dt><dd>Not public yet</dd></div>
+              <div><dt>licence</dt><dd>To be decided (an OSI-approved open-source licence)</dd></div>
+              <div><dt>data</dt><dd>Public planetary datasets, cited layer by layer</dd></div>
+            </dl>
+            <p class="manifest__note">We’ll link the repository here once it’s public.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- =========================================================== ROADMAP -->
+      <section class="section roadmap" id="roadmap" data-theme="ink" data-section="roadmap" aria-labelledby="roadmap-title">
+        <div class="wrap">
+          <div class="roadmap__head">
+            <h2 class="h2" id="roadmap-title" data-reveal="words">Where MartisDux is today.</h2>
+            <p class="lead" data-reveal style="--i: 1">
+              Early. Here’s what we’re working on now, what we’re still exploring, and what comes after.
+            </p>
+            <ul class="roadmap__key mono mono--s" data-reveal style="--i: 2" aria-label="Status key">
+              <li><span class="status-mark status-mark--done" aria-hidden="true"></span>Done</li>
+              <li><span class="status-mark status-mark--progress" aria-hidden="true"></span>In progress</li>
+            </ul>
+          </div>
+
+          <ol class="phases" data-phases>
+            <li class="phase phase--done" data-reveal style="--i: 0">
+              <span class="status-mark status-mark--done" aria-hidden="true"></span>
+              <p class="phase__status mono mono--s">Done</p>
+              <h3 class="phase__title">Concept &amp; design</h3>
+              <p class="phase__text">Defining the problem, the audience and the experience. This website is part of that work.</p>
+            </li>
+            <li class="phase phase--done" data-reveal style="--i: 1">
+              <span class="status-mark status-mark--done" aria-hidden="true"></span>
+              <p class="phase__status mono mono--s">Done</p>
+              <h3 class="phase__title">Mapping experience</h3>
+              <p class="phase__text">Testing how layers, sites and routes read together on screen, starting with prototypes like the map above.</p>
+            </li>
+            <li class="phase phase--done" data-reveal style="--i: 2">
+              <span class="status-mark status-mark--done" aria-hidden="true"></span>
+              <p class="phase__status mono mono--s">Done</p>
+              <h3 class="phase__title">Dataset investigation</h3>
+              <p class="phase__text">Working out which public datasets can be combined responsibly, at what resolution, and how to cite each.</p>
+            </li>
+            <li class="phase phase--progress" data-reveal style="--i: 3">
+              <span class="status-mark status-mark--progress" aria-hidden="true"></span>
+              <p class="phase__status mono mono--s">In progress</p>
+              <h3 class="phase__title">Technical integration</h3>
+              <p class="phase__text">The Jezero elevation, rover route and samples are connected. Next: imagery, geology and thermal layers.</p>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- =========================================================== CLOSING -->
+      <section class="closing" data-theme="ink" data-section="closing" aria-labelledby="closing-title">
+        <canvas class="closing__stars" data-stars aria-hidden="true"></canvas>
+        <div class="closing__inner wrap">
+          <h2 class="closing__title h2" id="closing-title" data-reveal="words">
+            Before anyone walks on Mars, someone has to read the ground.
+          </h2>
+          <p class="closing__text lead" data-reveal style="--i: 2">
+            MartisDux is our attempt to make that reading easier — first on a map, then in the room with you.
+          </p>
+          <div class="closing__ctas" data-reveal style="--i: 3">
+            <a class="btn btn--primary" href="#layers">Back to the map <span class="btn__arrow" aria-hidden="true">↑</span></a>
+            <a class="btn btn--ghost" href="#roadmap">See the roadmap <span class="btn__arrow" aria-hidden="true">↑</span></a>
+          </div>
+        </div>
+
+        <div class="horizon" aria-hidden="true">
+          <div class="horizon__ring" data-horizon-ring></div>
+          <div class="horizon__planet" data-horizon-planet></div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ============================================================== FOOTER -->
+    <footer class="site-footer" data-theme="ink">
+      <div class="wrap site-footer__grid">
+        <div class="site-footer__brand">
+          <a class="brand" href="#top" aria-label="MartisDux, back to top">
+            <span class="brand__word">MartisDux</span>
+          </a>
+          <p>
+            An open-source concept for a layered Martian surface map, and for bringing that map into physical space with
+            augmented reality.
+          </p>
+        </div>
+
+        <nav class="site-footer__nav" aria-label="Footer">
+          <p class="mono mono--s site-footer__label">On this page</p>
+          <ul>
+            <li><a href="#mission">Mission</a></li>
+            <li><a href="#approach">How it works</a></li>
+            <li><a href="#layers">Map</a></li>
+            <li><a href="#simulator">Simulator</a></li>
+            <li><a href="#open">Open source</a></li>
+            <li><a href="#roadmap">Roadmap</a></li>
+          </ul>
+        </nav>
+
+        <div class="site-footer__credits">
+          <p class="mono mono--s site-footer__label">Sources &amp; credits</p>
+          <ul>
+            <li>
+              Globe:
+              <a href="https://astrogeology.usgs.gov/search/details/Mars/Viking/MDIM21/Mars_Viking_MDIM21_ClrMosaic_global_232m/cub" rel="noopener">Viking MDIM 2.1 colorized global mosaic</a>,
+              NASA/JPL/USGS, public domain, colour-adjusted for display.
+            </li>
+            <li>
+              Photographs:
+              <a href="https://commons.wikimedia.org/wiki/File:Pia18608-Curiosity_Mars_Rover%27s_Approach_to_%27Pahrump_Hills%27_.jpg" rel="noopener">PIA18608</a> and
+              <a href="https://commons.wikimedia.org/wiki/File:Curiosity%E2%80%99s_ChemCam_Views_Ancient_River_Channel_Peace_Vallis_(PIA26637).jpg" rel="noopener">PIA26637</a>,
+              NASA/JPL-Caltech and partners, public domain, cropped (PIA26637 tinted).
+            </li>
+            <li>
+              Terrain:
+              <a href="https://planetarymaps.usgs.gov/mosaic/mars2020_trn/CTX/JEZ_ctx_B_soc_008_DTM_MOLAtopography_DeltaGeoid_20m_Eqc_latTs0_lon0.tif" rel="noopener">Mars 2020 Terrain Relative Navigation CTX elevation model of Jezero crater</a>,
+              USGS Astrogeology / NASA/JPL-Caltech, resampled to about 44 m.
+            </li>
+            <li>
+              Route and positions:
+              <a href="https://science.nasa.gov/mission/mars-2020-perseverance/location-map/" rel="noopener">Perseverance traverse and waypoints</a>,
+              NASA/JPL-Caltech, up to sol 2022. Samples:
+              <a href="https://science.nasa.gov/mission/mars-2020-perseverance/mars-rock-samples/" rel="noopener">NASA Mars Rock Samples</a>.
+            </li>
+            <li>Type: Julius Sans One, Instrument Sans and Martian Mono (SIL Open Font License). 3D: three.js (MIT).</li>
+            <li>Loading-screen helmet: “Astronaut Helmet” by <a href="https://sketchfab.com/3d-models/astronaut-helmet-315605194a474c7b95cd2a9083985d22" rel="noopener">Medhatelo</a> on Sketchfab (CC BY 4.0), converted and compressed.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="wrap site-footer__base">
+        <p class="site-footer__disclaimer">Independent project. Not affiliated with or endorsed by NASA.</p>
+        <p class="site-footer__event mono mono--s">NASA Space Apps Challenge 2026 · Planetary Exploration</p>
+      </div>
+    </footer>
+  </body>
+</html>
