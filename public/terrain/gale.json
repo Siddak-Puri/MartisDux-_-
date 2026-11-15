@@ -1,0 +1,50 @@
+{
+  "title": "USGS MSL Gale Merged DEM 1 m (v3)",
+  "source": "https://astrogeology.usgs.gov/search/map/mars_msl_gale_merged_dem_1m",
+  "credit": "NASA / JPL-Caltech / University of Arizona / USGS",
+  "datasets": [
+    {
+      "id": "gale-context",
+      "site": "Gale",
+      "url": "terrain/gale-context.u16.gz",
+      "width": 2062,
+      "height": 3590,
+      "x0": 8127994.492786024,
+      "y0": -244782.075189438,
+      "step": 16,
+      "scale": 0.1,
+      "offset": -4700.0,
+      "nodata": 65535,
+      "minimum": -4625.4296875,
+      "maximum": -322.5602722167969,
+      "validFraction": 0.8179544158928373,
+      "sourceSpacing": 1,
+      "deliveredSpacing": 16,
+      "radius": 3396190.0,
+      "original": "https://planetarymaps.usgs.gov/mosaic/Mars/MSL/MSL_Gale_DEM_Mosaic_1m_v3.tif",
+      "sha256": "900b80356141266df6c87ac49e4377f3559352c75afad5046c914d0fef100ecb"
+    },
+    {
+      "id": "gale-landing",
+      "site": "Gale",
+      "url": "terrain/gale-landing.u16.gz",
+      "width": 2049,
+      "height": 2049,
+      "x0": 8145791.492786024,
+      "y0": -271017.075189438,
+      "step": 1,
+      "scale": 0.05,
+      "offset": -4600.0,
+      "nodata": 65535,
+      "minimum": -4529.5576171875,
+      "maximum": -4490.173828125,
+      "validFraction": 1.0,
+      "sourceSpacing": 1,
+      "deliveredSpacing": 1,
+      "radius": 3396190.0,
+      "original": "https://planetarymaps.usgs.gov/mosaic/Mars/MSL/MSL_Gale_DEM_Mosaic_1m_v3.tif",
+      "sha256": "c83fd3a5c9236266c17326cdc0bde4dea7c6bb5a9b010b68c9bd207b94078d82"
+    }
+  ],
+  "processing": "Nearest native pixel-centre sampling at 16 m for context, native 1 m near Bradbury Landing; height quantization to 0.1 m steps. Undecodable source rows [47872, 45872] replaced by the adjacent native row (1 m away). No synthetic relief, sharpening or AI generation. Nodata remains masked."
+}

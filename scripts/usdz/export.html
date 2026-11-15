@@ -1,0 +1,21 @@
+<!doctype html><meta charset="utf-8">
+<script type="importmap">{"imports":{"three":"../../node_modules/three/build/three.module.js","three/addons/":"../../node_modules/three/examples/jsm/"}}</script>
+<script type="module">
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { USDZExporter } from 'three/addons/exporters/USDZExporter.js';
+const { ipcRenderer } = require('electron');
+const fs = require('node:fs'), path = require('node:path');
+const q = new URLSearchParams(location.search);
+try {
+  for (const name of q.get('models').split(',')) {
+    const glb = fs.readFileSync(path.join(q.get('root'), 'public', 'ar', `${name}.glb`));
+    const gltf = await new GLTFLoader().parseAsync(glb.buffer.slice(glb.byteOffset, glb.byteOffset + glb.byteLength), '');
+    const usdz = await new USDZExporter().parseAsync(gltf.scene, {
+      quickLookCompatible: true, maxTextureSize: 2048, includeAnchoringProperties: true,
+      ar: { anchoring: { type: 'plane' }, planeAnchoring: { alignment: 'horizontal' } },
+    });
+    ipcRenderer.send('usdz', name, usdz);
+  }
+  ipcRenderer.send('done');
+} catch (e) { ipcRenderer.send('done', String(e && e.stack || e)); }
+</script>

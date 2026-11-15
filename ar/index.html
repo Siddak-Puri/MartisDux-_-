@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Jezero Marswalk in AR · MartisDux</title>
+  <meta name="description" content="Put real Jezero crater terrain from NASA data on your table: the planned Marswalk route and Perseverance's sample sites, in augmented reality.">
+  <link rel="icon" href="favicon.svg">
+</head>
+<body>
+  <main class="ar-page">
+    <header class="ar-top">
+      <a class="ar-brand" href="../">MARTISDUX</a>
+      <div class="ar-relief" role="group" aria-label="Vertical scale">
+        <button type="button" data-relief="x1" aria-pressed="true">True relief</button>
+        <button type="button" data-relief="x3" aria-pressed="false">Relief ×3</button>
+      </div>
+    </header>
+
+    <model-viewer id="model" alt="Real Jezero crater terrain with the planned Marswalk route and Perseverance sample sites"
+      src="jezero-marswalk-x1.glb" ar ar-modes="webxr scene-viewer quick-look" ar-placement="floor" ar-scale="auto"
+      camera-controls touch-action="pan-y" shadow-intensity="1" shadow-softness="0.8" exposure="1.05"
+      camera-orbit="25deg 58deg auto" field-of-view="32deg" interaction-prompt="auto" loading="eager">
+      <button slot="ar-button" class="ar-button" type="button">View on your table <span>↗</span></button>
+      <div class="ar-progress" slot="progress-bar"><span id="ar-progress"></span></div>
+    </model-viewer>
+
+    <section class="ar-card" aria-labelledby="ar-title">
+      <p class="ar-eyebrow">JEZERO CRATER · MARS · <span id="ar-scale">1:—</span></p>
+      <h1 id="ar-title">The Marswalk, on your table.</h1>
+      <p class="ar-lede">Real terrain from NASA's 1 m HiRISE elevation model, wrapped in the HiRISE orbital photo. The orange line is the safest walking route MartisDux planned; blue pins are rock-core sites Perseverance sampled.</p>
+      <ul class="ar-legend">
+        <li><i class="k-route"></i>Safest walk · <b id="ar-distance">—</b>, max slope <b id="ar-slope">—</b></li>
+        <li><i class="k-base"></i>Base: Perseverance landing site</li>
+        <li><i class="k-sci"></i>Perseverance sample sites</li>
+      </ul>
+      <p class="ar-note" id="ar-note"></p>
+      <div id="ar-qr" class="ar-qr" hidden><div id="ar-qr-code"></div><p id="ar-qr-text"><b>Open on your phone</b>Put your phone on the same Wi-Fi as this laptop, then scan. The laptop serves the terrain directly — no internet or app needed.<code id="ar-qr-url"></code></p></div>
+      <p class="ar-credit">Terrain and imagery: NASA/JPL-Caltech/University of Arizona/USGS. Sample sites: NASA/JPL-Caltech. Model: Team MartisDux.</p>
+    </section>
+  </main>
+  <script type="module" src="../src/ar-page.js"></script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+:root{--ink:#120b07;--cream:#fef3e2;--muted:#fef3e2a8;--solar:#ff9c4c;--line:#fef3e22c;--mono:'Martian Mono Variable',ui-monospace,monospace;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;background:#120b07;color:var(--cream);font-family:'Instrument Sans Variable',system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
+body.in-ar{background:transparent}
+.walk-stage,.walk-stage canvas{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}
+.walk-overlay{position:fixed;inset:0;pointer-events:none}
+.walk-overlay>*:not(.hud){pointer-events:auto}
+.walk-load{position:absolute;left:0;right:0;top:0;height:3px;background:#fef3e214;transition:opacity .4s}.walk-load.done{opacity:0}
+.walk-load span{display:block;height:100%;width:0;background:var(--solar);transition:width .2s}
+.hud{opacity:0;transition:opacity .4s}.ready .hud{opacity:1}
+
+.walk-card{position:absolute;top:16px;right:16px;width:min(360px,calc(100vw - 32px));padding:18px 18px 14px;border-radius:14px;background:#160d08e6;border:1px solid var(--line);box-shadow:0 10px 40px #0007;backdrop-filter:blur(8px)}
+.walk-card.closed>*:not(.walk-collapse):not(h1){display:none}.walk-card.closed h1{font-size:16px;margin:0}
+.walk-collapse{position:absolute;top:10px;right:10px;width:28px;height:28px;border:1px solid var(--line);border-radius:50%;background:none;color:var(--muted);cursor:pointer}
+.walk-card.closed .walk-collapse{transform:rotate(180deg);top:12px}
+.walk-eyebrow{font:9px var(--mono);letter-spacing:.1em;color:#f2b58c;margin:0 0 8px}
+.walk-card h1{font-size:24px;font-weight:450;letter-spacing:-.02em;margin:0 0 8px}
+.walk-lede{font-size:13px;line-height:1.55;color:#fef3e2cc;margin:0 0 12px}
+.walk-primary{width:100%;padding:14px;border:0;border-radius:99px;background:var(--solar);color:#28180d;font:650 15px 'Instrument Sans Variable',sans-serif;cursor:pointer;margin-bottom:10px}
+.walk-msg{font-size:12px;line-height:1.55;padding:10px 12px;border-radius:10px;background:#ff9c4c14;border:1px solid #ff9c4c55;margin:0 0 10px}
+.walk-msg b{display:block;margin-bottom:3px}
+.walk-msg code,.walk-qr code{font:10.5px var(--mono);word-break:break-all;color:#ffd2ad}
+.walk-hint{font-size:11.5px;color:var(--muted);margin:0 0 10px}
+kbd{font:10px var(--mono);padding:1px 5px;border:1px solid var(--line);border-radius:4px;margin:0 1px}
+.walk-qr{display:flex;gap:12px;align-items:center;padding:10px;border-radius:10px;background:var(--cream);color:var(--ink)}
+.walk-qr #walk-qr-code{width:104px;height:104px;flex:none}.walk-qr svg{width:100%;height:100%}
+.walk-qr p{margin:0;font-size:11.5px;line-height:1.45}.walk-qr b{display:block;font-size:13px;margin-bottom:2px}.walk-qr code{display:block;color:#7a4a28;margin-top:3px}
+
+.walk-bar{position:absolute;left:50%;bottom:max(14px,env(safe-area-inset-bottom));transform:translateX(-50%);display:flex;flex-wrap:wrap;justify-content:center;gap:6px;width:max-content;max-width:calc(100vw - 20px);padding:6px;border-radius:16px;background:#160d08d9;border:1px solid var(--line);backdrop-filter:blur(8px)}
+.walk-bar button,.walk-goto{display:flex;align-items:center;gap:6px;min-height:40px;padding:0 13px;border:1px solid var(--line);border-radius:11px;background:#fef3e20a;color:var(--cream);font:500 12.5px 'Instrument Sans Variable',sans-serif;cursor:pointer}
+.walk-bar button span{font:600 10.5px var(--mono);color:#ffd2ad}
+.walk-bar button[aria-pressed=true]{border-color:#ff9c4c99;background:#ff9c4c22}
+.walk-goto span{color:var(--muted)}.walk-goto select{background:none;border:0;color:var(--cream);font:inherit;max-width:180px}
+.walk-goto option{background:#160d08}
+.walk-hold{display:none;gap:6px}.walk-hold button{width:48px;justify-content:center;font-size:14px;touch-action:none}
+@media (pointer:coarse){.walk-hold{display:flex}}
+.in-ar .walk-hold{display:none}
+.walk-credit{position:absolute;left:12px;bottom:4px;margin:0;font-size:9.5px;color:#fef3e277;pointer-events:auto}
+.walk-credit a{color:#ffd2ad}
+.in-ar .walk-card,.in-ar .walk-credit{display:none}
+@media (max-width:720px){.walk-card{top:auto;bottom:118px;right:10px;width:calc(100vw - 20px)}.walk-credit{display:none}.walk-bar button,.walk-goto{min-height:38px;padding:0 10px;font-size:12px}}
+.embedded .walk-card{top:70px}

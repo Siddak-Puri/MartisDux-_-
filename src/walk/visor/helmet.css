@@ -1,0 +1,105 @@
+.md-visor.helmet {
+  --helmet-width: 88%; --helmet-height: 88%; --helmet-center: 50%;
+  --instrument-ink: #f1f3ee; --instrument-dim: #c8ccc6; --instrument-amber: #ffd497;
+  --instrument-face: #141918d9; --instrument-line: #e4e8df50;
+  container-type: size;
+}
+.md-visor.helmet :is(.vignette,.visor-header,.visor-compass,.visor-rail,.hazard-glance,.visor-reticle,.target-tag,.surface-readout,.navigation-dock,.visor-footer),
+.md-visor.helmet .visor-map:not(.expanded) { display: none !important; }
+.md-visor .helmet-fit-window {
+  position: absolute; left: 50%; top: var(--helmet-center); width: var(--helmet-width); height: var(--helmet-height);
+  transform: translate(-50%,-50%); color: var(--instrument-ink); container-type: size; pointer-events: none;
+  font: 500 13px/1.25 'Instrument Sans Variable', system-ui, sans-serif;
+  text-shadow: 0 1px 3px #080b0a;
+}
+.md-visor .helmet-fit-window svg { display: block; }
+.md-visor .helmet-guide { display: none; position: absolute; inset: 0; border: 1px dashed #e4e8df95; border-radius: 50%; background: linear-gradient(#e4e8df38,#e4e8df38) center/1px 100% no-repeat,linear-gradient(#e4e8df38,#e4e8df38) center/100% 1px no-repeat; }
+.md-visor.helmet-guides .helmet-guide { display: block; }
+.md-visor .helmet-ident, .md-visor .helmet-mode { position: absolute; top: 2%; font-size: 11px; }
+.md-visor .helmet-ident { left: 2%; display: grid; gap: 3px; }
+.md-visor .helmet-ident strong { font-size: 13px; font-weight: 650; }
+.md-visor .helmet-ident span { color: var(--instrument-dim); }
+.md-visor .helmet-mode { right: 2%; display: flex; align-items: center; gap: 6px; color: var(--instrument-dim); white-space: nowrap; }
+.md-visor .helmet-mode i { width: 4px; height: 4px; border: 1px solid currentColor; border-radius: 50%; }
+.md-visor .helmet-mode[data-mode="ar"] i { background: currentColor; }
+.md-visor .helmet-mode[data-mode="stale"] { color: var(--instrument-amber); }
+.md-visor .helmet-label { font-size: 11px; font-weight: 550; color: var(--instrument-dim); }
+.md-visor .helmet-bearing {
+  position: absolute; top: 2%; left: 50%; transform: translateX(-50%);
+  display: grid; justify-items: center; gap: 3px; white-space: nowrap;
+}
+.md-visor .helmet-bearing strong { font-size: clamp(18px,4.4cqh,30px); line-height: 1.05; font-weight: 620; font-variant-numeric: tabular-nums; }
+.md-visor .helmet-tape { width: clamp(108px,32cqw,236px); height: auto; margin-top: 2px; color: var(--instrument-dim); overflow: visible; }
+.md-visor .helmet-tape path { fill: none; stroke: currentColor; stroke-width: 1; vector-effect: non-scaling-stroke; }
+.md-visor .helmet-tape text { fill: currentColor; text-anchor: middle; font: 500 10px 'Instrument Sans Variable',sans-serif; font-variant-numeric: tabular-nums; }
+.md-visor .helmet-tape .helmet-index { fill: var(--instrument-ink); stroke: none; }
+.md-visor .helmet-alert {
+  position: absolute; top: 28%; left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 8px;
+  max-width: 96%; padding: 6px 10px; border-left: 2px solid var(--instrument-line); background: #141918ac; border-radius: 0 3px 3px 0;
+}
+.md-visor .helmet-alert strong { display: block; font-size: clamp(12px,2.5cqh,16px); font-weight: 650; }
+.md-visor .helmet-alert [data-f="helmet-detail"] { display: block; margin-top: 1px; font-size: clamp(10px,2cqh,12px); color: var(--instrument-dim); font-variant-numeric: tabular-nums; }
+.md-visor .helmet-alert [data-f="helmet-detail"]:empty, .md-visor .helmet-alert[data-level="low"] .helmet-alert-icon { display: none; }
+.md-visor .helmet-alert-icon { flex: none; }
+.md-visor .helmet-alert-icon svg { width: 15px; height: 15px; }
+.md-visor .helmet-alert:is([data-level="steep"],[data-level="caution"]) { color: var(--instrument-amber); border-color: var(--instrument-amber); background: #211c14e6; }
+.md-visor .helmet-alert[data-level="unknown"] { border-color: #d9c3a0; }
+.md-visor .helmet-aim { position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%); width: 37px; color: #eef3e8b0; }
+.md-visor .helmet-aim path { fill: none; stroke: currentColor; stroke-width: 1.1; }
+.md-visor .helmet-aim svg { filter: drop-shadow(0 1px 1px #080b0a); }
+.md-visor .helmet-route {
+  position: absolute; top: 68%; left: 50%; transform: translate(-50%,-50%); display: flex; align-items: center; gap: 11px;
+  max-width: 96%; padding: 6px 10px; background: #141918b8; border-radius: 3px; border-top: 1px solid var(--instrument-line);
+}
+.md-visor .helmet-route .helmet-label { display: block; }
+.md-visor .helmet-route-value { display: flex; align-items: baseline; gap: 9px; margin-top: 2px; }
+.md-visor .helmet-route strong { font-size: clamp(19px,4.7cqh,31px); font-weight: 620; line-height: 1; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.md-visor .helmet-arrow { flex: none; }
+.md-visor .helmet-arrow svg { width: 23px; height: 23px; fill: none; stroke: currentColor; stroke-width: 1.65; stroke-linecap: round; stroke-linejoin: round; }
+.md-visor .helmet-destination { overflow: hidden; text-overflow: ellipsis; max-width: 15ch; color: var(--instrument-dim); font-size: 11px; white-space: nowrap; }
+.md-visor .helmet-route.no-route .helmet-route-value { display: none; }
+.md-visor .helmet-radiation { position: absolute; left: 50%; bottom: max(47px,13%); transform: translateX(-50%); font-size: 10px; white-space: nowrap; color: var(--instrument-dim); }
+.md-visor .helmet-radiation span { margin-left: 4px; color: var(--instrument-ink); }
+.md-visor .helmet-controls {
+  position: absolute; left: 50%; bottom: 0; transform: translateX(-50%); display: flex; align-items: stretch;
+  background: var(--instrument-face); border: 1px solid var(--instrument-line); border-radius: 4px; pointer-events: auto;
+}
+.md-visor .helmet-controls button { min-height: 36px; min-width: 56px; padding: 0 11px; font-size: 12px; }
+.md-visor .helmet-controls button + button { border-left: 1px solid var(--instrument-line); }
+.md-visor .helmet-controls button[aria-expanded="true"] { background: #e4e8df29; }
+.md-visor.helmet-contrast :is(.helmet-route,.helmet-alert,.helmet-controls) { background: #101312; border-color: #e4e8df9c; }
+.md-visor.helmet-contrast .helmet-fit-window { text-shadow: 0 1px 3px #000,0 0 2px #000; }
+.md-visor.helmet :is(.visor-drawer,.visor-map.expanded) {
+  position: absolute; inset: auto; left: 50%; top: calc(var(--helmet-center) - 3%); transform: translate(-50%,-50%);
+  width: min(360px,calc(var(--helmet-width) - 4%)); max-height: calc(var(--helmet-height) - 68px);
+  z-index: 5; border: 1px solid var(--instrument-line); border-radius: 7px; background: #191e1cf5;
+  backdrop-filter: none; box-shadow: 0 5px 20px #0004; overflow: auto;
+}
+.md-visor.helmet .visor-map.expanded { width: min(455px,calc(var(--helmet-width) - 4%)); padding: 12px; }
+.md-visor.helmet .visor-map.expanded .map-canvas-wrap { height: min(40cqh,300px); aspect-ratio: auto; border-radius: 3px; }
+.md-visor.helmet .visor-map.expanded canvas { object-fit: contain; }
+.md-visor.helmet .visor-drawer .drawer-heading { position: sticky; top: 0; z-index: 1; background: #191e1c; }
+.md-visor.helmet .drawer-body>button,.md-visor.helmet .drawer-body>a { border-radius: 4px; }
+.md-visor .helmet-menu-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 6px; }
+.md-visor .helmet-menu-grid button { display: grid; justify-items: center; align-content: center; gap: 6px; min-height: 50px; border: 1px solid #e4e8df35; border-radius: 4px; font-size: 12px; text-align: center; padding: 5px; }
+.md-visor .helmet-calibration label { display: grid; gap: 6px; margin: 0 0 11px; color: var(--instrument-dim); font-size: 12px; }
+.md-visor .helmet-calibration label div { display: flex; align-items: center; gap: 8px; }
+.md-visor .helmet-calibration input { pointer-events: auto; accent-color: #e4e8df; }
+.md-visor .helmet-calibration input[type="range"] { flex: 1; min-width: 0; }
+.md-visor .helmet-calibration output { width: 38px; text-align: right; font: 11px system-ui,sans-serif; font-variant-numeric: tabular-nums; }
+.md-visor .helmet-calibration .helmet-check { display: flex; align-items: center; gap: 7px; }
+@container (max-height: 360px) {
+  .md-visor .helmet-alert { top: 25%; padding: 4px 8px; }
+  .md-visor .helmet-route { top: 65%; padding: 4px 8px; }
+  .md-visor .helmet-bearing { gap: 1px; }
+  .md-visor .helmet-tape { width: clamp(108px,26cqw,178px); }
+}
+@container (max-width: 390px) {
+  .md-visor .helmet-mode { font-size: 10px; }
+  .md-visor .helmet-ident strong { font-size: 11px; }
+  .md-visor .helmet-ident span { font-size: 10px; }
+  .md-visor .helmet-mode i { display: none; }
+  .md-visor .helmet-destination { max-width: 10ch; }
+}
+@container (max-width: 285px) { .md-visor .helmet-mode { top: 14%; right: 2%; } }
+.md-visor.helmet-mesh-preview :is(.helmet-ident,.helmet-mode,.helmet-bearing,.helmet-alert,.helmet-route,.helmet-radiation,.helmet-aim) { opacity: 0; }

@@ -1,0 +1,408 @@
+:root {
+  --space: #120b07;
+  --glass-clear: rgb(47 35 31 / .54);
+  --glass-panel: rgb(31 24 23 / .76);
+  --glass-dense: rgb(31 24 23 / .9);
+  --glass-solid: #211917;
+  --glass-well: rgb(12 9 8 / .39);
+  --glass-control: rgb(248 220 199 / .07);
+  --glass-hover: rgb(248 220 199 / .15);
+  --glass-stroke: rgb(255 230 210 / .17);
+  --glass-highlight: rgb(255 242 230 / .17);
+  --glass-glint: rgb(255 230 214 / .095);
+  --glass-shadow: rgb(0 0 0 / .3);
+  --glass-shade: rgb(10 6 4 / .6);
+  --glass-selected: rgb(233 142 82 / .24);
+  --glass-selected-rim: rgb(255 171 112 / .5);
+  --glass-selected-text: #ffd2ae;
+  --glass-focus: #ffc193;
+  --soft-cream: #ebe0d5;
+  --muted: #b9ada4;
+  --glass-outside: #e7dacd;
+  --text-on-photo: #fff2e4;
+  --glass-action: #ffaf76;
+  --glass-action-ink: #2a150b;
+  --glass-danger: #ffb5a7;
+  --glass-success: #b7e4ac;
+  --glass-warn: #ffd482;
+  --glass-info: #bfe6ff;
+  --glass-spring: cubic-bezier(.22, 1.55, .32, 1);
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
+  --ink: #eee5dd;
+  --ink-raised: #f8f0e8;
+  --cream: #2b201b;
+  --peach: #803c1c;
+  --solar: #b04f25;
+  --muted: #594c45;
+  --line: rgb(61 38 28 / .22);
+  --panel: #f4e8de;
+  --glass-clear: rgb(246 231 218 / .79);
+  --glass-panel: rgb(249 238 225 / .87);
+  --glass-dense: rgb(255 245 234 / .95);
+  --glass-solid: #f7eade;
+  --glass-well: rgb(78 47 31 / .09);
+  --glass-control: rgb(255 251 244 / .45);
+  --glass-hover: rgb(255 252 246 / .84);
+  --glass-stroke: rgb(61 38 28 / .24);
+  --glass-highlight: rgb(255 255 255 / .77);
+  --glass-glint: rgb(255 255 255 / .45);
+  --glass-shadow: rgb(37 17 8 / .2);
+  --glass-shade: rgb(65 43 34 / .36);
+  --glass-selected: rgb(205 111 63 / .21);
+  --glass-selected-rim: rgb(159 69 30 / .43);
+  --glass-selected-text: #6f2c0c;
+  --glass-focus: #9b411a;
+  --soft-cream: #49372d;
+  --glass-action: #a74520;
+  --glass-action-ink: #fff8f1;
+  --glass-danger: #911e0f;
+  --glass-success: #285d27;
+  --glass-warn: #79460c;
+  --glass-info: #17516a;
+}
+
+.explorer {
+  background: var(--space);
+}
+
+.explorer :is(.masthead, .explorer-rail, .discovery-panel, .ground-view, .tool-stack, .layer-switcher, .log-card,
+.display-switcher, .search-results, .hazard-legend, .truth-panel, .shield-panel, .ground-route-card,
+.journey-console, .journey-overview, .geology-readout, .notice, .route-pick-banner, .fatal-error, .briefing-card),
+dialog:not(.sheet-dialog), .theme-toggle {
+  --glass-tint: var(--glass-panel);
+  --glass-blur: 24px;
+  background: linear-gradient(153deg, var(--glass-glint), transparent 44%), var(--glass-tint);
+  border: 1px solid var(--glass-stroke);
+  border-radius: 19px;
+  box-shadow: inset 0 1px 0 var(--glass-highlight), inset 0 -1px 0 rgb(255 255 255 / .035),
+    0 12px 28px var(--glass-shadow);
+  backdrop-filter: blur(var(--glass-blur)) saturate(145%);
+  color: var(--cream);
+}
+
+.explorer .masthead {
+  inset: 12px 16px auto;
+  height: 64px;
+  padding: 0 17px;
+  grid-template-columns: minmax(190px, .9fr) minmax(155px, 1.3fr) minmax(225px, 1fr);
+  gap: clamp(14px, 2vw, 28px);
+  border-radius: 25px;
+  pointer-events: auto;
+  --glass-tint: var(--glass-clear);
+  --glass-blur: 31px;
+  isolation: isolate;
+}
+
+.explorer .masthead::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse 350px 42px at var(--glass-x, 37%) 0, var(--glass-highlight), transparent),
+    linear-gradient(0deg, var(--glass-glint), transparent 37%);
+  opacity: .68;
+  transition: opacity 260ms ease, scale 290ms var(--glass-spring);
+}
+
+.masthead .masthead-brand { grid-column: 1; }
+.masthead .search-wrap { grid-column: 2; min-width: 0; }
+.masthead .masthead-actions { grid-column: 3; gap: 9px; }
+.masthead .brand-edition { display: none; }
+.masthead button.wordmark { font-size: clamp(21px, 2vw, 27px); line-height: 1; }
+.masthead:focus-within::before, .masthead:hover::before { opacity: 1; scale: 1.004; }
+.masthead:has(button:active, input:active)::before { opacity: .9; scale: .997; }
+.masthead:has(button:active, input:active) { --glass-blur: 39px; }
+.native-drag-area { display: none; }
+
+:root[data-platform="mac"] .explorer .masthead { padding-left: 95px; }
+:root[data-platform="mac"] .native-drag-area {
+  display: block;
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  -webkit-app-region: drag;
+}
+:root[data-platform="mac"] .masthead :is(button, .search, .search-results) {
+  position: relative;
+  -webkit-app-region: no-drag;
+}
+:root[data-platform="mac"] .masthead .search-results { position: absolute; }
+
+.explorer .masthead .search {
+  height: 38px;
+  border-radius: 16px;
+  border-color: var(--glass-stroke);
+  background: var(--glass-well);
+  box-shadow: inset 0 1px 4px rgb(0 0 0 / .13);
+  transition: background 200ms, border-color 200ms, box-shadow 200ms;
+}
+
+.explorer .masthead .search:focus-within {
+  border-color: var(--glass-focus);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--glass-focus) 35%, transparent);
+}
+.masthead .search input::placeholder { color: var(--muted); }
+.masthead kbd { color: var(--muted); border-color: var(--glass-stroke); }
+.masthead .earth-link { padding: 8px 12px; }
+.masthead :is(.quality-button, .header-link) { padding: 9px 12px; border-radius: 12px; }
+
+.explorer .explorer-rail {
+  left: 16px;
+  top: 96px;
+  width: 66px;
+  padding: 5px;
+  gap: 3px;
+  --glass-tint: var(--glass-clear);
+  --glass-blur: 28px;
+}
+
+.explorer-rail .rail-button {
+  width: 54px;
+  height: clamp(39px, 6.65dvh, 56px);
+  gap: 4px;
+  border-radius: 12px;
+  color: var(--soft-cream);
+}
+.explorer-rail .rail-button svg { width: 19px; height: 19px; }
+.explorer-rail .rail-button span { font-size: 9px; }
+.explorer-rail .rail-rule { background: var(--glass-stroke); margin: 2px auto; }
+
+.explorer .discovery-panel { left: 96px; --glass-tint: var(--glass-panel); }
+.explorer .ground-view { --glass-tint: var(--glass-dense); }
+.explorer .destination-heading h2 { color: var(--soft-cream); }
+.explorer :is(.panel-eyebrow, .destination-arrow) { color: var(--peach); }
+.explorer :is(.destination small, .ez-note, .mars-now) { color: var(--muted); }
+.explorer .mars-now-site { color: var(--peach); }
+.explorer .mars-now-phase[data-phase="DAY"] { color: var(--glass-warn); }
+.explorer .mars-now-phase[data-phase="NIGHT"] { color: var(--glass-info); }
+.explorer .mars-now-sw { color: var(--glass-success); }
+.explorer .mars-now[data-level="caution"] .mars-now-sw { color: var(--glass-warn); }
+.explorer .mars-now[data-level="nogo"] .mars-now-sw { color: var(--glass-danger); }
+.explorer :is(.destination-heading > span, .destination-number, .ez-site small, .scale) { color: var(--muted); }
+.explorer .map-options > summary {
+  background: var(--glass-panel);
+  border-color: var(--glass-stroke);
+  box-shadow: inset 0 1px 0 var(--glass-highlight);
+  color: var(--cream);
+  backdrop-filter: blur(18px);
+}
+.explorer .ground-stage { color: var(--text-on-photo); }
+.explorer .ground-photo-caption span { color: var(--text-on-photo); }
+.explorer .ground-map-label :is(h2, p, span),
+.explorer :is(.journey-top, .journey-source-line) :is(div > strong, div > span, a) {
+  color: var(--glass-outside);
+}
+.explorer .journey-top .ground-close { color: var(--cream); }
+.explorer .journey-top :is(#journey-heading, div > span) { color: var(--text-on-photo); }
+.explorer :is(.ground-clear, .ground-retry) { color: var(--cream); }
+.explorer :is(.view-context, .scale, .navigation-hint, .compass-button),
+.explorer :is(.view-context strong, #scale-label, .journey-source-line, #ground-map-context) { color: var(--glass-outside); }
+.explorer .bottom-controls .control-label { color: var(--muted); }
+.explorer .statusbar {
+  color: var(--muted);
+  background: var(--glass-panel);
+  backdrop-filter: blur(18px);
+  border-color: var(--glass-stroke);
+  right: 111px;
+  border-radius: 13px 13px 0 0;
+}
+.explorer .statusbar :is(#tile-status, .coordinates, .status-separator) { color: var(--soft-cream); }
+.explorer .statusbar .coordinates { gap: 7px; }
+
+.explorer :is(.search-results, .notice, .fatal-error, .route-pick-banner), dialog:not(.sheet-dialog) {
+  --glass-tint: var(--glass-dense);
+  --glass-blur: 30px;
+}
+dialog:not(.sheet-dialog)::backdrop,
+.explorer .briefing { background: var(--glass-shade); backdrop-filter: blur(10px) saturate(115%); }
+.explorer .briefing-card { padding: clamp(20px, 5vh, 44px); }
+.explorer .briefing-text, #data-dialog-content { color: var(--muted); }
+#data-dialog-content dt { color: var(--peach); }
+dialog .photo-nav span { color: var(--muted); }
+
+.explorer :is(.walk-step, .live-gauges > div, .eva-poll, .shield-here, .ground-route-card, .journey-beta), dialog .saved-route {
+  border-color: var(--glass-stroke);
+  background-color: var(--glass-control);
+}
+.explorer :is(.journey-beta, .ground-route-card) { background-color: var(--glass-panel); }
+.explorer :is(.terrain-shortcut, .destination, .ground-sites > button, .route-instruction, .route-coordinates,
+.live-phase, .ground-status, .route-hazards, .journey-foot) { color: var(--soft-cream); }
+.explorer :is(.destinations, .panel-body, .ground-head, .ground-footer, .route-panel-footer, .journey-foot),
+dialog :is(.dialog-heading, .help-grid > div) { border-color: var(--glass-stroke); }
+
+.explorer :is(.masthead button:not(.wordmark), .map-quick-actions button, .view-context button,
+.terrain-shortcut, .route-secondary, .route-entry, .journey-entry, .journey-secondary,
+.ground-close, .journey-move button, .briefing-secondary, .ground-clear, .live-again),
+dialog :is(.saved-route button, .photo-nav button, .ar-close) {
+  background: var(--glass-control);
+  border: 1px solid var(--glass-stroke);
+  color: var(--cream);
+  box-shadow: inset 0 1px 0 var(--glass-highlight);
+}
+
+.explorer :is(.search-results button, .display-switcher button, .layer-switcher button, .tool-stack button,
+.route-mode button, .eva-travel button, .panel-close) { color: var(--soft-cream); }
+.explorer :is(.route-primary, .journey-primary, .briefing-primary, .live-start, .eva-demo, .eva-load, .eva-primary) {
+  background: var(--glass-action);
+  border-color: var(--glass-action);
+  color: var(--glass-action-ink);
+  box-shadow: inset 0 1px 0 var(--glass-highlight);
+}
+.explorer :is(.route-primary, .journey-primary, .briefing-primary, .live-start, .eva-demo, .eva-load, .eva-primary):hover {
+  background: color-mix(in srgb, var(--glass-action) 90%, white);
+}
+:root[data-theme="light"] .explorer .home-action { background: #a64925; border-color: #a64925; color: #fff7ed; }
+:root[data-theme="light"] .explorer .home-action:hover { background: #914021; }
+.explorer :is(.rail-button, .layer-switcher button, .display-switcher button, .route-mode button,
+.eva-travel button, .earth-link, .quality-button)[aria-pressed="true"],
+.explorer :is(.rail-button[aria-current="page"], .rail-button.is-active:not([data-app-nav])) {
+  background: linear-gradient(152deg, var(--glass-glint), transparent 75%), var(--glass-selected);
+  color: var(--glass-selected-text);
+  border-color: var(--glass-selected-rim);
+  box-shadow: inset 0 1px 0 var(--glass-highlight);
+}
+
+.explorer select, .explorer :is(.route-endpoint, .route-panel, .live-panel) input,
+dialog input {
+  background-color: var(--glass-control);
+  border-color: var(--glass-stroke);
+  color: var(--cream);
+}
+.explorer :is(.live-drills button, .live-directive[data-level="bad"] > strong, .live-gauges [data-level="bad"] dd,
+.eva-poll [data-state="nogo"] small) { color: var(--glass-danger); }
+.explorer :is(.live-directive[data-level="ok"] > strong, .live-gauges [data-level="ok"] dd, .eva-proof) { color: var(--glass-success); }
+.explorer :is(.live-directive > strong, .live-gauges [data-level="warn"] dd) { color: var(--glass-warn); }
+.explorer :is(.shield-here strong, .live-directive p.live-cover, .eva-return-toggle) { color: var(--glass-info); }
+.explorer .live-banner { color: #fff5eb; }
+.explorer .sheet-dialog { color: #1a110b; }
+
+:is(.explorer, dialog) :is(button:not(.wordmark), select, .map-options > summary), .theme-toggle {
+  transition: scale 240ms var(--glass-spring), background-color 170ms ease, border-color 170ms ease,
+    box-shadow 190ms ease, backdrop-filter 220ms ease, color 170ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :is(.explorer, dialog) :is(button:not(.wordmark, .compass-button), select, .map-options > summary):not(:disabled):hover, .theme-toggle:hover {
+    scale: 1.035;
+  }
+  .explorer :is(.rail-button, .masthead button:not(.wordmark), .layer-switcher button, .display-switcher button, .route-secondary,
+  .ground-close, .journey-secondary, .tool-stack button, .map-quick-actions button):not(:disabled):hover {
+    background-color: var(--glass-hover);
+  }
+}
+:is(.explorer, dialog) :is(button:not(.wordmark, .compass-button), select, .map-options > summary):not(:disabled):active, .theme-toggle:active {
+  scale: .955;
+  box-shadow: inset 0 2px 6px rgb(0 0 0 / .22), 0 2px 5px var(--glass-shadow);
+  backdrop-filter: blur(30px) saturate(165%);
+  transition-duration: 105ms;
+}
+:is(.explorer, dialog) :is(button, a, select, input, summary):focus-visible,
+.theme-toggle:focus-visible {
+  outline: 2px solid var(--glass-focus);
+  outline-offset: 3px;
+}
+:is(.explorer, dialog) :is(button, select):disabled {
+  opacity: .45;
+}
+
+.theme-toggle {
+  position: fixed;
+  z-index: 60;
+  right: 20px;
+  bottom: 13px;
+  width: 78px;
+  height: 38px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  place-items: center;
+  padding: 0 5px;
+  border-radius: 999px;
+  --glass-tint: var(--glass-panel);
+  --glass-blur: 20px;
+}
+
+.theme-toggle svg { z-index: 1; width: 15px; height: 15px; stroke-width: 1.5; }
+.theme-toggle .theme-thumb {
+  position: absolute;
+  left: 7px;
+  top: 5px;
+  width: 29px;
+  height: 26px;
+  border: 1px solid var(--glass-selected-rim);
+  border-radius: 999px;
+  background: linear-gradient(146deg, var(--glass-glint), transparent), var(--glass-selected);
+  box-shadow: inset 0 1px var(--glass-highlight), 0 3px 6px var(--glass-shadow);
+  transition: transform 340ms var(--glass-spring);
+}
+.theme-toggle[aria-checked="true"] .theme-thumb { transform: translateX(32px); }
+.theme-toggle .theme-sun,
+.theme-toggle[aria-checked="true"] .theme-moon { color: var(--glass-selected-text); }
+.theme-toggle .theme-moon,
+.theme-toggle[aria-checked="true"] .theme-sun { color: var(--muted); }
+
+dialog .theme-toggle { position: sticky; inset: auto; bottom: 10px; margin: 14px 0 0 auto; }
+dialog.sheet-dialog .theme-toggle { color: var(--cream); right: auto; padding: 0 5px; }
+dialog:is(.ar-dialog, .photo-dialog) .theme-toggle { float: right; margin: -46px 12px 8px auto; }
+
+@media (max-width: 1100px) {
+  .explorer .masthead { grid-template-columns: minmax(164px,.8fr) minmax(170px,1.4fr) auto; }
+  .explorer .statusbar #source-credit { max-width: 165px; }
+  .explorer .bottom-controls { left: calc(50% + 115px); }
+  .explorer .bottom-controls button { padding-inline: 9px; }
+}
+
+@media (max-width: 760px) {
+  .explorer .masthead { inset: 8px 8px auto; height: 107px; padding: 5px 12px 8px; grid-template-columns: 1fr auto; gap: 3px 8px; }
+  .masthead button.wordmark { font-size: 20px; }
+  .masthead .masthead-brand { grid-row: 1; }
+  .masthead .search-wrap { grid-row: 2; grid-column: 1 / -1; }
+  .masthead .masthead-actions { grid-column: 2; grid-row: 1; gap: 5px; }
+  .masthead .earth-link { padding: 6px 7px; }
+  .masthead .earth-link > span { display: none; }
+  .explorer .masthead-actions { position: static; }
+  .explorer .masthead .header-link { display: inline-flex; }
+  .masthead .earth-link strong { font-size: 9px; }
+  .masthead .quality-button { padding: 7px 9px; }
+  .explorer .explorer-rail {
+    left: 8px; right: 8px; top: auto; bottom: 29px; width: auto;
+    padding: 4px; gap: 0; justify-content: space-between; border-radius: 16px;
+  }
+  .explorer-rail .rail-button { flex: 1; width: auto; height: 48px; }
+  .explorer .discovery-panel { left: 12px; }
+  .explorer .bottom-controls { left: 50%; }
+  .theme-toggle { right: 10px; bottom: 96px; height: 35px; }
+  body[data-page="log"] .theme-toggle { bottom: 8px; }
+  body[data-page="home"] .theme-toggle { bottom: 99px; }
+  body[data-journey] .theme-toggle { bottom: 23px; }
+  .theme-toggle .theme-thumb { top: 4px; }
+  .explorer .statusbar { right: 12px; }
+}
+@media (max-width: 365px) {
+  .explorer .masthead button.wordmark { font-size: 16px; }
+  .explorer .masthead .header-link { padding: 6px; font-size: 8px; }
+  .masthead .earth-link strong { font-size: 8px; }
+  .explorer-rail .rail-button span { font-size: 8px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :is(.explorer, dialog) :is(button, select), .theme-toggle { scale: none !important; }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .explorer :is(.masthead, .explorer-rail, .discovery-panel, .ground-view, .tool-stack, .layer-switcher, .log-card,
+  .display-switcher, .search-results, .hazard-legend, .truth-panel, .shield-panel, .ground-route-card,
+  .journey-console, .journey-overview, .geology-readout, .notice, .route-pick-banner, .fatal-error, .briefing-card),
+  dialog:not(.sheet-dialog), .theme-toggle {
+    --glass-tint: var(--glass-solid);
+    backdrop-filter: none;
+  }
+}
+
+@media print { .theme-toggle { display: none !important; } }
+

@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Walk Jezero · MartisDux</title>
+  <meta name="description" content="Stand at the Perseverance landing site in Jezero crater at life size and walk freely over NASA's 1 m-class HiRISE terrain.">
+  <link rel="icon" href="favicon.svg">
+</head>
+<body>
+  <div id="view" class="view"></div>
+
+  <div class="corner" aria-label="Walk controls">
+    <button id="reset-btn" type="button" title="Back to the route start (R)">Reset</button>
+    <button id="auto-btn" type="button" aria-pressed="false" title="Auto-walk along the route: off, 1×, 5×, 20× (T)">Auto-walk <span>Off</span></button>
+    <button id="hud-btn" type="button" title="HUD: full, compact, hidden (H)">HUD</button>
+    <button id="mouse-look" type="button" title="Capture mouse to look; Escape releases it">Mouse look</button>
+    <button id="menu-btn" type="button" title="Menu (Esc)">Menu</button>
+  </div>
+  <div class="pad" aria-label="Move">
+    <button id="go-fwd" type="button" aria-label="Walk forward (hold)">▲</button>
+    <button id="go-back" type="button" aria-label="Walk back (hold)">▼</button>
+  </div>
+
+  <div id="xr-overlay" class="xr-overlay">
+    <div id="walk-visor" hidden></div>
+    <button id="xr-walk" class="xr-walk" type="button">Hold to walk</button>
+    <div class="xr-top"><button id="xr-sky" type="button" aria-pressed="true">Mars sky</button><button id="xr-hud" type="button" title="HUD: full, compact, hidden">HUD</button><button id="xr-exit" type="button">Exit</button></div>
+  </div>
+
+  <section id="menu" class="menu" aria-labelledby="menu-title">
+    <div class="card">
+      <p class="kicker">MARTISDUX · JEZERO CRATER · LIFE SIZE</p>
+      <h1 id="menu-title">Walk Jezero</h1>
+      <p class="lede">You start where Perseverance landed. The ground around you is NASA's HiRISE elevation model (about 1 m grid: 1.0 m north–south, 0.95 m east–west) with the
+        0.3 m/px HiRISE orbital photo; beyond about 1 km it continues into coarser measured terrain up to the crater rim and the horizon.
+        Walk the roughly 2 × 2 km area (2.05 × 1.94 km) with the helmet HUD. The reference route to Rochette is a MartisDux planner output, not safety-certified.</p>
+      <div id="loading" class="loading"><span>Loading terrain</span><i><b id="load-bar"></b></i></div>
+      <div class="actions">
+        <button id="start" class="primary" type="button" disabled>Loading…</button>
+        <button id="enter-ar" type="button" hidden>Enter AR</button>
+        <button id="enter-vr" type="button" hidden>Enter VR</button>
+      </div>
+      <div id="demo-walks" class="demos" hidden>
+        <p class="demos-title">DEMO WALKS · THE ROUTE WALKS ITSELF</p>
+        <div id="demo-list" class="demo-list"></div>
+        <p class="demos-note">Each goes from the landing site to a real Perseverance sampling site. Routes are MartisDux planner output on a 4 m slope grid, not safety-certified.
+          Auto-walk follows the route at a modelled suited pace (0.9 m/s on the level, slower on grades), shown 5× faster; press <kbd>T</kbd> or the Auto-walk button for 1×, 5×, 20× or off. Any walk key hands control back to you.</p>
+      </div>
+      <label id="walk-route-import" class="route-import" hidden>Load route JSON <input id="walk-route-file" type="file" accept=".json,application/json"></label>
+      <p id="walk-route-status" class="route-import-status" role="status"></p>
+      <p class="keys">Desktop: drag to look or select Mouse look. Use <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> to walk,
+        <kbd>Shift</kbd> to go faster, <kbd>R</kbd> to return to the start, <kbd>T</kbd> to auto-walk the route, <kbd>Esc</kbd> for this menu. Touch: drag to look, hold ▲ / ▼.</p>
+      <label class="toggle"><input id="visor-enabled" type="checkbox" checked> Helmet HUD <span>(press <kbd>H</kbd> or the HUD button while walking: full → compact → hidden)</span></label>
+      <label class="toggle"><input id="relief" type="checkbox" checked> Relief ×2 <span>(heights exaggerated twice for readability — not to scale; untick for true scale; <kbd>V</kbd>)</span></label>
+      <label class="toggle"><input id="detail" type="checkbox" checked> Illustrative ground detail within 30 m <span>(generated pebbles, small rocks and fine regolith texture — not observed, may not be to scale; <kbd>G</kbd>)</span></label>
+      <p id="xr-note" class="note" hidden></p>
+      <details>
+        <summary>About AR on phones</summary>
+        <p>Android Chrome (ARCore) uses your real movement: walk and turn to look around, or hold <b>Hold to walk</b> to move further.
+          Phone AR starts with the camera visible above the terrain. <b>Mars sky</b> fills the screen with the simulation; keep to a clear space and watch where you step. <b>Room</b> shows the camera image above the Martian horizon. Devices without immersive WebXR can use the first-person preview. Headsets with WebXR VR get full immersion.</p>
+      </details>
+      <details>
+        <summary>Terrain data</summary>
+        <p>A reconstruction from archived orbital data, not a live view of Mars. Heights are shown ×2 by default so slopes and ridges read at eye level (not to scale); untick Relief ×2 for true scale. The ground lies on the Mars sphere
+          (radius 3,396,190 m, planetocentric latitude, east longitude), so the horizon curves away as it would there. HiRISE and CTX images are
+          monochrome; they are shown with one uniform hue, the average Viking colour of Mars. The sun is a fixed display light, not today's Sun.
+          Ground shape and height come from the measured DEM. The HUD uses unexaggerated slopes and cannot assess radiation, dust, rocks, or soil strength. The only generated content is the optional
+          illustrative detail within 30 m of you: fine regolith texture and small rock clusters (placed where the DEM is steeper or the HiRISE image brighter). It is not a NASA observation, may not be to
+          scale, and does not change the ground height you walk on; beyond 30 m everything is measured data. Nothing is sharpened, upscaled,
+          AI-generated or derived from image brightness; where finer data ends, the view continues on coarser real data.</p>
+        <ul id="sources"></ul>
+        <p class="fine">Independent Team MartisDux project for the NASA Space Apps Challenge; not endorsed by NASA.</p>
+      </details>
+    </div>
+  </section>
+  <script type="module" src="../src/walk/env-walk.js"></script>
+</body>
+</html>

@@ -1,0 +1,329 @@
+{
+ "question": "Does sky blocked by terrain, computed from orbital elevation data, match the sky-visibility map Curiosity's RAD team built from the rover's panoramas?",
+ "site": {
+  "name": "Quela drill site, butte M12, Murray Buttes (Gale crater)",
+  "lon": 137.3530064,
+  "lat": -4.69520223,
+  "sols": "1456-1467"
+ },
+ "measured": {
+  "skyBlocked": 0.19,
+  "referenceSkyBlocked": 0.1,
+  "doseDrop": 0.04,
+  "doseDropGuo": 0.05,
+  "neutralDrop": 0.075,
+  "sources": [
+   "https://doi.org/10.1029/2021JE006851",
+   "https://doi.org/10.1029/2021GL093912"
+  ]
+ },
+ "computed": {
+  "skyBlocked": 0.1927,
+  "nearFieldOnly": 0.1625,
+  "distantTerrainOnly": 0.0539,
+  "within2m": [
+   0.178,
+   0.2122
+  ],
+  "within4m": [
+   0.1657,
+   0.2377
+  ],
+  "observerHalfMetre": 0.2044,
+  "observerTwoMetres": 0.1704,
+  "referenceMedian": 0.0874,
+  "referenceMean": 0.1024,
+  "referenceCount": 347
+ },
+ "method": "Horizon angle on 360 azimuths: USGS MSL Gale merged DEM 1 m within 300 m, bundled 16 m grid beyond (to 60 km), planet curvature included, observer 1.0 m above ground. Sky blocked = mean of sin(horizon angle), the solid-angle fraction of the hemisphere.",
+ "profile": [
+  {
+   "az": 0,
+   "deg": 27.9
+  },
+  {
+   "az": 5,
+   "deg": 26.2
+  },
+  {
+   "az": 10,
+   "deg": 24.3
+  },
+  {
+   "az": 15,
+   "deg": 21.3
+  },
+  {
+   "az": 20,
+   "deg": 18.0
+  },
+  {
+   "az": 25,
+   "deg": 14.8
+  },
+  {
+   "az": 30,
+   "deg": 9.1
+  },
+  {
+   "az": 35,
+   "deg": 4.5
+  },
+  {
+   "az": 40,
+   "deg": 3.3
+  },
+  {
+   "az": 45,
+   "deg": 2.4
+  },
+  {
+   "az": 50,
+   "deg": 2.2
+  },
+  {
+   "az": 55,
+   "deg": 2.0
+  },
+  {
+   "az": 60,
+   "deg": 2.0
+  },
+  {
+   "az": 65,
+   "deg": 2.1
+  },
+  {
+   "az": 70,
+   "deg": 2.9
+  },
+  {
+   "az": 75,
+   "deg": 3.1
+  },
+  {
+   "az": 80,
+   "deg": 3.3
+  },
+  {
+   "az": 85,
+   "deg": 4.8
+  },
+  {
+   "az": 90,
+   "deg": 6.2
+  },
+  {
+   "az": 95,
+   "deg": 7.9
+  },
+  {
+   "az": 100,
+   "deg": 9.4
+  },
+  {
+   "az": 105,
+   "deg": 10.7
+  },
+  {
+   "az": 110,
+   "deg": 11.0
+  },
+  {
+   "az": 115,
+   "deg": 11.1
+  },
+  {
+   "az": 120,
+   "deg": 10.7
+  },
+  {
+   "az": 125,
+   "deg": 10.1
+  },
+  {
+   "az": 130,
+   "deg": 9.7
+  },
+  {
+   "az": 135,
+   "deg": 9.2
+  },
+  {
+   "az": 140,
+   "deg": 8.9
+  },
+  {
+   "az": 145,
+   "deg": 8.6
+  },
+  {
+   "az": 150,
+   "deg": 8.3
+  },
+  {
+   "az": 155,
+   "deg": 8.1
+  },
+  {
+   "az": 160,
+   "deg": 7.6
+  },
+  {
+   "az": 165,
+   "deg": 7.2
+  },
+  {
+   "az": 170,
+   "deg": 7.1
+  },
+  {
+   "az": 175,
+   "deg": 6.5
+  },
+  {
+   "az": 180,
+   "deg": 5.9
+  },
+  {
+   "az": 185,
+   "deg": 5.6
+  },
+  {
+   "az": 190,
+   "deg": 4.7
+  },
+  {
+   "az": 195,
+   "deg": 4.3
+  },
+  {
+   "az": 200,
+   "deg": 3.7
+  },
+  {
+   "az": 205,
+   "deg": 3.2
+  },
+  {
+   "az": 210,
+   "deg": 2.6
+  },
+  {
+   "az": 215,
+   "deg": 2.1
+  },
+  {
+   "az": 220,
+   "deg": 2.1
+  },
+  {
+   "az": 225,
+   "deg": 3.2
+  },
+  {
+   "az": 230,
+   "deg": 3.2
+  },
+  {
+   "az": 235,
+   "deg": 2.9
+  },
+  {
+   "az": 240,
+   "deg": 4.1
+  },
+  {
+   "az": 245,
+   "deg": 4.1
+  },
+  {
+   "az": 250,
+   "deg": 2.8
+  },
+  {
+   "az": 255,
+   "deg": 3.2
+  },
+  {
+   "az": 260,
+   "deg": 3.7
+  },
+  {
+   "az": 265,
+   "deg": 6.4
+  },
+  {
+   "az": 270,
+   "deg": 13.1
+  },
+  {
+   "az": 275,
+   "deg": 15.8
+  },
+  {
+   "az": 280,
+   "deg": 18.1
+  },
+  {
+   "az": 285,
+   "deg": 20.1
+  },
+  {
+   "az": 290,
+   "deg": 21.3
+  },
+  {
+   "az": 295,
+   "deg": 21.6
+  },
+  {
+   "az": 300,
+   "deg": 23.5
+  },
+  {
+   "az": 305,
+   "deg": 26.8
+  },
+  {
+   "az": 310,
+   "deg": 28.1
+  },
+  {
+   "az": 315,
+   "deg": 29.4
+  },
+  {
+   "az": 320,
+   "deg": 30.1
+  },
+  {
+   "az": 325,
+   "deg": 29.9
+  },
+  {
+   "az": 330,
+   "deg": 30.4
+  },
+  {
+   "az": 335,
+   "deg": 30.4
+  },
+  {
+   "az": 340,
+   "deg": 29.9
+  },
+  {
+   "az": 345,
+   "deg": 29.9
+  },
+  {
+   "az": 350,
+   "deg": 28.6
+  },
+  {
+   "az": 355,
+   "deg": 28.5
+  }
+ ]
+}

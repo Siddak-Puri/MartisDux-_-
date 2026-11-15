@@ -1,0 +1,30 @@
+{
+  "product": "Mars Viking MDIM 2.1 color mosaic, official 1 km browse product",
+  "sourcePage": "https://astrogeology.usgs.gov/search/map/mars_viking_colorized_global_mosaic_232m",
+  "sourceUrl": "https://astrogeology.usgs.gov/ckan/dataset/7131d503-cdc9-45a5-8f83-5126c0fd397e/resource/5ea881c6-01b3-41fa-a7af-42d2131b54f1/download/mars_viking_mdim21_clrmosaic_1km.jpg",
+  "georeferenceUrl": "https://astrogeology.usgs.gov/ckan/dataset/7131d503-cdc9-45a5-8f83-5126c0fd397e/resource/69f3953f-9791-4d92-bffe-ebe24945eb95/download/mars_viking_mdim21_clrmosaic_1km.jpg.aux.xml",
+  "downloaded": "2026-10-27",
+  "sourceDimensions": [
+    21339,
+    10670
+  ],
+  "outputDimensions": [
+    8192,
+    4096
+  ],
+  "sourceSamplingMetresPerPixel": 1000,
+  "outputApproximateEquatorialSamplingMetresPerPixel": 2604.8451060046677,
+  "geometry": "North-up simple cylindrical/equirectangular, 0\u00b0 central meridian, approximately -180\u00b0 to +180\u00b0 longitude and +90\u00b0 to -90\u00b0 latitude; source extent is rounded to 1 km cells.",
+  "sourceGeoTransform": [
+    -10670000,
+    1000,
+    0,
+    5335000,
+    0,
+    -1000
+  ],
+  "referenceSphereRadiusMetres": 3396190,
+  "processing": "JPEG decoded at 1/2 resolution (10670x5335) then Lanczos resampled to8192x4096; saved JPEGquality95 chroma4:4:4. No color adjustment, artificial sharpening, AI upscaling or generated terrain.",
+  "credit": "NASA/JPL/USGS/NASA Ames",
+  "license": "USGS source page: public domain; no use constraints."
+}

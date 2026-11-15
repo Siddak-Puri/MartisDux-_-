@@ -1,0 +1,110 @@
+{
+ "title": "Jezero Marswalk \u00b7 life size",
+ "grid": {
+  "nx": 869,
+  "nz": 1273,
+  "step": 1.0,
+  "width": 868.0,
+  "depth": 1272.0,
+  "hmin": -2592.688,
+  "hmax": -2546.792,
+  "heights": "terrain.bin",
+  "heightUnit": 0.001,
+  "texture": "terrain.jpg"
+ },
+ "geo": {
+  "north": 18.44882463668461,
+  "west": 77.43990546441071,
+  "metresPerDegLon": 56232.01392413621,
+  "metresPerDegLat": 59274.69752330622,
+  "note": "x = (lon - west) * metresPerDegLon (east), z = (north - lat) * metresPerDegLat (south); heights are MOLA areoid metres"
+ },
+ "base": {
+  "name": "Octavia E. Butler Landing (base)",
+  "x": 618.24,
+  "z": 250.41
+ },
+ "dest": {
+  "name": "Rochette \u00b7 first rock cores",
+  "x": 250.81,
+  "z": 1072.0
+ },
+ "route": {
+  "distance": 902.1,
+  "maxSlope": 9.0,
+  "points": [
+   [
+    618.24,
+    250.41
+   ],
+   [
+    618.08,
+    250.0
+   ],
+   [
+    250.0,
+    1062.0
+   ],
+   [
+    250.0,
+    1070.0
+   ],
+   [
+    250.81,
+    1072.0
+   ]
+  ]
+ },
+ "stops": [
+  {
+   "id": "s8",
+   "name": "Ha'ah\u00f3ni \u00b7 Ats\u00e1",
+   "detail": "Igneous rock core, sealed sol 371",
+   "x": 704.53,
+   "z": 291.81,
+   "along": 0.0,
+   "offRoute": 95.7
+  },
+  {
+   "id": "s4",
+   "name": "Salette \u00b7 Coulettes",
+   "detail": "Igneous rock core, sealed sol 262",
+   "x": 175.09,
+   "z": 880.85,
+   "along": 757.9,
+   "offRoute": 143.0
+  },
+  {
+   "id": "s6",
+   "name": "Robine",
+   "detail": "Igneous rock core, sealed sol 298",
+   "x": 82.52,
+   "z": 958.12,
+   "along": 866.5,
+   "offRoute": 195.4
+  },
+  {
+   "id": "s7",
+   "name": "Malay",
+   "detail": "Igneous rock core, sealed sol 337",
+   "x": 79.2,
+   "z": 961.17,
+   "along": 870.7,
+   "offRoute": 197.2
+  },
+  {
+   "id": "s2",
+   "name": "Montdenier \u00b7 Montagnac",
+   "detail": "Igneous rock core, sealed sol 194",
+   "x": 250.81,
+   "z": 1072.0,
+   "along": 902.1,
+   "offRoute": 0.0
+  }
+ ],
+ "sources": {
+  "terrain": "NASA/JPL-Caltech/University of Arizona/USGS HiRISE DTM, Jezero crater (1 m)",
+  "imagery": "NASA/JPL-Caltech/University of Arizona HiRISE orthomosaic via NASA Mars Trek",
+  "samples": "NASA/JPL-Caltech Mars 2020 sample list"
+ }
+}

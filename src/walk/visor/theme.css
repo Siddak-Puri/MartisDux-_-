@@ -1,0 +1,146 @@
+.md-visor {
+  --hud-cyan: #8fe9ff;
+  --hud-cyan-dim: #8fe9ffa6;
+  --hud-ink: #eefaff;
+  --hud-amber: #ffb866;
+  --hud-amber-dim: #ffb866b0;
+  --hud-halo: 0 0 2px #05090cc0, 0 1px 5px #05090c99;
+  --glass-tint: #0b1418;
+  --glass-alpha: 52%;
+  --glass-blur: 14px;
+  --glass-line: #8fe9ff42;
+  --glass-shadow: 0 10px 34px #0206088c, inset 0 1px 0 #c8f6ff24;
+  --mint: var(--hud-cyan); --accent: var(--hud-amber);
+}
+.md-visor[data-scene="bright"] { --hud-cyan: #a8f0ff; --hud-halo: 0 0 2px #04080be6, 0 1px 7px #04080bcc; --glass-alpha: 64%; --glass-line: #a8f0ff55; }
+.md-visor[data-scene="dark"]   { --hud-halo: 0 0 2px #05090c99, 0 1px 4px #05090c66; --glass-alpha: 44%; --glass-tint: #132028; }
+.md-visor[data-scene="unknown"], .md-visor.helmet-contrast {
+  --hud-cyan: #c4f6ff; --hud-cyan-dim: #c4f6ffd9; --hud-ink: #fff; --hud-amber: #ffc680;
+  --hud-halo: 0 0 2px #000, 0 0 4px #000, 0 1px 8px #000; --glass-alpha: 86%; --glass-blur: 6px; --glass-line: #c4f6ff8c;
+}
+.md-visor.helmet {
+  --instrument-ink: var(--hud-ink); --instrument-dim: var(--hud-cyan-dim); --instrument-amber: var(--hud-amber);
+  --instrument-face: color-mix(in srgb, var(--glass-tint) var(--glass-alpha), transparent); --instrument-line: var(--glass-line);
+}
+.md-visor .helmet-fit-window { text-shadow: var(--hud-halo); font-family: 'Instrument Sans Variable', system-ui, sans-serif; transition: opacity .2s; }
+
+.md-visor .helmet-ident strong { font: 600 11px 'Martian Mono Variable', monospace; letter-spacing: .2em; text-transform: uppercase; color: var(--hud-cyan); }
+.md-visor .helmet-ident span, .md-visor .helmet-mode, .md-visor .helmet-label, .md-visor .helmet-radiation { font: 500 10.5px 'Martian Mono Variable', monospace; letter-spacing: .1em; text-transform: uppercase; color: var(--hud-cyan-dim); }
+.md-visor .helmet-mode[data-mode="stale"] { color: var(--hud-amber); }
+.md-visor .helmet-bearing strong { color: var(--hud-ink); font-weight: 560; letter-spacing: .02em; }
+.md-visor .helmet-tape { color: var(--hud-cyan); filter: drop-shadow(0 0 2px #05090cb0); }
+.md-visor .helmet-tape text { font: 500 9px 'Martian Mono Variable', monospace; }
+.md-visor .helmet-tape .helmet-index { fill: var(--hud-amber); }
+
+.md-visor .helmet-aim { width: min(46cqw, 430px); color: var(--hud-cyan); opacity: .9; }
+.md-visor .helmet-aim svg { filter: drop-shadow(0 0 2px #05090cb0); overflow: visible; }
+.md-visor .helmet-aim path { fill: none; stroke: currentColor; stroke-width: 1.2; vector-effect: non-scaling-stroke; stroke-linecap: round; }
+.md-visor .helmet-aim .aim-arc { stroke: var(--hud-amber); stroke-width: 1.6; }
+.md-visor .helmet-aim .aim-side { stroke-width: 1.6; opacity: .75; }
+.md-visor .helmet-aim .aim-dot { fill: var(--hud-cyan); }
+
+.md-visor .helmet-alert, .md-visor .helmet-route,
+.md-visor.helmet-contrast :is(.helmet-route, .helmet-alert) { background: none; border: 0; border-radius: 0; padding: 0 0 0 10px; }
+.md-visor .helmet-alert { top: 24%; border-left: 1.5px solid var(--hud-cyan-dim); color: var(--hud-cyan); }
+.md-visor .helmet-alert strong { font-weight: 600; letter-spacing: .01em; }
+.md-visor .helmet-alert [data-f="helmet-detail"] { color: var(--hud-cyan-dim); }
+.md-visor .helmet-alert:is([data-level="steep"],[data-level="caution"]) { color: var(--hud-amber); border-left: 2.5px solid var(--hud-amber); background: none; }
+.md-visor .helmet-alert[data-level="steep"] { border-left-style: double; border-left-width: 5px; }
+.md-visor .helmet-alert[data-level="unknown"] { border-left: 1.5px dashed var(--hud-amber-dim); color: var(--hud-ink); }
+.md-visor .helmet-alert:is([data-level="steep"],[data-level="caution"]) [data-f="helmet-detail"] { color: var(--hud-amber-dim); }
+.md-visor .helmet-route { top: 74%; padding: 0; gap: 12px; color: var(--hud-amber); }
+.md-visor .helmet-route .helmet-label { color: var(--hud-amber-dim); }
+.md-visor .helmet-route strong { font-weight: 560; }
+.md-visor .helmet-destination { color: var(--hud-cyan-dim); font-size: 11px; }
+.md-visor .helmet-arrow svg { filter: drop-shadow(0 0 2px #05090cb0); }
+.md-visor .helmet-radiation span { color: var(--hud-cyan); }
+
+.md-visor .helmet-controls,
+.md-visor.helmet :is(.visor-drawer, .visor-map.expanded),
+.md-visor.helmet-contrast .helmet-controls {
+  background: color-mix(in srgb, var(--glass-tint) var(--glass-alpha), transparent);
+  border: 1px solid var(--glass-line); box-shadow: var(--glass-shadow);
+  backdrop-filter: blur(var(--glass-blur)) saturate(120%); -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(120%);
+}
+.md-visor .helmet-controls { border-radius: 999px; overflow: hidden; text-shadow: none; bottom: max(2px, env(safe-area-inset-bottom)); }
+.md-visor .helmet-controls button { min-height: 38px; min-width: 52px; padding: 0 14px; font: 500 10.5px 'Martian Mono Variable', monospace; letter-spacing: .1em; text-transform: uppercase; color: var(--hud-cyan); }
+.md-visor .helmet-controls button + button { border-left: 1px solid var(--glass-line); }
+.md-visor .helmet-controls button:is([aria-expanded="true"],[aria-pressed="true"]) { background: #8fe9ff26; color: var(--hud-ink); }
+.md-visor button:hover:not(:disabled) { background: #8fe9ff1c; }
+.md-visor button:focus-visible, .md-visor select:focus-visible, .md-visor a:focus-visible { outline: 2px solid var(--hud-cyan); outline-offset: 2px; }
+.md-visor.helmet :is(.visor-drawer, .visor-map.expanded) { border-radius: 16px; color: var(--hud-ink); text-shadow: none; }
+.md-visor.helmet .visor-drawer:before, .md-visor.helmet .visor-map:before { display: none; }
+.md-visor.helmet .visor-drawer .drawer-heading { background: color-mix(in srgb, var(--glass-tint) 88%, transparent); border-bottom: 1px solid var(--glass-line); font: 500 10.5px 'Martian Mono Variable', monospace; letter-spacing: .14em; text-transform: uppercase; color: var(--hud-cyan); }
+.md-visor.helmet .drawer-body > button, .md-visor.helmet .drawer-body > a, .md-visor .helmet-menu-grid button { border: 1px solid var(--glass-line); border-radius: 10px; color: var(--hud-ink); }
+.md-visor.helmet .drawer-body p, #walk-visor .drawer-body p { color: #d6eef5; }
+.md-visor .legend i.caution { background: var(--hud-amber-dim); } .md-visor .legend i.steep { background: var(--hud-amber); outline: 1px solid #fff8; }
+.md-visor .panel-note { color: var(--hud-cyan-dim); }
+.md-visor .helmet-calibration input { accent-color: var(--hud-cyan); }
+.md-visor .map-heading, .md-visor .visor-map footer { color: var(--hud-cyan-dim); }
+
+.md-visor.compact :is(.helmet-ident, .helmet-mode, .helmet-radiation, .helmet-label, .helmet-destination, .helmet-tape, .aim-frame, .aim-arc, .aim-side) { display: none; }
+.md-visor.compact .helmet-alert[data-level="low"] { display: none; }
+.md-visor.compact .helmet-route { top: 82%; }
+.md-visor.compact .helmet-controls button:not([data-hud]) { display: none; }
+.md-visor.compact .helmet-controls { left: auto; right: 0; transform: none; }
+
+@container (max-width: 520px) {
+  .md-visor .helmet-aim .aim-side { display: none; }
+  .md-visor .helmet-aim { width: 64cqw; }
+  .md-visor .helmet-controls button { min-width: 0; padding: 0 9px; font-size: 9.5px; letter-spacing: .06em; }
+  .md-visor .helmet-radiation { display: none; }
+}
+@container (max-height: 380px) { .md-visor .helmet-aim { width: min(40cqw, 62cqh * 2); } .md-visor .helmet-radiation { display: none; } }
+@media (prefers-reduced-motion: reduce) { .md-visor * { transition: none !important; animation: none !important; } }
+
+.corner button, .xr-top button, .xr-walk, .pad button {
+  font: 500 10.5px 'Martian Mono Variable', monospace !important; letter-spacing: .1em; text-transform: uppercase;
+  color: #8fe9ff !important; background: #0b141899 !important; border: 1px solid #8fe9ff42 !important; border-radius: 999px !important;
+  backdrop-filter: blur(12px) saturate(120%) !important; -webkit-backdrop-filter: blur(12px) saturate(120%);
+}
+.pad button { border-radius: 14px !important; }
+@media (max-width: 540px) { .pad { bottom: 116px !important; } }
+
+.md-visor .tm-label { font: 500 9.5px 'Martian Mono Variable', monospace; letter-spacing: .12em; text-transform: uppercase; color: var(--hud-cyan-dim); }
+.md-visor .tm-cue { position: absolute; left: 50%; top: 35%; transform: translateX(-50%); display: flex; align-items: center; gap: 7px; white-space: nowrap;
+  font: 500 11px 'Martian Mono Variable', monospace; letter-spacing: .1em; color: var(--hud-cyan); }
+.md-visor .tm-cue svg { width: 15px; height: 15px; filter: drop-shadow(0 0 2px #05090cb0); }
+.md-visor .tm-cue path { fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.md-visor .tm-cue[data-tone="caution"] { color: var(--hud-amber); }
+.md-visor .helmet-alert { top: 22%; }
+.md-visor .helmet-aim .elev-ticks { stroke: var(--hud-cyan); stroke-width: 1.2; }
+.md-visor .helmet-aim .elev-marker { fill: var(--hud-cyan); stroke: none; }
+.md-visor[data-terrain="caution"] .helmet-aim .elev-marker { fill: var(--hud-amber); }
+.md-visor .tm-elev { position: absolute; top: 50%; right: calc(50% + min(23cqw, 215px) + 12px); transform: translateY(-50%); display: grid; justify-items: end; gap: 2px;
+  padding: 4px 2px; text-align: right; text-shadow: var(--hud-halo); pointer-events: auto; border-radius: 6px; }
+.md-visor .tm-elev strong { font: 560 clamp(14px, 3.2cqh, 20px)/1.1 'Instrument Sans Variable', sans-serif; color: var(--hud-cyan); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.md-visor[data-terrain="caution"] .tm-elev strong { color: var(--hud-amber); }
+.md-visor .tm-sub { font: 500 8px 'Martian Mono Variable', monospace; letter-spacing: .1em; color: var(--hud-cyan-dim); }
+.md-visor .tm-speed { position: absolute; top: calc(2% + 18px); right: 2%; font: 500 9.5px 'Martian Mono Variable', monospace; letter-spacing: .12em; color: var(--hud-amber); white-space: pre-line; text-align: right; line-height: 1.5; }
+.md-visor .tm-rail { position: absolute; left: 2%; top: calc(2% + 44px); width: max-content; max-width: 96cqw; display: grid; gap: 1px; padding: 3px; text-shadow: none;
+  background: color-mix(in srgb, var(--glass-tint) calc(var(--glass-alpha) * .6), transparent); border: 1px solid color-mix(in srgb, var(--glass-line) 60%, transparent); border-radius: 10px;
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); pointer-events: auto; }
+.md-visor .tm-row { display: grid; grid-template-columns: 6px auto 1fr; align-items: center; gap: 7px; padding: 5px 8px; border-radius: 7px; text-align: left;
+  font: 500 10px 'Martian Mono Variable', monospace; letter-spacing: .04em; color: var(--hud-ink); white-space: nowrap; }
+.md-visor .tm-dot { width: 6px; height: 6px; border-radius: 50%; border: 1px solid var(--hud-cyan); }
+.md-visor .tm-row[data-level="clear"] .tm-dot { background: var(--hud-cyan); }
+.md-visor .tm-row[data-level="caution"] .tm-dot { background: var(--hud-amber); border-color: var(--hud-amber); border-radius: 1px; }
+.md-visor .tm-row[data-level="caution"] { color: var(--hud-amber); }
+.md-visor .tm-detail { padding: 2px 9px 7px 21px; font: 400 11px/1.4 'Instrument Sans Variable', sans-serif; color: #d6eef5; white-space: normal; max-width: 250px; }
+.md-visor .speed-title { margin: 10px 0 6px !important; } .md-visor .speed-title span { display: block; font-size: 11px; color: var(--hud-cyan-dim); }
+.md-visor .speed-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.md-visor .speed-row button { min-width: 44px; min-height: 34px; border: 1px solid var(--glass-line); border-radius: 999px; font: 500 11px 'Martian Mono Variable', monospace; color: var(--hud-ink); }
+.md-visor .speed-row button[aria-pressed="true"] { background: #8fe9ff2e; border-color: var(--hud-cyan); }
+.md-visor .speed-row label { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--hud-cyan-dim); }
+.md-visor .speed-row input { width: 62px; padding: 6px 7px; border: 1px solid var(--glass-line); border-radius: 8px; background: #0b141880; color: var(--hud-ink); font: inherit; pointer-events: auto; }
+.md-visor.compact :is(.tm-rail, .tm-sub, .elev-ticks, .elev-marker) { display: none; }
+.md-visor.compact .tm-elev { right: auto; left: 2%; top: 4%; transform: none; justify-items: start; }
+.md-visor.helmet-mesh-preview :is(.tm-cue, .tm-elev, .tm-rail, .tm-speed) { opacity: 0; }
+@container (max-width: 520px) {
+  .md-visor .helmet-aim .aim-side:not(.keep) { display: block; }
+  .md-visor .helmet-aim { width: 58cqw; }
+  .md-visor .tm-elev { right: auto; left: 1%; top: calc(50% + 21cqw); transform: none; justify-items: start; text-align: left; }
+  .md-visor .tm-rail { max-width: 96cqw; top: calc(2% + 40px); }
+  .md-visor .tm-row { white-space: normal; }
+  .md-visor .tm-row { font-size: 9px; padding: 4px 6px; }
+}

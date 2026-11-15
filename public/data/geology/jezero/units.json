@@ -1,0 +1,146 @@
+{
+ "source": "USGS SIM 3464 (Sun & Stack 2020), 1:75,000, USGS-NASA Planetary Geologic Mapping Program",
+ "doi": "https://doi.org/10.3133/sim3464",
+ "offsetNote": "Drawn on a semi-controlled CTX mosaic: offsets of ~100-200 m.",
+ "bounds": {
+  "west": 76.79596334724995,
+  "east": 77.80173748630577,
+  "south": 17.698761480412486,
+  "north": 18.70105735640941
+ },
+ "grid": {
+  "file": "units.png",
+  "width": 3017,
+  "height": 3006,
+  "ppd": 3000
+ },
+ "overlay": "overlay.png",
+ "units": [
+  {
+   "code": "NHjf1",
+   "name": "Jezero fan 1 (lower delta)",
+   "color": "#6fa8dc",
+   "notes": "Layered river sediment laid down where a river met the old lake. A top place to look for signs of past life.",
+   "hazard": null,
+   "age": "Noachian to Hesperian (about 3.9–3.0 billion years old)",
+   "mapped": true
+  },
+  {
+   "code": "NHjf2",
+   "name": "Jezero fan 2 (main delta)",
+   "color": "#3d85c6",
+   "notes": "The delta: river sediment with clays and carbonates. Perseverance explored and sampled its front.",
+   "hazard": null,
+   "age": "Noachian to Hesperian (about 3.9–3.0 billion years old)",
+   "mapped": true
+  },
+  {
+   "code": "Njf",
+   "name": "Jezero floor",
+   "color": "#d5a6bd",
+   "notes": "Crater floor. Perseverance found it is volcanic (igneous) rock, the Máaz and Séítah formations.",
+   "hazard": null,
+   "age": "Noachian (more than 3.7 billion years old)",
+   "mapped": true
+  },
+  {
+   "code": "Nle",
+   "name": "Lower etched unit",
+   "color": "#c27c0e",
+   "notes": "Olivine-rich rock low in the crater, possibly changed by the ancient lake water.",
+   "hazard": null,
+   "age": "Noachian (more than 3.7 billion years old)",
+   "mapped": true
+  },
+  {
+   "code": "Nue",
+   "name": "Upper etched unit",
+   "color": "#e69138",
+   "notes": "Olivine-rich rock found across the region. Wind-carved ridges (yardangs) in places.",
+   "hazard": "caution",
+   "age": "Noachian (more than 3.7 billion years old)",
+   "mapped": true
+  },
+  {
+   "code": "Nnp1",
+   "name": "Nili Planum 1",
+   "color": "#b4a07a",
+   "notes": "Oldest rock here, the ground the Jezero impact hit. Holds megabreccia: shattered blocks 10–100 m across.",
+   "hazard": "caution",
+   "age": "Noachian (more than 3.7 billion years old)",
+   "mapped": true
+  },
+  {
+   "code": "Nnp2",
+   "name": "Nili Planum 2",
+   "color": "#8e7cc3",
+   "notes": "Flat-topped cap rock with lobed edges that sheds boulders. Watch your footing near its edges.",
+   "hazard": "caution",
+   "age": "Noachian (more than 3.7 billion years old)",
+   "mapped": true
+  },
+  {
+   "code": "Hnpf",
+   "name": "Nili Planum fan",
+   "color": "#9fc5e8",
+   "notes": "River deposits inside Neretva Vallis, the channel that fed the lake.",
+   "hazard": null,
+   "age": "Hesperian (about 3.7–3.0 billion years old)",
+   "mapped": true
+  },
+  {
+   "code": "Nrb",
+   "name": "Rugged bright unit",
+   "color": "#f1c232",
+   "notes": "Light-toned rugged mounds sitting on the etched unit. Rough going.",
+   "hazard": "caution",
+   "age": "Noachian (more than 3.7 billion years old)",
+   "mapped": true
+  },
+  {
+   "code": "su",
+   "name": "Smooth unit",
+   "color": "#cccccc",
+   "notes": "Smooth dark cover thick enough to hide the rock beneath. Easy walking, little bedrock to sample.",
+   "hazard": null,
+   "age": "Age set by the crater that formed it",
+   "mapped": true
+  },
+  {
+   "code": "Aeb",
+   "name": "Windblown sand (eolian bedforms)",
+   "color": "#ffe599",
+   "notes": "Sand ripples and dunes. Soft sand can trap wheels (it stranded the Spirit rover) and tires walkers. Cross with care, avoid by rover.",
+   "hazard": "avoid",
+   "age": "Amazonian (younger than 3 billion years)",
+   "mapped": true
+  },
+  {
+   "code": "cr",
+   "name": "Crater rim",
+   "color": "#7f6000",
+   "notes": "Raised rim rock of Jezero and smaller craters, with megabreccia blocks. Often steep.",
+   "hazard": "caution",
+   "age": "Age set by the crater that formed it",
+   "mapped": true
+  },
+  {
+   "code": "ce",
+   "name": "Crater ejecta",
+   "color": "#a67c52",
+   "notes": "Rock thrown out by impacts. Expect scattered boulders.",
+   "hazard": "caution",
+   "age": "Age set by the crater that formed it",
+   "mapped": true
+  },
+  {
+   "code": "ci",
+   "name": "Crater interior",
+   "color": "#783f04",
+   "notes": "Bedrock in the middle of a crater.",
+   "hazard": null,
+   "age": "Age set by the crater that formed it",
+   "mapped": true
+  }
+ ]
+}

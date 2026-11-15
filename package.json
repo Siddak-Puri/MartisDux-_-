@@ -1,0 +1,82 @@
+{
+  "name": "martisdux-explorer",
+  "version": "0.6.4",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "postinstall": "node scripts/prepare-cesium.mjs",
+    "dev": "vite --host 127.0.0.1",
+    "build": "vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "test": "node --test src/*.test.js server/*.test.mjs",
+    "app": "vite build && electron .",
+    "app:dist": "vite build && electron-builder --win portable nsis",
+    "build:ar-usdz": "electron scripts/build-ar-usdz.cjs",
+    "build:ar-site": "vite build --config vite.ar.config.js",
+    "serve": "node server/app-server.mjs",
+    "app:mac": "vite build && electron-builder --mac dmg zip --arm64 --x64 --publish never"
+  },
+  "devDependencies": {
+    "@fontsource-variable/instrument-sans": "5.3.0",
+    "@fontsource-variable/martian-mono": "^5.3.0",
+    "@fontsource/ibm-plex-mono": "5.3.0",
+    "@fontsource/julius-sans-one": "^5.3.0",
+    "@google/model-viewer": "4.4.0",
+    "cesium": "1.146.0",
+    "electron": "44.9.3",
+    "electron-builder": "26.18.0",
+    "gltf-validator": "2.0.0-dev.3.10",
+    "lerc": "2.0.0",
+    "qrcode-generator": "2.0.4",
+    "three": "0.183.2",
+    "vite": "8.3.5"
+  },
+  "main": "electron/main.cjs",
+  "description": "MartisDux Mars Explorer: Marswalk planning from NASA data",
+  "author": "Team MartisDux",
+  "build": {
+    "appId": "space.martisdux.explorer",
+    "productName": "MartisDux",
+    "copyright": "Team MartisDux. Imagery and data: NASA and partners (see Data & sources).",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "!electron/**/*.map",
+      "server/app-server.mjs",
+      "server/tile-cache.mjs",
+      "src/data.js",
+      "src/log-book.js",
+      "src/earth-link.js"
+    ],
+    "asar": true,
+    "win": {
+      "icon": "electron/icon.png",
+      "target": [
+        "portable",
+        "nsis"
+      ]
+    },
+    "portable": {
+      "artifactName": "MartisDux-${version}-portable.exe"
+    },
+    "nsis": {
+      "artifactName": "MartisDux-${version}-setup.exe",
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "shortcutName": "MartisDux"
+    },
+    "mac": {
+      "icon": "electron/icon.icns",
+      "category": "public.app-category.education",
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "artifactName": "MartisDux-${version}-mac-${arch}.${ext}"
+    }
+  }
+}

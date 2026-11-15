@@ -1,0 +1,18 @@
+{
+  "id": "PIA16074",
+  "title": "All Around Curiosity",
+  "source": "https://science.nasa.gov/resource/all-around-curiosity/",
+  "original": "https://assets.science.nasa.gov/content/dam/science/psd/mars/downloadable_items/3/6/36187_pia16074_navcamcylindrical.jpg",
+  "credit": "NASA/JPL-Caltech",
+  "acquired": "2012-08-08 (UTC; late August 7 PDT)",
+  "published": "2012-08-17",
+  "width": 7703,
+  "height": 1678,
+  "approximateSite": {
+    "lat": -4.5895,
+    "lon": 137.4417
+  },
+  "orientationRegistered": false,
+  "processing": "Original NASA cylindrical JPEG unchanged. Native stitching seams and unphotographed edge regions retained. No generated pixels or colorization.",
+  "sha256": "90282f0cd6c5895af952a4e8703178988562495630e21403a5c237d0e85103ac"
+}

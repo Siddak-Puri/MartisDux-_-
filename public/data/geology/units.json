@@ -1,0 +1,372 @@
+{
+ "source": "Tanaka, K.L., et al., 2014, Geologic map of Mars: USGS Scientific Investigations Map 3292, scale 1:20,000,000",
+ "doi": "https://doi.org/10.3133/sim3292",
+ "download": "https://pubs.usgs.gov/sim/3292/downloads/sim3292_database.zip",
+ "trekLayer": "SIM3292_Global_Geology",
+ "shapefileSha256": "9c0fbc204c1c7f108a854036d85f44c77531e85e0c03959eaea2b6cd33197f3a",
+ "grid": {
+  "file": "units.png",
+  "pixelsPerDegree": 16,
+  "width": 5760,
+  "height": 2880,
+  "origin": "row 0 = 90N, column 0 = 180W, pixel centres at +0.5",
+  "noData": 0,
+  "coverage": 1.0
+ },
+ "ages": "Epoch boundaries in Ga follow Tanaka et al. 2014 (Hartmann-Neukum chronology); approximate.",
+ "scaleNote": "Global 1:20M map: contacts are placed to roughly +/- 5-10 km. Use for regional context, not outcrop-scale geology.",
+ "units": [
+  {
+   "code": "AHi",
+   "description": "Amazonian and Hesperian impact unit",
+   "period": "Hesperian to Amazonian",
+   "epoch": null,
+   "oldGa": 3.71,
+   "youngGa": 0.0
+  },
+  {
+   "code": "AHtu",
+   "description": "Amazonian and Hesperian transition undivided unit",
+   "period": "Hesperian to Amazonian",
+   "epoch": null,
+   "oldGa": 3.71,
+   "youngGa": 0.0
+  },
+  {
+   "code": "AHv",
+   "description": "Amazonian and Hesperian volcanic",
+   "period": "Hesperian to Amazonian",
+   "epoch": null,
+   "oldGa": 3.71,
+   "youngGa": 0.0
+  },
+  {
+   "code": "ANa",
+   "description": "Amazonian and Noachian apron unit",
+   "period": "Noachian to Amazonian",
+   "epoch": null,
+   "oldGa": 4.1,
+   "youngGa": 0.0
+  },
+  {
+   "code": "Aa",
+   "description": "Amazonian apron unit",
+   "period": "Amazonian",
+   "epoch": null,
+   "oldGa": 3.37,
+   "youngGa": 0.0
+  },
+  {
+   "code": "Ap",
+   "description": "Amazonian polar unit",
+   "period": "Amazonian",
+   "epoch": null,
+   "oldGa": 3.37,
+   "youngGa": 0.0
+  },
+  {
+   "code": "Apu",
+   "description": "Amazonian polar undivided unit",
+   "period": "Amazonian",
+   "epoch": null,
+   "oldGa": 3.37,
+   "youngGa": 0.0
+  },
+  {
+   "code": "Av",
+   "description": "Amazonian volcanic unit",
+   "period": "Amazonian",
+   "epoch": null,
+   "oldGa": 3.37,
+   "youngGa": 0.0
+  },
+  {
+   "code": "Ave",
+   "description": "Amazonian volcanic edifice",
+   "period": "Amazonian",
+   "epoch": null,
+   "oldGa": 3.37,
+   "youngGa": 0.0
+  },
+  {
+   "code": "HNb",
+   "description": "Hesperian and Noachian basin unit",
+   "period": "Noachian to Hesperian",
+   "epoch": null,
+   "oldGa": 4.1,
+   "youngGa": 3.37
+  },
+  {
+   "code": "HNhu",
+   "description": "Hesperian and Noachian highland undivided unit",
+   "period": "Noachian to Hesperian",
+   "epoch": null,
+   "oldGa": 4.1,
+   "youngGa": 3.37
+  },
+  {
+   "code": "HNt",
+   "description": "Hesperian and Noachian transition unit",
+   "period": "Noachian to Hesperian",
+   "epoch": null,
+   "oldGa": 4.1,
+   "youngGa": 3.37
+  },
+  {
+   "code": "Hp",
+   "description": "Hesperian polar unit",
+   "period": "Hesperian",
+   "epoch": null,
+   "oldGa": 3.71,
+   "youngGa": 3.37
+  },
+  {
+   "code": "Hpe",
+   "description": "Hesperian polar edifice unit",
+   "period": "Hesperian",
+   "epoch": null,
+   "oldGa": 3.71,
+   "youngGa": 3.37
+  },
+  {
+   "code": "Hpu",
+   "description": "Hesperian polar undivided unit",
+   "period": "Hesperian",
+   "epoch": null,
+   "oldGa": 3.71,
+   "youngGa": 3.37
+  },
+  {
+   "code": "Ht",
+   "description": "Hesperian transition unit",
+   "period": "Hesperian",
+   "epoch": null,
+   "oldGa": 3.71,
+   "youngGa": 3.37
+  },
+  {
+   "code": "Hto",
+   "description": "Hesperian transition outflow unit",
+   "period": "Hesperian",
+   "epoch": null,
+   "oldGa": 3.71,
+   "youngGa": 3.37
+  },
+  {
+   "code": "Htu",
+   "description": "Hesperian transition undivided unit",
+   "period": "Hesperian",
+   "epoch": null,
+   "oldGa": 3.71,
+   "youngGa": 3.37
+  },
+  {
+   "code": "Hve",
+   "description": "Hesperian volcanic edifice unit",
+   "period": "Hesperian",
+   "epoch": null,
+   "oldGa": 3.71,
+   "youngGa": 3.37
+  },
+  {
+   "code": "Nhe",
+   "description": "Noachian highland edifice unit",
+   "period": "Noachian",
+   "epoch": null,
+   "oldGa": 4.1,
+   "youngGa": 3.71
+  },
+  {
+   "code": "Nhu",
+   "description": "Noachian highland undivided unit",
+   "period": "Noachian",
+   "epoch": null,
+   "oldGa": 4.1,
+   "youngGa": 3.71
+  },
+  {
+   "code": "Nve",
+   "description": "Noachian volcanic edifice unit",
+   "period": "Noachian",
+   "epoch": null,
+   "oldGa": 4.1,
+   "youngGa": 3.71
+  },
+  {
+   "code": "eAb",
+   "description": "Early Amazonian basin unit",
+   "period": "Amazonian",
+   "epoch": "Early Amazonian",
+   "oldGa": 3.37,
+   "youngGa": 1.23
+  },
+  {
+   "code": "eHb",
+   "description": "Early Hesperian basin unit",
+   "period": "Hesperian",
+   "epoch": "Early Hesperian",
+   "oldGa": 3.71,
+   "youngGa": 3.61
+  },
+  {
+   "code": "eHh",
+   "description": "Early Hesperian highland unit",
+   "period": "Hesperian",
+   "epoch": "Early Hesperian",
+   "oldGa": 3.71,
+   "youngGa": 3.61
+  },
+  {
+   "code": "eHt",
+   "description": "Early Hesperian transition unit",
+   "period": "Hesperian",
+   "epoch": "Early Hesperian",
+   "oldGa": 3.71,
+   "youngGa": 3.61
+  },
+  {
+   "code": "eHv",
+   "description": "Early Hesperian volcanic unit",
+   "period": "Hesperian",
+   "epoch": "Early Hesperian",
+   "oldGa": 3.71,
+   "youngGa": 3.61
+  },
+  {
+   "code": "eNh",
+   "description": "Early Noachian highland unit",
+   "period": "Noachian",
+   "epoch": "Early Noachian",
+   "oldGa": 4.1,
+   "youngGa": 3.94
+  },
+  {
+   "code": "eNhm",
+   "description": "Early Noachian highland massif unit",
+   "period": "Noachian",
+   "epoch": "Early Noachian",
+   "oldGa": 4.1,
+   "youngGa": 3.94
+  },
+  {
+   "code": "lAa",
+   "description": "Late Amazonian apron unit",
+   "period": "Amazonian",
+   "epoch": "Late Amazonian",
+   "oldGa": 0.33,
+   "youngGa": 0.0
+  },
+  {
+   "code": "lApc",
+   "description": "Late Amazonian polar cap unit",
+   "period": "Amazonian",
+   "epoch": "Late Amazonian",
+   "oldGa": 0.33,
+   "youngGa": 0.0
+  },
+  {
+   "code": "lApd",
+   "description": "Late Amazonian polar dunes unit",
+   "period": "Amazonian",
+   "epoch": "Late Amazonian",
+   "oldGa": 0.33,
+   "youngGa": 0.0
+  },
+  {
+   "code": "lAv",
+   "description": "Late Amazonian volcanic unit",
+   "period": "Amazonian",
+   "epoch": "Late Amazonian",
+   "oldGa": 0.33,
+   "youngGa": 0.0
+  },
+  {
+   "code": "lAvf",
+   "description": "Late Amazonian volcanic field unit",
+   "period": "Amazonian",
+   "epoch": "Late Amazonian",
+   "oldGa": 0.33,
+   "youngGa": 0.0
+  },
+  {
+   "code": "lHb",
+   "description": "Late Hesperian basin unit",
+   "period": "Hesperian",
+   "epoch": "Late Hesperian",
+   "oldGa": 3.61,
+   "youngGa": 3.37
+  },
+  {
+   "code": "lHl",
+   "description": "Late Hesperian lowland unit",
+   "period": "Hesperian",
+   "epoch": "Late Hesperian",
+   "oldGa": 3.61,
+   "youngGa": 3.37
+  },
+  {
+   "code": "lHt",
+   "description": "Late Hesperian transition unit",
+   "period": "Hesperian",
+   "epoch": "Late Hesperian",
+   "oldGa": 3.61,
+   "youngGa": 3.37
+  },
+  {
+   "code": "lHv",
+   "description": "Late Hesperian volcanic unit",
+   "period": "Hesperian",
+   "epoch": "Late Hesperian",
+   "oldGa": 3.61,
+   "youngGa": 3.37
+  },
+  {
+   "code": "lHvf",
+   "description": "Late Hesperian volcanic field unit",
+   "period": "Hesperian",
+   "epoch": "Late Hesperian",
+   "oldGa": 3.61,
+   "youngGa": 3.37
+  },
+  {
+   "code": "lNh",
+   "description": "Late Noachian highland unit",
+   "period": "Noachian",
+   "epoch": "Late Noachian",
+   "oldGa": 3.85,
+   "youngGa": 3.71
+  },
+  {
+   "code": "lNv",
+   "description": "Late Noachian volcanic unit",
+   "period": "Noachian",
+   "epoch": "Late Noachian",
+   "oldGa": 3.85,
+   "youngGa": 3.71
+  },
+  {
+   "code": "mAl",
+   "description": "Middle Amazonian lowland unit",
+   "period": "Amazonian",
+   "epoch": "Middle Amazonian",
+   "oldGa": 1.23,
+   "youngGa": 0.33
+  },
+  {
+   "code": "mNh",
+   "description": "Middle Noachian highland unit",
+   "period": "Noachian",
+   "epoch": "Middle Noachian",
+   "oldGa": 3.94,
+   "youngGa": 3.85
+  },
+  {
+   "code": "mNhm",
+   "description": "Middle Noachian highland massif unit",
+   "period": "Noachian",
+   "epoch": "Middle Noachian",
+   "oldGa": 3.94,
+   "youngGa": 3.85
+  }
+ ]
+}

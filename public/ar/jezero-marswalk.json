@@ -1,0 +1,170 @@
+{
+ "title": "Jezero Marswalk \u00b7 tabletop",
+ "scale": "1:2123",
+ "areaMetres": [
+  868,
+  1274
+ ],
+ "reliefMetres": 45.9,
+ "route": {
+  "distance": 902,
+  "maxSlope": 9.0
+ },
+ "sources": {
+  "terrain": "https://planetarymaps.usgs.gov/mosaic/mars2020_trn/HiRISE/JEZ_hirise_soc_006_DTM_MOLAtopography_DeltaGeoid_1m_Eqc_latTs0_lon0_blend40.tif",
+  "imagery": "https://trek.nasa.gov/tiles/Mars/EQ/JEZ_hirise_soc_006_orthoMosaic_25cm_Eqc_latTs0_lon0_first_dd/1.0.0/default/default028mm/",
+  "samples": "https://science.nasa.gov/mission/mars-2020-perseverance/mars-rock-samples/"
+ },
+ "models": {
+  "x1": {
+   "file": "jezero-marswalk-x1.glb",
+   "bytes": 2665308,
+   "sha256": "0927fd1cf6ee2d47320665ef97bef0cab308e8fbcee34304cfdc3c9c987e0700",
+   "anchors": [
+    {
+     "id": "base",
+     "label": "A \u00b7 Base",
+     "position": [
+      0.0867,
+      0.1103,
+      -0.1821
+     ]
+    },
+    {
+     "id": "dest",
+     "label": "B \u00b7 Rochette \u00b7 first rock cores",
+     "position": [
+      -0.0863,
+      0.026,
+      0.2049
+     ]
+    },
+    {
+     "id": "s2",
+     "label": "Montdenier \u00b7 Montagnac",
+     "detail": "Igneous, sealed sol 194",
+     "position": [
+      -0.0863,
+      0.0851,
+      0.2049
+     ]
+    },
+    {
+     "id": "s4",
+     "label": "Salette \u00b7 Coulettes",
+     "detail": "Igneous, sealed sol 262",
+     "position": [
+      -0.122,
+      0.0877,
+      0.1148
+     ]
+    },
+    {
+     "id": "s6",
+     "label": "Robine",
+     "detail": "Igneous, sealed sol 298",
+     "position": [
+      -0.1656,
+      0.0851,
+      0.1512
+     ]
+    },
+    {
+     "id": "s7",
+     "label": "Malay",
+     "detail": "Igneous, sealed sol 337",
+     "position": [
+      -0.1672,
+      0.0852,
+      0.1527
+     ]
+    },
+    {
+     "id": "s8",
+     "label": "Ha'ah\u00f3ni \u00b7 Ats\u00e1",
+     "detail": "Igneous, sealed sol 371",
+     "position": [
+      0.1273,
+      0.0878,
+      -0.1626
+     ]
+    }
+   ]
+  },
+  "x3": {
+   "file": "jezero-marswalk-x3.glb",
+   "bytes": 2665304,
+   "sha256": "ed729cd5c51d725eff0d6b600a0588c5bdbf56c7f339d59f5099db126f2998f5",
+   "anchors": [
+    {
+     "id": "base",
+     "label": "A \u00b7 Base",
+     "position": [
+      0.0867,
+      0.1317,
+      -0.1821
+     ]
+    },
+    {
+     "id": "dest",
+     "label": "B \u00b7 Rochette \u00b7 first rock cores",
+     "position": [
+      -0.0863,
+      0.043,
+      0.2049
+     ]
+    },
+    {
+     "id": "s2",
+     "label": "Montdenier \u00b7 Montagnac",
+     "detail": "Igneous, sealed sol 194",
+     "position": [
+      -0.0863,
+      0.1022,
+      0.2049
+     ]
+    },
+    {
+     "id": "s4",
+     "label": "Salette \u00b7 Coulettes",
+     "detail": "Igneous, sealed sol 262",
+     "position": [
+      -0.122,
+      0.1099,
+      0.1148
+     ]
+    },
+    {
+     "id": "s6",
+     "label": "Robine",
+     "detail": "Igneous, sealed sol 298",
+     "position": [
+      -0.1656,
+      0.1023,
+      0.1512
+     ]
+    },
+    {
+     "id": "s7",
+     "label": "Malay",
+     "detail": "Igneous, sealed sol 337",
+     "position": [
+      -0.1672,
+      0.1025,
+      0.1527
+     ]
+    },
+    {
+     "id": "s8",
+     "label": "Ha'ah\u00f3ni \u00b7 Ats\u00e1",
+     "detail": "Igneous, sealed sol 371",
+     "position": [
+      0.1273,
+      0.1103,
+      -0.1626
+     ]
+    }
+   ]
+  }
+ }
+}

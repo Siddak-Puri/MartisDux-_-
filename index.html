@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="en" data-launch="loading">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#120b07">
+  <meta name="description" content="MartisDux — explore Mars through the missions that mapped it.">
+  <title>MartisDux — Mars Explorer</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="./brand/astronaut-home.webp" as="image">
+</head>
+<body data-page="home">
+  <main class="explorer" aria-label="MartisDux Mars explorer" inert>
+    <div id="globe" class="globe" aria-label="Interactive Mars globe. Drag to rotate, scroll to zoom." tabindex="0" inert></div>
+    <div class="edge-shade" aria-hidden="true"></div>
+    <section id="home-page" class="home-page" aria-labelledby="home-title">
+      <div class="home-figure" aria-hidden="true">
+        <img id="home-astronaut" src="./brand/astronaut-home.webp" width="1322" height="1190" alt="" fetchpriority="high" decoding="async">
+      </div>
+      <div class="home-copy">
+        <h1 id="home-title">Make Mars<br>feel navigable.</h1>
+        <p>Terrain, routes, scientific sites and hazards on one map.</p>
+        <button id="home-explore" class="home-action" type="button">Explore Mars <svg viewBox="0 0 24 24" aria-hidden="true" fill="none"><path d="M5 12h13m-5-5 5 5-5 5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        <small class="home-credit">Astronaut: AI-generated illustration · Mars: NASA/JPL/USGS imagery</small>
+      </div>
+      <canvas id="launch-sweep" class="launch-sweep" aria-hidden="true" hidden></canvas>
+    </section>
+    <header class="masthead">
+      <div class="native-drag-area" aria-hidden="true"></div>
+      <div class="masthead-brand"><button class="wordmark" id="brand-home" type="button" aria-label="MartisDux Home">MartisDux</button><span class="brand-edition">PLAN A WALK ON MARS</span></div>
+      <div class="search-wrap">
+        <form id="search-form" class="search" role="search">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6" stroke="currentColor"/><path d="m15 15 4.7 4.7" stroke="currentColor" stroke-linecap="round"/></svg>
+          <label class="sr-only" for="search-input">Search Mars or enter latitude and longitude</label><input id="search-input" type="search" placeholder="Search Mars or coordinates" autocomplete="off" spellcheck="false" aria-controls="search-results" aria-expanded="false"><kbd>/</kbd>
+        </form><div id="search-results" class="search-results" hidden></div>
+      </div>
+      <div class="masthead-actions">
+        <button id="earth-link" class="earth-link" type="button" title="One-way radio delay between Earth and Mars right now"><span>EARTH IS</span><strong id="earth-link-delay">—</strong><span>AWAY</span></button>
+        <button id="quality-button" class="quality-button" type="button" aria-pressed="true" title="Ultra detail">Ultra</button>
+        <button id="sources-button" class="header-link" type="button">Data ↗</button>
+      </div>
+    </header>
+
+    <section id="log-page" class="log-page" aria-labelledby="log-title-label" hidden>
+      <header class="log-heading">
+        <h1 id="log-title-label">Log</h1>
+        <span>Simulated downlink</span>
+      </header>
+      <div class="log-grid">
+        <form id="log-form" class="log-card log-form" autocomplete="off">
+          <h2 id="log-form-title">New observation</h2>
+          <label for="log-title">Title</label>
+          <input id="log-title" required maxlength="100" placeholder="Name the discovery">
+          <label for="log-note">Observation</label>
+          <textarea id="log-note" required maxlength="4000" rows="6" placeholder="What did you find?"></textarea>
+          <div class="log-location">
+            <button id="log-position" class="log-secondary" type="button">Attach map position</button>
+            <span id="log-position-label">No coordinates attached</span>
+          </div>
+          <div class="log-actions">
+            <button id="log-save" class="log-secondary" type="submit" disabled>Save draft</button>
+            <button id="log-ship" class="log-primary" type="submit" disabled>Ship to Houston <span aria-hidden="true">↗</span></button>
+          </div>
+          <p id="log-feedback" role="status"></p>
+        </form>
+        <div class="log-traffic">
+          <section class="log-card log-signal" aria-labelledby="log-signal-label">
+            <h2 id="log-signal-label">One-way light time</h2>
+            <time id="log-signal-clock">—</time>
+            <span id="log-signal-detail">Mars → Earth</span>
+          </section>
+          <section class="log-card log-history" aria-labelledby="log-history-label">
+            <div class="log-history-head"><h2 id="log-history-label">Observations</h2><button id="log-new" class="log-secondary" type="button">New</button></div>
+            <p id="log-empty">No observations yet.</p>
+            <ul id="log-entries"></ul>
+          </section>
+        </div>
+      </div>
+    </section>
+    <nav class="explorer-rail" aria-label="Explorer tools">
+      <button id="home-nav" class="rail-button" data-app-nav="home" aria-current="page" type="button" title="Home"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m3.5 10.5 8.5-7 8.5 7M6 9v11h12V9m-8.5 11v-6.5h5V20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Home</span></button>
+      <button id="explore-panel-toggle" class="rail-button" data-app-nav="places" type="button" aria-label="Show or hide places" aria-expanded="true" title="Discover places"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8" stroke="currentColor"/><path d="m15.8 8.2-2.2 5.4-5.4 2.2 2.2-5.4 5.4-2.2Z" stroke="currentColor"/></svg><span>Places</span></button>
+      <button id="search-focus" class="rail-button" type="button" aria-label="Search Mars" title="Search Mars"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6" stroke="currentColor"/><path d="m15 15 4.7 4.7" stroke="currentColor" stroke-linecap="round"/></svg><span>Search</span></button>
+      <button id="route-toggle" class="rail-button" data-app-nav="walk" type="button" aria-label="Plan a surface route" aria-expanded="false" title="Plan a walk"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="6" cy="17" r="3" stroke="currentColor"/><circle cx="18" cy="6" r="3" stroke="currentColor"/><path d="M6 14v-3a3 3 0 0 1 3-3h3a3 3 0 0 1 3 3v2a3 3 0 0 0 3 3h2" stroke="currentColor" stroke-linecap="round"/></svg><span>Walk</span></button>
+      <button id="terrain-button" class="rail-button" data-app-nav="terrain" type="button" aria-pressed="false" title="Tilt the map into 3D terrain"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m2 19 7-13 5 8 3-5 5 10H2Z" stroke="currentColor"/><path d="m7 10 2 2 2-2" stroke="currentColor"/></svg><span>Terrain</span></button>
+      <button id="photos-button" class="rail-button" data-app-nav="photos" type="button" aria-label="Open rover photos" title="Rover 360° photos"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="6" width="18" height="14" rx="3" stroke="currentColor"/><circle cx="12" cy="13" r="4" stroke="currentColor"/><path d="m8 6 1-3h6l1 3" stroke="currentColor"/></svg><span>Photos</span></button>
+      <button id="saved-button" class="rail-button" type="button" aria-label="Open saved routes" title="Saved routes"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 3h12v18l-6-4-6 4V3Z" stroke="currentColor"/></svg><span>Saved</span></button>
+      <button id="log-nav" class="rail-button" data-app-nav="log" type="button" title="Discovery log"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="3.5" width="14" height="17" rx="2.5" stroke="currentColor"/><path d="M9 8h6m-6 4h6m-6 4h4" stroke="currentColor" stroke-linecap="round"/></svg><span>Log</span></button>
+      <span class="rail-rule"></span>
+      <button id="data-rail-button" class="rail-button" type="button" aria-label="Open data sources" title="Data sources"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m12 4 9 5-9 5-9-5 9-5Zm-9 9 9 5 9-5M3 17l9 5 9-5" stroke="currentColor" stroke-linejoin="round"/></svg><span>Data</span></button>
+      <button id="help-button" class="rail-button" type="button" aria-label="Navigation help" title="Navigation help"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8" stroke="currentColor"/><path d="M9.7 9a2.3 2.3 0 0 1 4.6.4c0 1.8-2.3 1.8-2.3 3.8" stroke="currentColor" stroke-linecap="round"/><circle cx="12" cy="16.5" r=".7" fill="currentColor"/></svg><span>Help</span></button>
+    </nav>
+
+    <aside id="discovery-panel" class="discovery-panel" aria-label="Discover Mars">
+      <div class="panel-eyebrow"><span>MARS ATLAS</span><button id="panel-toggle" class="icon-button panel-close" type="button" aria-label="Collapse explorer panel" aria-expanded="true" title="Hide places"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m14 7-5 5 5 5" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>
+      <div class="planet-heading"><h1>Places</h1><button id="route-open" class="text-button route-entry" type="button">Plan a Marswalk <span>↗</span></button></div>
+      <div class="panel-body">
+        <div class="destination-heading"><h2>Landmarks</h2><span>04 PLACES</span></div>
+        <div class="destinations">
+          <button class="destination" data-place="olympus" type="button"><span class="destination-number">01</span><span class="destination-copy"><strong>Olympus Mons</strong><small>18.650° N · 133.800° W</small></span><span class="destination-arrow">↗</span></button>
+          <button class="destination" data-place="valles" type="button"><span class="destination-number">02</span><span class="destination-copy"><strong>Valles Marineris</strong><small>14.010° S · 58.590° W</small></span><span class="destination-arrow">↗</span></button>
+          <button class="destination" data-place="jezero" type="button"><span class="destination-number">03</span><span class="destination-copy"><strong>Jezero Crater</strong><small>18.445° N · 77.451° E</small></span><span class="destination-arrow">↗</span></button>
+          <button class="destination" data-place="gale" type="button"><span class="destination-number">04</span><span class="destination-copy"><strong>Gale Crater</strong><small>4.590° S · 137.442° E</small></span><span class="destination-arrow">↗</span></button>
+        </div>
+        <button id="jezero-terrain" class="terrain-shortcut" type="button"><span class="terrain-icon">△</span><span>Jezero in 3D <small>Real terrain, 1 m detail</small></span><b>↗</b></button>
+        <div id="ground-sites" class="ground-sites"><div class="destination-heading"><h2>Rover photos</h2><span>02 SITES</span></div>
+          <button data-ground-site="jezero" type="button"><span class="ground-thumb ground-thumb-jezero"></span><span><strong>Jezero Crater</strong><small>Perseverance · 360° photo</small></span><b>↗</b></button>
+          <button data-ground-site="gale" type="button"><span class="ground-thumb ground-thumb-gale"></span><span><strong>Gale Crater</strong><small>Curiosity · 360° photo</small></span><b>↗</b></button>
+        </div>
+        <details class="ez-section">
+          <summary class="destination-heading"><h2>Where humans might land</h2><span id="ez-count">— SITES</span></summary>
+          <p class="ez-note">Sites NASA picked in 2015 for the first crews.</p>
+          <div id="ez-list" class="ez-list"></div>
+        </details>
+        <div class="source-summary">
+          <div class="source-eyebrow"><span class="status-dot"></span> THE VIEW, EXPLAINED</div>
+          <div class="source-title-row"><h2 id="source-title">NASA Viking imagery</h2><span id="source-resolution">8K overview</span></div>
+          <p id="source-description">Recorded mission imagery, brought into one perspective.</p>
+          <div id="geology-readout" class="geology-readout" aria-live="polite" hidden><span id="geology-source">UNDER THE POINTER · USGS MAP OF MARS</span><strong id="geology-unit">—</strong><small id="geology-age"></small></div>
+          <button id="data-button" class="text-button" type="button">Source details <span>↗</span></button>
+        </div>
+      </div>
+    </aside>
+
+    <aside id="route-panel" class="discovery-panel route-panel" aria-label="Plan a Marswalk" hidden>
+      <div class="panel-eyebrow"><span>MARSWALK</span><button id="route-close" class="icon-button panel-close" type="button" aria-label="Close planner"><span>×</span></button></div>
+      <div class="planet-heading"><h1>Plan a walk</h1></div>
+      <p id="route-instruction" class="route-instruction" role="status">Pick where you start.</p>
+      <details id="eva-demos" class="eva-demos" open><summary>Sample walks <span>6 ready-made · Jezero and Gale</span></summary>
+      <button id="eva-demo" class="eva-demo" type="button"><span class="eva-demo-tag">TRY</span><span><strong>Sample walk at Jezero</strong><small>0.9 km to Perseverance's first rock samples</small></span><b>↗</b></button>
+      <button id="eva-demo-far" class="eva-demo" type="button"><span class="eva-demo-tag">LONG</span><span><strong>Delta front traverse</strong><small>3 km to the ancient river delta, a real test</small></span><b>↗</b></button>
+      <button class="eva-demo eva-demo-more" type="button" data-demo data-travel="foot" data-lat="18.4702" data-lon="77.3840" data-name="Delta top · Melyn core"><span class="eva-demo-tag">CLIMB</span><span><strong>Up onto the delta</strong><small>4 km out, 1 h 37 min from home at the far end</small></span><b>↗</b></button>
+      <button class="eva-demo eva-demo-more" type="button" data-demo data-travel="rover" data-lat="18.4975" data-lon="77.3052" data-name="Crater rim · Sapphire Canyon"><span class="eva-demo-tag">ROVER</span><span><strong>Crater rim by rover</strong><small>9 km to the rim: only a rover makes it</small></span><b>↗</b></button>
+      <button class="eva-demo eva-demo-more" type="button" data-demo data-travel="foot" data-lat="18.4975" data-lon="77.3052" data-name="Crater rim · Sapphire Canyon"><span class="eva-demo-tag">FAR</span><span><strong>Rim on foot</strong><small>The same 9 km on foot: watch it say NO-GO</small></span><b>↗</b></button>
+      <button class="eva-demo eva-demo-more" type="button" data-demo data-travel="foot" data-from-lat="-4.5895" data-from-lon="137.4417" data-from-name="Bradbury Landing (base)" data-lat="-4.5903" data-lon="137.4494" data-name="Yellowknife Bay area"><span class="eva-demo-tag">GALE</span><span><strong>Curiosity's first drive</strong><small>Bradbury Landing to Yellowknife Bay</small></span><b>↗</b></button>
+      </details>
+      <button data-open-ar class="eva-ar-entry" type="button"><span class="eva-demo-tag eva-ar-tag">LIFE SIZE</span><span><strong>Stand in Jezero with the helmet display</strong><small>1 m HiRISE ground to the horizon · walk freely · Android AR and VR headsets</small></span><b>↗</b></button>
+
+      <ol class="walk-steps">
+        <li class="walk-step walk-step-a">
+          <div class="route-endpoint route-start"><span class="route-letter">A</span><div><h2>Start</h2><p id="route-start-coordinate">Not set</p></div><button id="route-pick-start" class="route-secondary" type="button" aria-pressed="false">Pick on map</button></div>
+          <div class="walk-step-body">
+            <form id="route-start-form" class="endpoint-form"><label class="sr-only" for="route-origin">Start: place or coordinates</label><input id="route-origin" placeholder="or type a place" autocomplete="off" spellcheck="false"><button type="submit" aria-label="Set start">↵</button></form>
+            <button id="route-use-center" class="route-subtle" type="button" title="Use the centre of the map">Use map centre</button>
+          </div>
+        </li>
+        <li class="walk-step walk-step-b">
+          <form id="route-form" novalidate>
+            <div class="route-endpoint route-end"><span class="route-letter">B</span><div><label for="route-destination">Destination</label><p id="route-destination-coordinate" class="route-coordinates">Not set</p></div><button id="route-pick-destination" class="route-secondary route-map-pick" type="button" aria-pressed="false">Pick on map</button></div>
+            <div class="walk-step-body">
+              <div class="route-destination-search"><div class="search"><input id="route-destination" type="search" placeholder="Search a place" autocomplete="off" spellcheck="false" aria-controls="route-results" aria-expanded="false" aria-describedby="route-destination-coordinate route-error"></div><div id="route-results" class="search-results" hidden></div></div>
+            </div>
+            <p id="route-error" class="route-error" role="alert" hidden></p>
+            <button id="route-submit" class="sr-only" type="submit" disabled>Plan route</button>
+          </form>
+        </li>
+      </ol>
+
+      <div id="route-summary" class="route-summary" hidden>
+        <span id="route-distance-label">SAFEST ROUTE</span><strong id="route-distance">—</strong>
+        <p id="route-hazard-note" class="route-hazard-note" hidden></p>
+      </div>
+      <section id="eva-card" class="eva-card" aria-labelledby="eva-verdict" hidden>
+        <div class="eva-travel" role="group" aria-label="How the crew travels"><button type="button" data-travel="foot" aria-pressed="true">On foot</button><button type="button" data-travel="rover" aria-pressed="false">By rover</button></div>
+        <div class="eva-head"><b id="eva-verdict" class="eva-verdict">—</b><span id="eva-title">FLIGHT · ON BOARD</span></div>
+        <p id="eva-headline" class="eva-headline"></p>
+        <p id="eva-alert" class="eva-alert" role="alert" hidden></p>
+        <ul id="eva-poll" class="eva-poll" aria-label="GO / NO-GO poll"></ul>
+        <button id="live-start" class="live-start" type="button" disabled><span>▶ Start the walk</span><b>LIVE</b></button>
+        <div class="eva-total"><strong id="eva-total">—</strong><span id="eva-total-note">round trip</span></div>
+        <div id="eva-bar" class="eva-bar" role="img" aria-label="Suit time used"></div>
+        <ul class="eva-bar-key"><li><i class="k-out"></i>Out</li><li><i class="k-sci"></i>Science</li><li><i class="k-back"></i>Back</li><li><i class="k-res"></i>Reserve</li></ul>
+        <button id="eva-proof" class="eva-proof" type="button" title="Open the Rover check"><span>✓</span> Slope map checked against Perseverance: off by <b id="eva-proof-mae">1.5°</b> on average over <b id="eva-proof-n">588</b> rover stops</button>
+        <div class="eva-sun"><label class="eva-start"><span>Leave at</span><input id="eva-start" type="range" min="5" max="17" step="0.25" value="9" aria-label="Start time, Mars local time"><output id="eva-start-out">09:00</output></label><p id="eva-sun-note">—</p></div>
+        <div class="eva-return"><button id="eva-range" class="eva-return-toggle" type="button" aria-pressed="false"><span>Show safe-return zone</span></button><p>Blue: you can get there and back. Dark: too far to return.</p></div>
+        <div id="eva-stations" class="eva-stations" hidden><span>TRAVERSE STATIONS</span><ol id="eva-stations-list"></ol></div>
+        <div id="eva-photos" class="eva-sites eva-photos" hidden><span>WHAT THE GROUND LOOKS LIKE</span><p id="eva-photos-note" class="eva-cond-note"></p><div id="eva-photo-strip" class="eva-photo-strip"></div></div>
+      </section>
+      <div id="walk-actions" class="walk-actions">
+        <button id="journey-start" class="route-primary journey-entry" type="button" disabled>Walk it in 3D <span>↗</span></button>
+        <p id="journey-entry-note" class="journey-entry-note"></p>
+        <button id="sheet-open" class="sheet-open" type="button">Traverse sheet <span>↗</span></button>
+        <div class="route-file-actions"><button id="route-save" type="button" disabled>Save</button><button id="route-fit" type="button">See whole route</button><button id="route-clear" type="button" disabled>Start over</button></div>
+      </div>
+
+      <details id="walk-details" class="walk-details">
+        <summary>Mission details</summary>
+        <div class="route-mode" role="group" aria-label="Route type"><button type="button" data-route-mode="safe" aria-pressed="true">Safest walk</button><button type="button" data-route-mode="direct" aria-pressed="false">Straight line</button></div>
+        <div id="route-hazard" class="route-hazard" hidden>
+          <span class="walk-details-label">GROUND ALONG THE ROUTE</span>
+          <div id="route-hazard-bar" class="hazard-bar" role="img" aria-label="Share of the route in each slope class"></div>
+          <div id="route-profile" class="profile-chart"></div>
+          <dl><div><dt>Steepest</dt><dd id="route-max-slope">—</dd></div><div><dt>Climb</dt><dd id="route-ascent">—</dd></div><div><dt>Descent</dt><dd id="route-descent">—</dd></div><div><dt>Easy</dt><dd id="route-easy">—</dd></div></dl>
+          <p id="route-compare" class="route-compare" hidden></p>
+        </div>
+        <div id="eva-more" hidden>
+          <dl class="eva-stats">
+            <div><dt>Walk out</dt><dd id="eva-out">—</dd></div>
+            <div><dt>Walk back</dt><dd id="eva-back">—</dd></div>
+            <div><dt>Science stops</dt><dd id="eva-stops">—</dd></div>
+            <div><dt>Energy</dt><dd id="eva-energy">—</dd></div>
+            <div><dt>Oxygen used</dt><dd id="eva-oxygen">—</dd></div>
+            <div><dt>Radiation</dt><dd id="eva-dose">—</dd></div>
+            <div><dt>Farthest from base</dt><dd id="eva-shelter">—</dd></div>
+            <div><dt>Walk-back margin</dt><dd id="eva-margin">—</dd></div>
+          </dl>
+          <div id="eva-space" class="eva-space" data-level="pending"><strong id="eva-space-status">Checking for solar storms…</strong></div>
+          <p id="eva-space-detail" class="eva-cond-note"></p>
+          <div id="eva-conditions" class="eva-conditions" hidden>
+            <span>WEATHER</span>
+            <p id="eva-dust" class="eva-dust" hidden>Dust-storm season. Check the dust forecast before going out.</p>
+            <dl><div><dt id="eva-season-title">—</dt><dd><ul id="eva-season"></ul></dd></div><div><dt id="eva-latest-title">—</dt><dd id="eva-latest"></dd></div></dl>
+            <p id="eva-jezero" class="eva-cond-note"></p>
+          </div>
+          <div id="eva-sites" class="eva-sites" hidden><span>SCIENCE STOPS</span><ul id="eva-site-list"></ul></div>
+          <div id="eva-geology" class="eva-sites eva-geology" hidden><span id="eva-geology-title">ROCKS UNDERFOOT · USGS</span><ul id="eva-geology-list"></ul><p id="eva-geology-note" class="eva-cond-note"></p></div>
+          <div class="eva-actions"><button data-open-ar class="text-button" type="button">Walk it in AR <span>↗</span></button><button id="eva-pack" class="text-button" type="button">Save for offline <span>↓</span></button><button id="route-export" class="text-button" type="button" disabled>Export file <span>↓</span></button></div><p id="eva-pack-status" class="eva-cond-note" role="status" hidden></p>
+          <details class="eva-assumptions"><summary>Crew and suit settings</summary>
+            <div class="eva-inputs">
+              <label>Crew mass <span><input data-eva="crewMass" type="number" min="40" max="130" step="1"> kg</span></label>
+              <label>Suit + life support <span><input data-eva="suitMass" type="number" min="20" max="150" step="1"> kg</span></label>
+              <label>Tools carried <span><input data-eva="toolMass" type="number" min="0" max="60" step="1"> kg</span></label>
+              <label>Walking speed <span><input data-eva="flatSpeed" type="number" min="0.3" max="1.6" step="0.05"> m/s</span></label>
+              <label>Suit time <span><input data-eva="budgetHours" type="number" min="1" max="10" step="0.5"> h</span></label>
+              <label>Reserve <span><input data-eva="reserveMinutes" type="number" min="0" max="180" step="5"> min</span></label>
+              <label>Per science stop <span><input data-eva="stopMinutes" type="number" min="0" max="180" step="5"> min</span></label>
+              <label>Terrain factor <span><input data-eva="terrain" type="number" min="1" max="2.5" step="0.1"> η</span></label>
+              <label>NASA API key <span><input id="eva-nasa-key" type="text" placeholder="DEMO_KEY" autocomplete="off" spellcheck="false" style="width:120px;text-align:left"></span></label>
+            </div>
+            <p>Speed: Tobler hiking function. Energy: Pandolf equation at Mars gravity. Oxygen: 20.1 kJ per litre. Radiation: 0.64 mSv/sol (Curiosity RAD). Planning estimates, not flight rules.</p>
+          </details>
+        </div>
+        <div class="route-ground"><p id="route-ground-message"></p><div id="route-ground-list"></div><button id="route-browse-ground" class="text-button" type="button">Rover 360° photos <span>↗</span></button></div>
+        <p id="route-footer-note" class="route-footer-note"></p>
+      </details>
+    </aside>
+    <aside id="live-panel" class="discovery-panel live-panel" aria-label="Mission Control, live walk" hidden>
+      <div class="panel-eyebrow"><span>MISSION CONTROL · ON BOARD</span><button id="live-close" class="icon-button panel-close" type="button" aria-label="End the live walk"><span>×</span></button></div>
+      <div class="live-clock"><div><span>WALK TIME</span><strong id="live-elapsed">00:00:00</strong></div>
+        <div class="live-speed" role="group" aria-label="Simulation speed"><button type="button" data-live-speed="0" aria-pressed="false" title="Pause">❚❚</button><button type="button" data-live-speed="60" aria-pressed="false">60×</button><button type="button" data-live-speed="300" aria-pressed="true">300×</button><button type="button" data-live-speed="900" aria-pressed="false">900×</button></div></div>
+      <p id="live-phase" class="live-phase" role="status">—</p>
+      <div id="live-track" class="live-track" role="img" aria-label="Progress through the walk"><i id="live-track-fill"></i></div>
+      <dl class="live-gauges">
+        <div><dt>Suit time left</dt><dd id="live-suit">—</dd></div>
+        <div id="live-home-box"><dt>Way home</dt><dd id="live-home">—</dd></div>
+        <div id="live-margin-box"><dt>Spare</dt><dd id="live-margin">—</dd></div>
+        <div id="live-radio-box"><dt>Radio to base</dt><dd id="live-radio">—</dd></div>
+      </dl>
+      <p class="live-earth">Asking Houston takes <b id="live-earth-delay">—</b>. The map answers now.</p>
+      <div id="live-drills" class="live-drills"><span>THROW A PROBLEM AT IT</span>
+        <div><button type="button" data-drill="storm">☀ Solar storm</button><button type="button" data-drill="leak">Suit leak</button><button type="button" data-drill="injury">Injury</button><button type="button" data-drill="rover" hidden>Rover dies</button></div>
+      </div>
+      <section id="live-directive" class="live-directive" aria-live="assertive" hidden>
+        <span id="live-directive-tag">FLIGHT · ON BOARD</span>
+        <strong id="live-directive-title"></strong>
+        <p id="live-directive-text"></p>
+        <p id="live-directive-count" class="live-count" hidden></p>
+        <p id="live-directive-cover" class="live-cover" hidden></p>
+        <small id="live-directive-time"></small>
+      </section>
+      <button id="live-again" class="live-again" type="button" hidden>Run the walk again</button>
+    </aside>
+    <div id="live-banner" class="live-banner" role="status" hidden><span id="live-banner-tag"></span><strong id="live-banner-title"></strong></div>
+    <div id="route-pick-banner" class="route-pick-banner" role="status" hidden><span class="route-pick-dot" aria-hidden="true"></span><span id="route-pick-message"></span><button id="route-cancel-pick" type="button">Cancel <span>×</span></button></div>
+
+    <div class="view-context"><span class="status-dot"></span><strong id="view-mode-label">ORBITAL VIEW</strong><select id="terrain-angle" aria-label="Terrain viewing angle" hidden><option value="-22">Low angle</option><option value="-40">Raised view</option><option value="-65">Overview</option></select><span id="terrain-travel" hidden><button id="route-reset" type="button" title="Return to pin A">↤ Start</button><button id="route-step" type="button">Forward 50 m →</button><span id="route-progress"></span></span><button id="retry-tiles" type="button" title="Retry surface imagery">↻ Detail</button><button id="map-view-button" type="button" hidden>Top-down ↗</button></div>
+    <div class="map-quick-actions" role="group" aria-label="Route shortcuts"><button id="quick-pin" type="button">＋ Drop pin</button><button id="quick-route" type="button">＋ Plan a walk</button><button id="quick-fit" type="button" hidden>See route</button></div>
+    <div class="view-tools" role="group" aria-label="Globe navigation">
+      <button id="north-button" class="compass-button" type="button" title="Reset north" aria-label="Reset north"><span>N</span><svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><path d="m16 3 5 14-5-3-5 3L16 3Z" fill="currentColor"/><path d="m16 29 5-14-5 3-5-3 5 14Z" fill="currentColor" opacity=".25"/></svg></button>
+      <div class="tool-stack"><button id="zoom-in" class="icon-button" type="button" aria-label="Zoom in" title="Zoom in"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5v14" stroke="currentColor" stroke-linecap="round"/></svg></button><span></span><button id="zoom-out" class="icon-button" type="button" aria-label="Zoom out" title="Zoom out"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12h14" stroke="currentColor" stroke-linecap="round"/></svg></button></div>
+      <div class="tool-stack"><button id="home-button" class="icon-button" type="button" aria-label="Return to global view" title="Whole planet"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="currentColor"/><ellipse cx="12" cy="12" rx="3.5" ry="8" stroke="currentColor"/><path d="M4 12h16" stroke="currentColor"/></svg></button><span></span><button id="fullscreen-button" class="icon-button" type="button" aria-label="Toggle fullscreen" title="Fullscreen"><svg viewBox="0 0 24 24" fill="none"><path d="M8 4H4v4m12-4h4v4M4 16v4h4m12-4v4h-4" stroke="currentColor" stroke-linecap="round"/></svg></button></div>
+    </div>
+
+    <div class="bottom-controls">
+      <div class="layer-switcher" role="group" aria-label="Imagery layer"><span class="control-label">VIEW</span><button type="button" data-layer="viking" aria-pressed="true">Surface</button><button type="button" data-layer="themis" aria-pressed="false">Infrared</button><button type="button" data-layer="mola" aria-pressed="false">Relief</button><button type="button" data-layer="geology" aria-pressed="false" title="USGS geologic map of Mars (SIM 3292) via NASA Mars Trek">Geology</button></div>
+      <div class="layer-switcher overlay-switcher" role="group" aria-label="Map overlays"><span class="control-label">OVERLAY</span><button id="hazard-toggle" type="button" aria-pressed="false" title="Slope hazards from NASA/ESA/USGS elevation data">Slope hazards</button><button id="shield-toggle" type="button" aria-pressed="false" title="Where terrain hides the sky and blocks radiation">Storm shelter</button><button id="truth-toggle" type="button" aria-pressed="false" title="Check the slope map against Perseverance's measured tilt">Rover check</button></div>
+      <details class="map-options"><summary>Display</summary><div class="display-switcher">
+        <button id="lighting-button" type="button" aria-pressed="true" title="Orbital lighting. Click for neutral map colors."><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="4" stroke="currentColor"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.4 1.4m11.2 11.2L19 19M5 19l1.4-1.4M17.6 6.4 19 5" stroke="currentColor" stroke-linecap="round"/></svg><span>Globe light</span></button>
+        <button id="labels-toggle" type="button" aria-pressed="true" title="Show or hide landmark labels"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 17 12 5l5 12M9 13h6M4 20h16" stroke="currentColor" stroke-linecap="round"/></svg><span>Labels</span></button>
+        <button id="rotate-button" type="button" aria-pressed="false" title="Toggle orbital rotation"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M18.5 7a8 8 0 1 0 1.3 8M19 3v5h-5" stroke="currentColor" stroke-linecap="round"/></svg><span>Orbit</span></button>
+      </div></details>
+    </div>
+    <aside id="hazard-legend" class="hazard-legend" aria-label="Slope hazard legend" hidden><span class="control-label">SLOPE HAZARDS · WALKING</span><ul id="hazard-legend-items"></ul><p>How steep the ground is for walking.</p></aside>
+    <aside id="shield-panel" class="truth-panel shield-panel" aria-labelledby="shield-title" hidden>
+      <div class="truth-head"><span class="control-label">STORM SHELTER · SKY HIDDEN BY TERRAIN</span><button id="shield-close" class="icon-button" type="button" aria-label="Close storm shelter panel"><span>×</span></button></div>
+      <h2 id="shield-title">Where can the ground shield you?</h2>
+      <p class="truth-lede">Radiation comes down from the sky. A cliff that hides part of the sky blocks part of the dose. Brighter = more sky hidden.</p>
+      <div class="shield-here"><span>UNDER THE POINTER</span><strong id="shield-value">—</strong></div>
+      <div id="shield-stats" class="truth-stats"></div>
+      <p id="shield-note" class="truth-note"></p>
+      <div class="truth-actions"><button id="shield-fly" class="text-button" type="button">See the spot Curiosity measured <span>↗</span></button><a class="text-button" href="https://doi.org/10.1029/2021JE006851" target="_blank" rel="noopener noreferrer">RAD study <span>↗</span></a></div>
+    </aside>
+    <aside id="truth-panel" class="truth-panel" aria-labelledby="truth-title" hidden>
+      <div class="truth-head"><span class="control-label">GROUND TRUTH · PERSEVERANCE</span><button id="truth-close" class="icon-button" type="button" aria-label="Close ground-truth panel"><span>×</span></button></div>
+      <h2 id="truth-title">Does the map match what the rover felt?</h2>
+      <p class="truth-lede">We compared our slope map with how much Perseverance actually tilted on the ground.</p>
+      <p id="truth-live" class="truth-live"></p>
+      <div id="truth-stats" class="truth-stats"></div>
+      <div id="truth-chart" class="truth-chart"></div>
+      <p id="truth-note" class="truth-note"></p>
+      <div id="truth-second" class="truth-second" hidden><span class="control-label">SAME TEST, SECOND SITE · CURIOSITY AT GALE</span><p id="truth-second-text"></p></div>
+      <div class="truth-actions"><button id="truth-fly" class="text-button" type="button">Show the whole traverse <span>↗</span></button><a class="text-button" href="https://mars.nasa.gov/mmgis-maps/M20/Layers/json/M20_waypoints.json" target="_blank" rel="noopener noreferrer">NASA rover data <span>↗</span></a></div>
+    </aside>
+    <div class="navigation-hint">DRAG TO EXPLORE <span>·</span> SCROLL TO MOVE CLOSER</div>
+    <div class="scale" aria-label="Map scale"><span id="scale-label">1,000 km</span><span id="scale-line"></span></div>
+    <footer class="statusbar">
+      <div class="statusbar-source"><span id="tile-status">Preparing view</span><span class="status-separator">/</span><span id="source-credit">NASA / JPL / USGS</span></div>
+      <div id="mars-now" class="mars-now" aria-label="Current time and space weather at Jezero"></div>
+      <div class="coordinates" aria-label="Globe position"><span id="latitude">—° N</span><span id="longitude">—° E</span><span class="status-separator">/</span><span>ALT <strong id="altitude">— km</strong></span></div>
+    </footer>
+    <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+    <dialog id="photo-dialog" class="photo-dialog" aria-label="Perseverance ground photo">
+      <figure><img id="photo-image" alt="" referrerpolicy="no-referrer"><figcaption id="photo-caption"></figcaption></figure>
+      <div class="photo-nav"><button id="photo-prev" type="button" aria-label="Previous photo">‹ Prev</button><button id="photo-next" type="button" aria-label="Next photo">Next ›</button><span id="photo-count"></span><a id="photo-link" class="text-button" target="_blank" rel="noopener">NASA raw image page ↗</a><button id="photo-close" type="button">Close</button></div>
+    </dialog>
+    <div id="ground-map-context" hidden>
+      <div class="ground-map-label"><span>MAP / PHOTO LOCATION</span><h2 id="ground-map-title"></h2><p id="ground-map-station"></p></div>
+      <div id="ground-route-card" class="ground-route-card" hidden><span>YOUR ROUTE IS SAVED</span><strong id="ground-route-distance"></strong><button id="ground-show-route" type="button">Show route on map ↗</button></div>
+    </div>
+    <section id="ground-view" class="ground-view" aria-label="Recorded NASA ground photo" hidden>
+      <header class="ground-head"><div><span class="ground-eyebrow">NASA GROUND VIEW</span><h2 id="ground-title"></h2></div><button id="ground-close" class="ground-close" type="button">Back to map <span>×</span></button></header>
+      <div class="ground-location"><label for="ground-site-select">Photo site</label><select id="ground-site-select"><option value="jezero">Jezero · Perseverance</option><option value="gale">Gale · Curiosity</option></select><span>Recorded at this site only</span></div>
+      <div class="ground-stage">
+        <canvas id="ground-canvas" aria-hidden="true" hidden></canvas>
+        <div id="ground-look" tabindex="0" role="region" aria-label="Rover panorama. Drag or use arrow keys to look. Plus and minus zoom."></div>
+        <div class="ground-photo-caption"><p id="ground-caption"></p><span>Drag to look around</span></div>
+        <div id="ground-loading" class="ground-loading" role="status"><span class="ground-spinner" aria-hidden="true"></span><p id="ground-loading-text"></p><button id="ground-retry" type="button" hidden>Try again</button></div>
+      </div>
+      <footer class="ground-footer"><a id="ground-credit" target="_blank" rel="noopener noreferrer"></a><div id="ground-photo-controls" role="group" aria-label="Photo controls"><button id="ground-zoom-out" type="button" aria-label="Zoom out of photo">−</button><button id="ground-reset" type="button">Reset</button><button id="ground-zoom-in" type="button" aria-label="Zoom into photo">+</button></div></footer>
+      <p id="ground-status" class="sr-only" role="status" aria-live="polite"></p>
+    </section>
+    <section id="journey-view" class="journey-view" aria-label="First-person surface journey" hidden>
+      <div id="journey-look" tabindex="0" role="region" aria-label="First-person Mars map. Drag to look. W A S D or hold the movement buttons to move. Arrow keys look. Escape returns to map."></div>
+      <header class="journey-top"><button id="journey-close" class="ground-close" type="button">← Back to map</button><div><span>FIRST-PERSON JOURNEY</span><strong id="journey-heading">000° N</strong></div><span class="journey-chips"><button id="journey-hazards" class="journey-beta journey-chip" data-hazard-toggle type="button" aria-pressed="false">Slope hazards</button><button id="journey-hud-toggle" class="journey-beta journey-chip" type="button" aria-pressed="true" title="Helmet heads-up display (H)">Helmet HUD</button><span class="journey-beta" title="Real measured elevation under the camera">3D TERRAIN</span></span></header>
+      <aside class="journey-overview" aria-label="North-up route overview"><span>YOUR TRAIL <b>N ↑</b></span><svg viewBox="0 0 160 160" role="img" aria-label="Route A to B with your preview position"><path id="journey-map-path" fill="none" stroke="#ff9c4c" stroke-width="2"/><g id="journey-map-a"><circle r="5" fill="#ff9c4c"/><text y="-11" text-anchor="middle">A</text></g><g id="journey-map-b"><circle r="5" fill="#fef3e2"/><text y="-11" text-anchor="middle">B</text></g><g id="journey-map-you"><circle r="10" fill="#20150f" stroke="#f2b58c"/><path id="journey-map-arrow" d="M0 -7 5 5 0 2 -5 5Z" fill="#ff9c4c"/></g></svg><p id="journey-coordinate"></p></aside>
+      <div class="journey-console">
+        <div class="journey-guidance"><div class="journey-bearing"><svg id="journey-pointer" viewBox="0 0 40 40" aria-hidden="true"><path d="M20 5 33 33 20 26 7 33Z" fill="currentColor"/></svg></div><div><span id="journey-instruction">Follow the trail</span><h2 id="journey-destination">Destination B</h2><p><strong id="journey-remaining"></strong> <span id="journey-waypoint"></span></p></div></div>
+        <div class="journey-progress"><div><span id="journey-progress-label">0% complete</span><span id="journey-offtrail">On trail</span></div><progress id="journey-progress-bar" value="0" max="1" aria-label="Route progress"></progress><div id="journey-profile" class="profile-chart journey-profile"></div><button id="journey-face" type="button">Face trail ↗</button><button id="journey-reset" type="button">Return to A</button></div>
+        <div class="journey-actions"><div><button id="journey-follow" class="journey-primary" type="button" aria-pressed="false">Follow trail <span>→</span></button><button id="journey-step" class="journey-secondary" type="button">Step 25 m ↑</button></div><div class="journey-settings"><label>Preview speed <select id="journey-speed"><option value="1.4">1× · 1.4 m/s</option><option value="14">10× · 14 m/s</option><option value="140">100× · 140 m/s</option></select></label><label>View height <select id="journey-height"><option value="auto" selected>Clarity view · Auto</option><option value="2">Eye level · 2 m</option><option value="15">Terrain view · 15 m</option><option value="60">Overview · 60 m</option></select></label></div></div>
+        <div class="journey-foot"><span>W A S D to move · drag to look · <kbd>Space</kbd> pause</span><button id="journey-log" class="log-secondary" type="button">Record observation</button><span id="journey-slope">Measured terrain</span></div>
+      </div>
+      <div class="journey-move" role="group" aria-label="Hold to move"><button data-move="forward" type="button" aria-label="Move forward">↑</button><button data-move="left" type="button" aria-label="Move left">←</button><button data-move="backward" type="button" aria-label="Move backward">↓</button><button data-move="right" type="button" aria-label="Move right">→</button></div>
+      <div id="journey-source-line" class="journey-source-line"><a id="journey-source" target="_blank" rel="noopener noreferrer"></a><span id="journey-detail"></span></div>
+      <div id="hud" class="hud" aria-label="Helmet heads-up display" data-plan="no">
+        <div class="hud-visor" aria-hidden="true"></div>
+        <div class="hud-compass"><div class="hud-tape-window"><div id="hud-tape" class="hud-tape"></div><i id="hud-base-mark" class="hud-mark hud-mark-base" title="Base">▲ BASE</i><i id="hud-sci-mark" class="hud-mark hud-mark-sci" title="Next science stop">◆ SCI</i></div><b id="hud-heading">000°</b></div>
+        <div class="hud-left">
+          <div class="hud-block"><span class="hud-label">SUIT · TIME LEFT</span><strong id="hud-suit">—</strong><div class="hud-bar"><i id="hud-suit-bar"></i></div><small id="hud-elapsed"></small><small id="hud-o2"></small></div>
+          <div id="hud-walkback" class="hud-block" data-level="unknown"><span class="hud-label">CAN I GET HOME?</span><strong id="hud-margin">—</strong><small id="hud-home"></small></div>
+        </div>
+        <div class="hud-right">
+          <div class="hud-block"><span class="hud-label">STATUS</span><strong id="hud-verdict" data-level="warn">—</strong><small id="hud-dest"></small></div>
+          <div id="hud-sci" class="hud-block hud-sci" hidden><span class="hud-label">NEXT SCIENCE</span><strong id="hud-sci-name"></strong><small id="hud-sci-info"></small></div>
+          <div id="hud-slope-box" class="hud-block"><span class="hud-label">SLOPE UNDERFOOT</span><strong id="hud-slope">—</strong><small id="hud-slope-class"></small></div>
+          <div class="hud-block"><small id="hud-sun"></small><small id="hud-space" data-level="unknown"></small></div>
+        </div>
+        <p id="hud-plan-note" class="hud-plan-note">Plan a Safest walk in Routes for suit, walk-back and science readouts.</p>
+        <div class="hud-reticle" aria-hidden="true"></div>
+      </div>
+      <div id="journey-loading" class="journey-loading" role="status" hidden><span class="ground-spinner" aria-hidden="true"></span><p id="journey-loading-text">Loading the ground beneath your route</p><button id="journey-cancel" type="button">Back to map</button></div>
+      <p id="journey-status" class="sr-only" role="status" aria-live="polite"></p>
+    </section>
+    <section id="briefing" class="briefing" role="dialog" aria-labelledby="briefing-title" hidden>
+      <div class="briefing-card">
+        <p class="briefing-eyebrow">EARTH ⇄ MARS · RADIO DELAY RIGHT NOW</p>
+        <strong id="briefing-delay" class="briefing-delay">—</strong>
+        <h2 id="briefing-title">Houston can't answer in time.</h2>
+        <p class="briefing-text">Ask a question on Mars and the answer comes back <b id="briefing-round">—</b> later. On a Marswalk, the map has to make the call.</p>
+        <div class="briefing-actions"><button id="briefing-run" class="briefing-primary" type="button">▶ Run a Marswalk</button><button id="briefing-skip" class="briefing-secondary" type="button">Explore the map</button></div>
+        <p class="briefing-foot">MartisDux is Mission Control on board. Built on NASA data.</p>
+      </div>
+    </section>
+    <div id="fatal-error" class="fatal-error" role="alert" hidden></div>
+  </main>
+
+  <button id="theme-toggle" class="theme-toggle" type="button" role="switch" aria-label="Dark appearance" aria-checked="true" title="Switch to light appearance">
+    <svg class="theme-sun" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="3.5" stroke="currentColor"/><path d="M12 2.5v2m0 15v2M2.5 12h2m15 0h2M5.3 5.3l1.4 1.4m10.6 10.6 1.4 1.4m0-13.4-1.4 1.4M6.7 17.3l-1.4 1.4" stroke="currentColor" stroke-linecap="round"/></svg>
+    <span class="theme-thumb" aria-hidden="true"></span>
+    <svg class="theme-moon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M19.5 15.3A8 8 0 0 1 8.7 4.5a8 8 0 1 0 10.8 10.8Z" stroke="currentColor" stroke-linejoin="round"/></svg>
+  </button>
+  <section id="loading-state" class="loader" data-loader aria-label="Launching MartisDux">
+    <canvas class="loader__canvas" data-loader-canvas aria-hidden="true"></canvas>
+    <div class="loader__frame">
+      <div class="loader__stage" data-loader-stage aria-hidden="true"></div>
+      <div class="loader__hud">
+        <p class="loader__step" data-loader-step role="status">Preparing the map</p>
+      </div>
+    </div>
+  </section>
+
+  <dialog id="ar-dialog" class="ar-dialog" aria-label="Life-size AR walk of the Jezero Marswalk"><button id="ar-close" class="icon-button ar-close" type="button" aria-label="Close AR view"><span>×</span></button><iframe id="ar-frame" title="Jezero Marswalk at life size" allow="xr-spatial-tracking; fullscreen"></iframe></dialog>
+  <dialog id="data-dialog" aria-labelledby="data-dialog-title"><div class="dialog-heading"><div><p class="eyebrow">THE MISSIONS BEHIND THE MAP</p><h2 id="data-dialog-title">A closer look<br>at the data.</h2></div><button id="data-close" class="icon-button" type="button" aria-label="Close data details"><span>×</span></button></div><div id="data-dialog-content"></div></dialog>
+  <dialog id="help-dialog" aria-labelledby="help-dialog-title"><div class="dialog-heading"><div><p class="eyebrow">HOW IT WORKS</p><h2 id="help-dialog-title">Quick guide</h2></div><button id="help-close" class="icon-button" type="button" aria-label="Close navigation help"><span>×</span></button></div><dl class="help-grid"><div><dt>Move around</dt><dd>Drag to spin Mars. Scroll or pinch to zoom.</dd></div><div><dt>Find a place</dt><dd>Type in the search bar, or press <kbd>/</kbd>.</dd></div><div><dt>Plan a walk</dt><dd>Open Walk. Pick a start, then a destination. You get a GO or NO-GO.</dd></div><div><dt>Change a route</dt><dd>Drag pin A or B on the map.</dd></div><div><dt>Run it live</dt><dd>Press Start the walk, then throw a problem at it: solar storm, suit leak, injury. The map makes the call and shows the way home.</dd></div><div><dt>Storm shelter</dt><dd>Shows where the ground hides part of the sky and blocks radiation.</dd></div><div><dt>Walk it in 3D</dt><dd>Use W A S D to move and drag to look. Esc goes back.</dd></div><div><dt>Rover photos</dt><dd>Open Photos to look around where Perseverance and Curiosity stood.</dd></div><div><dt>Start again</dt><dd>Use the globe control to reset the map, or choose Home in the sidebar.</dd></div></dl><button id="replay-opening" class="text-button replay-opening" type="button">Replay the opening sequence <span>↗</span></button><p class="dialog-footnote">All maps and photos are real NASA mission data.</p></dialog>
+  <dialog id="sheet-dialog" class="sheet-dialog" aria-label="Traverse sheet"><div class="sheet-bar"><button id="sheet-save" type="button">Save to Desktop</button><button id="sheet-close" type="button">Close ×</button></div><article id="sheet-body" class="sheet"></article></dialog>
+  <dialog id="saved-dialog" aria-labelledby="saved-title"><div class="dialog-heading"><div><p class="eyebrow">ON THIS DEVICE</p><h2 id="saved-title">Saved routes</h2></div><button id="saved-close" class="icon-button" type="button" aria-label="Close saved routes"><span>×</span></button></div><div id="saved-list"></div><div class="saved-footer"><button id="route-import" type="button">Import JSON ↑</button><input id="route-import-file" type="file" accept=".json,application/json" hidden><span id="saved-feedback" role="status"></span></div></dialog>
+  <script type="module" src="/src/launch.js"></script>
+</body>
+</html>

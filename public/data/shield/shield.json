@@ -1,0 +1,49 @@
+{
+ "title": "Sky hidden by terrain (natural radiation shelter)",
+ "method": "Horizon angle on 36 azimuths, observer 1.0 m above ground, planet curvature included. Value = fraction of the sky hemisphere below the horizon (mean of sin(horizon)).",
+ "encoding": "PNG value / 400 = sky blocked; 255 = no data",
+ "radius": 3396190.0,
+ "grids": [
+  {
+   "id": "jezero-context",
+   "site": "Jezero",
+   "file": "jezero-context.png",
+   "x0": 4577366.5,
+   "y0": 1106617.5,
+   "step": 16,
+   "width": 1338,
+   "height": 1343
+  },
+  {
+   "id": "jezero-landing",
+   "site": "Jezero",
+   "file": "jezero-landing.png",
+   "x0": 4589975.0,
+   "y0": 1094202.0,
+   "step": 2,
+   "width": 904,
+   "height": 904
+  },
+  {
+   "id": "quela",
+   "site": "Gale",
+   "file": "quela.png",
+   "x0": 8141372.492786024,
+   "y0": -278122.075189438,
+   "step": 1,
+   "width": 371,
+   "height": 371,
+   "rover": {
+    "lon": 137.3530064,
+    "lat": -4.69520223,
+    "mapValue": 0.1877
+   }
+  }
+ ],
+ "sources": [
+  "NASA/USGS Jezero HiRISE DTM (Mars 2020 TRN)",
+  "USGS MSL Gale merged DEM 1 m v3",
+  "Ehresmann et al. 2021, JGR Planets, 10.1029/2021JE006851",
+  "Guo et al. 2021, GRL, 10.1029/2021GL093912"
+ ]
+}

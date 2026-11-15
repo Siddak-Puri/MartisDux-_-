@@ -1,0 +1,474 @@
+{
+ "generated": "2026-11-10",
+ "title": "Candidate human landing sites / Exploration Zones (NASA workshop, 2015)",
+ "source": "https://ntrs.nasa.gov/api/citations/20160001040/downloads/20160001040.pdf",
+ "sourceSha256": "fe0776515e53d3ab55c9d575011af0a4304e35f5f97f29fd96185e5803b04d21",
+ "positions": "https://asc-planetarynames-data.s3.us-west-2.amazonaws.com/MARS_nomenclature_center_pts.zip",
+ "method": "Names and latitudes from Bussey & Hoffman (2016) Appendix D; marker at the IAU/USGS Gazetteer feature centre when within 3\u00b0 latitude of the proposal. Regional proposals without a single named feature are omitted.",
+ "sites": [
+  {
+   "ez": 3,
+   "name": "Gale Crater",
+   "proposalLat": -4.5,
+   "lat": -5.3672,
+   "lon": 137.811,
+   "feature": "Gale",
+   "type": "Crater, craters",
+   "abstracts": [
+    1020,
+    1022,
+    1040
+   ],
+   "gazetteer": "https://planetarynames.wr.usgs.gov/Feature/2071"
+  },
+  {
+   "ez": 4,
+   "name": "Meridiani Planum",
+   "proposalLat": 0.5,
+   "lat": -0.04,
+   "lon": -3.14,
+   "feature": "Meridiani Planum",
+   "type": "Planum, plana",
+   "abstracts": [
+    1030
+   ],
+   "gazetteer": "https://planetarynames.wr.usgs.gov/Feature/3854"
+  },
+  {
+   "ez": 5,
+   "name": "Hebrus Valles",
+   "proposalLat": 20.0,
+   "lat": 19.8793,
+   "lon": 126.7387,
+   "feature": "Hebrus Valles",
+   "type": "Vallis, valles",
+   "abstracts": [
+    1012
+   ],
+   "gazetteer": "https://planetarynames.wr.usgs.gov/Feature/2404"
+  },
+  {
+   "ez": 6,
+   "name": "Jezero Crater",
+   "proposalLat": 17.5,
+   "lat": 18.4082,
+   "lon": 77.6873,
+   "feature": "Jezero",
+   "type": "Crater, craters",
+   "abstracts": [
+    1034
+   ],
+   "gazetteer": "https://planetarynames.wr.usgs.gov/Feature/14300"
+  },
+  {
+   "ez": 7,
+   "name": "Mawrth Vallis",
+   "proposalLat": 24.5,
+   "lat": 22.4304,
+   "lon": -16.9726,
+   "feature": "Mawrth Vallis",
+   "type": "Vallis, valles",
+   "abstracts": [
+    1009
+   ],
+   "gazetteer": "https://planetarynames.wr.usgs.gov/Feature/3763"
+  },
+  {
+   "ez": 8,
+   "name": "Apollinaris Sulci",
+   "proposalLat": -12.5,
+   "lat": -11.0642,
+   "lon": 177.4663,
+   "feature": "Apollinaris Sulci",
+   "type": "Sulcus, sulci",
+   "abstracts": [
+    1043
+   ],
+   "gazetteer": "https://planetarynames.wr.usgs.gov/Feature/324"
+  },
+  {
+   "ez": 11,
+   "name": "Gusev Crater",
+   "proposalLat": -14.5,
+   "lat": -14.5308,
+   "lon": 175.5244,
+   "feature": "Gusev",
+   "type": "Crater, craters",
+   "abstracts": [
+    1008
+   ],
+   "gazetteer": "https://planetarynames.wr.usgs.gov/Feature/2289"
+  },
+  {
+   "ez": 12,
+   "name": "Nili Fossae",
+   "proposalLat": 22.0,
+   "lat": 22.0182,
+   "lon": 76.6948,
+   "feature": "Nili Fossae",
+   "type": "Fossa, fossae",
+   "abstracts": [
+    1010
+   ],
+   "gazetteer": "https://planetarynames.wr.usgs.gov/Feature/4271"
+  },
+  {
+   "ez": 13,
+   "name": "Melas Chasma",
+   "proposalLat": -12.0,
+   "lat": -10.5178,
+   "lon": -72.5387,
+   "feature": "Melas Chasma",
+   "type": "Chasma, chasmata",
+   "abstracts": [
+    1007
+   ],
+   "gazetteer": "https://planetarynames.wr.usgs.gov/Feature/3812"
+  },
+  {
+   "ez": 14,
+   "name": "Firsoff Crater",
+   "proposalLat": 0.0,
+   "lat": 2.7345,
+   "lon": -9.3745,
+   "feature": "Firsoff",
+   "type": "Crater, craters",
+   "abstracts": [
+    1026
+   ],
+   "gazetteer": "https://planetarynames.wr.usgs.gov/Feature/14782"
+  },
+  {
+   "ez": 15,
+   "name": "Hypanis Valles",
+   "proposalLat": 12.0,
+   "lat": 9.4627,
+   "lon": -46.4157,
+   "feature": "Hypanis Valles",
+   "type": "Vallis, valles",
+   "abstracts": [
+    1051
+   ],
+   "gazetteer": "https://planetarynames.wr.usgs.gov/Feature/2609"
+  },
+  {
+   "ez": 16,
+   "name": "Hadriacus Palus",
+   "proposalLat": -27.0,
+   "lat": -27.2473,
+   "lon": 77.2969,
+   "feature": "Hadriacus Palus",
+   "type": "Palus, paludes",
+   "abstracts": [
+    1052
+   ],
+   "gazetteer": "https://planetarynames.wr.usgs.gov/Feature/15151"
+  },
+  {
+   "ez": 18,
+   "name": "Acheron Fossae",
+   "proposalLat": 40.0,
+   "lat": 38.2742,
+   "lon": -135.0238,
+   "feature": "Acheron Fossae",
+   "type": "Fossa, fossae",
+   "abstracts": [
+    1011
+   ],
+   "gazetteer": "https://planetarynames.wr.usgs.gov/Feature/35"
+  },
+  {
+   "ez": 19,
+   "name": "Ismenius Cavus",
+   "proposalLat": 33.5,
+   "lat": 33.8981,
+   "lon": 17.075,
+   "feature": "Ismenius Cavus",
+   "type": "Cavus, cavi",
+   "abstracts": [
+    1027
+   ],
+   "gazetteer": "https://planetarynames.wr.usgs.gov/Feature/14592"
+  },
+  {
+   "ez": 20,
+   "name": "Newton Crater",
+   "proposalLat": -40.5,
+   "lat": -40.502,
+   "lon": -158.0288,
+   "feature": "Newton",
+   "type": "Crater, craters",
+   "abstracts": [
+    1015
+   ],
+   "gazetteer": "https://planetarynames.wr.usgs.gov/Feature/4236"
+  },
+  {
+   "ez": 21,
+   "name": "Cerberus",
+   "proposalLat": 10.0,
+   "lat": 11.2766,
+   "lon": 166.3738,
+   "feature": "Cerberus Fossae",
+   "type": "Fossa, fossae",
+   "abstracts": [
+    1017
+   ],
+   "gazetteer": "https://planetarynames.wr.usgs.gov/Feature/1109"
+  },
+  {
+   "ez": 25,
+   "name": "McLaughlin Crater",
+   "proposalLat": 22.0,
+   "lat": 21.8966,
+   "lon": -22.367,
+   "feature": "McLaughlin",
+   "type": "Crater, craters",
+   "abstracts": [
+    1025
+   ],
+   "gazetteer": "https://planetarynames.wr.usgs.gov/Feature/3782"
+  },
+  {
+   "ez": 26,
+   "name": "Hale Crater",
+   "proposalLat": -36.0,
+   "lat": -35.6879,
+   "lon": -36.3616,
+   "feature": "Hale",
+   "type": "Crater, craters",
+   "abstracts": [
+    1028
+   ],
+   "gazetteer": "https://planetarynames.wr.usgs.gov/Feature/2322"
+  },
+  {
+   "ez": 27,
+   "name": "Huygens Crater",
+   "proposalLat": -13.5,
+   "lat": -13.8819,
+   "lon": 55.5817,
+   "feature": "Huygens",
+   "type": "Crater, craters",
+   "abstracts": [
+    1032
+   ],
+   "gazetteer": "https://planetarynames.wr.usgs.gov/Feature/2596"
+  },
+  {
+   "ez": 29,
+   "name": "Coprates Chasma",
+   "proposalLat": -11.5,
+   "lat": -13.3654,
+   "lon": -60.7385,
+   "feature": "Coprates Chasma",
+   "type": "Chasma, chasmata",
+   "abstracts": [
+    1036
+   ],
+   "gazetteer": "https://planetarynames.wr.usgs.gov/Feature/1302"
+  },
+  {
+   "ez": 32,
+   "name": "Columbus Crater",
+   "proposalLat": -29.0,
+   "lat": -29.2933,
+   "lon": -165.9821,
+   "feature": "Columbus",
+   "type": "Crater, craters",
+   "abstracts": [
+    1041
+   ],
+   "gazetteer": "https://planetarynames.wr.usgs.gov/Feature/1274"
+  },
+  {
+   "ez": 33,
+   "name": "Sinus Meridiani",
+   "proposalLat": -2.0,
+   "lat": -4.9416,
+   "lon": 0.0,
+   "feature": "Sinus Meridiani",
+   "type": "Albedo Feature",
+   "abstracts": [
+    1042
+   ],
+   "gazetteer": "https://planetarynames.wr.usgs.gov/Feature/5568"
+  },
+  {
+   "ez": 35,
+   "name": "Ausonia Cavus",
+   "proposalLat": -32.0,
+   "lat": -31.9201,
+   "lon": 96.5536,
+   "feature": "Ausonia Cavus",
+   "type": "Cavus, cavi",
+   "abstracts": [
+    1045
+   ],
+   "gazetteer": "https://planetarynames.wr.usgs.gov/Feature/480"
+  },
+  {
+   "ez": 36,
+   "name": "Kasei Valles",
+   "proposalLat": 25.0,
+   "lat": 25.1357,
+   "lon": -62.8784,
+   "feature": "Kasei Valles",
+   "type": "Vallis, valles",
+   "abstracts": [
+    1045
+   ],
+   "gazetteer": "https://planetarynames.wr.usgs.gov/Feature/2942"
+  },
+  {
+   "ez": 37,
+   "name": "Apollinaris Sulci (south)",
+   "proposalLat": -13.0,
+   "lat": -11.0642,
+   "lon": 177.4663,
+   "feature": "Apollinaris Sulci",
+   "type": "Sulcus, sulci",
+   "abstracts": [
+    1046
+   ],
+   "gazetteer": "https://planetarynames.wr.usgs.gov/Feature/324"
+  },
+  {
+   "ez": 38,
+   "name": "Aram Chaos",
+   "proposalLat": 2.5,
+   "lat": 2.5233,
+   "lon": -22.3916,
+   "feature": "Aram Chaos",
+   "type": "Chaos, chaoses",
+   "abstracts": [
+    1048
+   ],
+   "gazetteer": "https://planetarynames.wr.usgs.gov/Feature/339"
+  },
+  {
+   "ez": 39,
+   "name": "Noctis Landing",
+   "proposalLat": -6.5,
+   "lat": -6.3625,
+   "lon": -101.1889,
+   "feature": "Noctis Labyrinthus",
+   "type": "Labyrinthus, labyrinthi",
+   "abstracts": [
+    1050
+   ],
+   "gazetteer": "https://planetarynames.wr.usgs.gov/Feature/4324"
+  },
+  {
+   "ez": 40,
+   "name": "Protonilus Mensae",
+   "proposalLat": 42.0,
+   "lat": 43.8694,
+   "lon": 48.8636,
+   "feature": "Protonilus Mensae",
+   "type": "Mensa, mensae",
+   "abstracts": [
+    1053
+   ],
+   "gazetteer": "https://planetarynames.wr.usgs.gov/Feature/4852"
+  },
+  {
+   "ez": 43,
+   "name": "Endeavour Crater",
+   "proposalLat": -3.0,
+   "lat": -2.2836,
+   "lon": -5.1955,
+   "feature": "Endeavour",
+   "type": "Crater, craters",
+   "abstracts": [
+    1057
+   ],
+   "gazetteer": "https://planetarynames.wr.usgs.gov/Feature/14501"
+  },
+  {
+   "ez": 44,
+   "name": "Copernicus Crater",
+   "proposalLat": -49.0,
+   "lat": -48.8446,
+   "lon": -168.828,
+   "feature": "Copernicus",
+   "type": "Crater, craters",
+   "abstracts": [
+    1029
+   ],
+   "gazetteer": "https://planetarynames.wr.usgs.gov/Feature/1297"
+  }
+ ],
+ "omitted": [
+  {
+   "ez": 1,
+   "name": "Phlegra Dorsa",
+   "reason": "feature centre 25.1\u00b0 vs proposal 39.0\u00b0"
+  },
+  {
+   "ez": 2,
+   "name": "Southern Nectaris Fossae",
+   "reason": "feature centre -23.1\u00b0 vs proposal -29.0\u00b0"
+  },
+  {
+   "ez": 9,
+   "name": "Deuteronilus Mensae",
+   "reason": "feature centre 45.1\u00b0 vs proposal 39.0\u00b0"
+  },
+  {
+   "ez": 10,
+   "name": "Valles Marineris mouth",
+   "reason": "no single named feature"
+  },
+  {
+   "ez": 17,
+   "name": "Erebus Montes",
+   "reason": "feature centre 35.7\u00b0 vs proposal 39.0\u00b0"
+  },
+  {
+   "ez": 22,
+   "name": "Chryse Planitia (Viking 1)",
+   "reason": "feature centre 28.4\u00b0 vs proposal 22.5\u00b0"
+  },
+  {
+   "ez": 23,
+   "name": "Noachis Terra",
+   "reason": "no single named feature"
+  },
+  {
+   "ez": 24,
+   "name": "Equatorial Valles Marineris",
+   "reason": "no single named feature"
+  },
+  {
+   "ez": 28,
+   "name": "Mesopotamia",
+   "reason": "no single named feature"
+  },
+  {
+   "ez": 30,
+   "name": "Hellas rim",
+   "reason": "no single named feature"
+  },
+  {
+   "ez": 31,
+   "name": "Eastern Hellas",
+   "reason": "no single named feature"
+  },
+  {
+   "ez": 34,
+   "name": "Deuteronilus Mensae (north)",
+   "reason": "feature centre 45.1\u00b0 vs proposal 41.0\u00b0"
+  },
+  {
+   "ez": 41,
+   "name": "Eastern Valles Marineris",
+   "reason": "no single named feature"
+  },
+  {
+   "ez": 42,
+   "name": "Tempe Terra",
+   "reason": "feature centre 38.7\u00b0 vs proposal 42.0\u00b0"
+  }
+ ]
+}

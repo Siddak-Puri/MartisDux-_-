@@ -1,0 +1,65 @@
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: block;
+  background:
+    radial-gradient(circle, rgba(235, 242, 255, 0.9) 0 0.8px, transparent 1.4px) 11px 17px / 173px 139px,
+    radial-gradient(circle, rgba(235, 242, 255, 0.55) 0 0.6px, transparent 1.2px) 67px 83px / 97px 113px,
+    radial-gradient(circle, rgba(235, 242, 255, 0.75) 0 1.1px, transparent 1.8px) 131px 41px / 263px 229px,
+    #000;
+  color: #fef3e2;
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), visibility 0s linear 0.9s;
+}
+.loader.is-done { opacity: 0; visibility: hidden; }
+.loader.is-open { background: none; pointer-events: none; transition: none; }
+.is-loading body { overflow: hidden; }
+.loader__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  opacity: 0;
+  transition: opacity 0.7s ease-out;
+}
+.loader.has-helmet .loader__canvas { opacity: 1; }
+.loader__frame {
+  position: relative;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: clamp(1.1rem, 3.4vh, 2.2rem);
+  height: 100%;
+  padding-bottom: 2vh;
+}
+.loader__stage { position: relative; width: min(60vh, 86vw); height: min(60vh, 86vw); }
+.loader__stage::before {
+  content: '';
+  position: absolute;
+  inset: 36%;
+  border: 1px solid rgba(254, 243, 226, 0.14);
+  border-top-color: #ff9c4c;
+  border-radius: 50%;
+  animation: loader-orbit 1.6s linear infinite;
+  transition: opacity 0.5s ease-out;
+}
+.loader.has-helmet .loader__stage::before { opacity: 0; }
+.loader__hud {
+  display: grid;
+  justify-items: center;
+  gap: 0.55rem;
+  width: min(12rem, 58vw);
+  transition: opacity 0.35s ease-out, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.loader.is-exiting .loader__hud { opacity: 0; transform: translateY(0.5rem); }
+.loader__step {
+  margin: 0;
+  font-family: 'Martian Mono Variable', ui-monospace, Menlo, monospace;
+  font-stretch: 87.5%;
+}
+.loader__step { font-size: 0.62rem; white-space: nowrap; color: rgba(254, 243, 226, 0.6); }
+@keyframes loader-orbit { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .loader__stage::before { animation: none; }
+}

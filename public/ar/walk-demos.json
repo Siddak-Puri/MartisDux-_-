@@ -1,0 +1,233 @@
+{
+ "note": "Planned by MartisDux (slope-cost A* on the HiRISE DTM, 4 m grid). maxSlope is re-measured on the 1 m DEM over a 4 m baseline. Planning aid, not safety-certified.",
+ "demos": [
+  {
+   "id": "sid",
+   "tag": "SHORT",
+   "title": "First steps to Sid",
+   "rock": "Sid",
+   "sol": 377,
+   "base": {
+    "lat": 18.4446,
+    "lon": 77.4509,
+    "name": "Octavia E. Butler Landing (base)"
+   },
+   "dest": {
+    "lat": 18.4439016,
+    "lon": 77.4524344,
+    "name": "Sid · Ha’ahóni and Atsá cores"
+   },
+   "grid": "jezero-landing",
+   "step": 4,
+   "distance": 98,
+   "maxSlope": 4.7,
+   "plannerSlope": 3.5,
+   "points": [
+    {
+     "lat": 18.4446,
+     "lon": 77.4509
+    },
+    {
+     "lon": 77.4508971251167,
+     "lat": 18.44460698547008
+    },
+    {
+     "lon": 77.45244922076365,
+     "lat": 18.443932161275754
+    },
+    {
+     "lat": 18.4439016,
+     "lon": 77.4524344
+    }
+   ]
+  },
+  {
+   "id": "rochette",
+   "tag": "TRY",
+   "title": "Rochette, the first rock cores",
+   "rock": "Rochette",
+   "sol": 194,
+   "base": {
+    "lat": 18.4446,
+    "lon": 77.4509,
+    "name": "Octavia E. Butler Landing (base)"
+   },
+   "dest": {
+    "lat": 18.4307394,
+    "lon": 77.4443657,
+    "name": "Rochette · first rock cores"
+   },
+   "grid": "jezero-landing",
+   "step": 4,
+   "distance": 902,
+   "maxSlope": 12,
+   "plannerSlope": 9,
+   "points": [
+    {
+     "lat": 18.4446,
+     "lon": 77.4509
+    },
+    {
+     "lon": 77.4508971251167,
+     "lat": 18.44460698547008
+    },
+    {
+     "lon": 77.44435133043176,
+     "lat": 18.43090805432529
+    },
+    {
+     "lon": 77.44435133043176,
+     "lat": 18.430773089486426
+    },
+    {
+     "lat": 18.4307394,
+     "lon": 77.4443657
+    }
+   ]
+  },
+  {
+   "id": "brac",
+   "tag": "SÉÍTAH",
+   "title": "Brac, in South Séítah",
+   "rock": "Brac",
+   "sol": 262,
+   "base": {
+    "lat": 18.4446,
+    "lon": 77.4509,
+    "name": "Octavia E. Butler Landing (base)"
+   },
+   "dest": {
+    "lat": 18.4339641,
+    "lon": 77.4430192,
+    "name": "Brac · Salette and Coulettes cores"
+   },
+   "grid": "jezero-landing",
+   "step": 4,
+   "distance": 792,
+   "maxSlope": 11.9,
+   "plannerSlope": 8,
+   "points": [
+    {
+     "lat": 18.4446,
+     "lon": 77.4509
+    },
+    {
+     "lon": 77.4508971251167,
+     "lat": 18.44460698547008
+    },
+    {
+     "lon": 77.45076216027785,
+     "lat": 18.44291992498427
+    },
+    {
+     "lon": 77.44806286350054,
+     "lat": 18.439208391915486
+    },
+    {
+     "lon": 77.4430016820431,
+     "lat": 18.43394476319975
+    },
+    {
+     "lat": 18.4339641,
+     "lon": 77.4430192
+    }
+   ]
+  },
+  {
+   "id": "issole",
+   "tag": "FAR",
+   "title": "Issole, the longest walk",
+   "rock": "Issole",
+   "sol": 298,
+   "base": {
+    "lat": 18.4446,
+    "lon": 77.4509,
+    "name": "Octavia E. Butler Landing (base)"
+   },
+   "dest": {
+    "lat": 18.4326606,
+    "lon": 77.441373,
+    "name": "Issole · Robine and Malay cores"
+   },
+   "grid": "jezero-landing",
+   "step": 4,
+   "distance": 916,
+   "maxSlope": 7.4,
+   "plannerSlope": 5.9,
+   "points": [
+    {
+     "lat": 18.4446,
+     "lon": 77.4509
+    },
+    {
+     "lon": 77.4508971251167,
+     "lat": 18.44460698547008
+    },
+    {
+     "lon": 77.45076216027785,
+     "lat": 18.44291992498427
+    },
+    {
+     "lon": 77.44806286350054,
+     "lat": 18.439208391915486
+    },
+    {
+     "lon": 77.44765796898395,
+     "lat": 18.438803497398887
+    },
+    {
+     "lon": 77.44759048656452,
+     "lat": 18.438736014979458
+    },
+    {
+     "lon": 77.44745552172564,
+     "lat": 18.438601050140594
+    },
+    {
+     "lon": 77.44738803930622,
+     "lat": 18.43853356772116
+    },
+    {
+     "lon": 77.44387895349574,
+     "lat": 18.434822034652374
+    },
+    {
+     "lon": 77.44266426994595,
+     "lat": 18.434282175296914
+    },
+    {
+     "lon": 77.44259678752651,
+     "lat": 18.43421469287748
+    },
+    {
+     "lon": 77.44225937542934,
+     "lat": 18.43387728078032
+    },
+    {
+     "lon": 77.44219189300992,
+     "lat": 18.433809798360887
+    },
+    {
+     "lon": 77.44212441059048,
+     "lat": 18.433742315941455
+    },
+    {
+     "lon": 77.44178699849331,
+     "lat": 18.43313497416656
+    },
+    {
+     "lon": 77.44144958639616,
+     "lat": 18.432730079649968
+    },
+    {
+     "lon": 77.44138210397674,
+     "lat": 18.432662597230536
+    },
+    {
+     "lat": 18.4326606,
+     "lon": 77.441373
+    }
+   ]
+  }
+ ]
+}

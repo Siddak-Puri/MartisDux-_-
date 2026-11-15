@@ -1,0 +1,18 @@
+{
+  "id": "PIA24264",
+  "title": "Mastcam-Z\u2019s First 360-Degree Panorama",
+  "source": "https://www.jpl.nasa.gov/images/pia24264-mastcam-zs-first-360-degree-panorama/",
+  "original": "https://d2pn8kiwq2w21t.cloudfront.net/original_images/jpegPIA24264.jpg",
+  "credit": "NASA/JPL-Caltech/MSSS/ASU",
+  "acquired": "2021-02-21",
+  "sol": 3,
+  "width": 9238,
+  "height": 2451,
+  "approximateSite": {
+    "lat": 18.4446,
+    "lon": 77.4509
+  },
+  "orientationRegistered": false,
+  "processing": "Original JPEG unchanged; interactive cylindrical viewport, no generated pixels.",
+  "sha256": "2b9e68c713700bc713dea9ce532e10bb0889061b7374575bee8a1d95791f48a2"
+}
